@@ -1,6 +1,5 @@
 package com.github.cpjinan.plugin.akariartifact
 
-import com.github.cpjinan.plugin.akariartifact.utils.FileUtil
 import taboolib.common.platform.Plugin
 import taboolib.platform.BukkitPlugin
 
