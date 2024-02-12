@@ -26,6 +26,8 @@ taboolib {
             name("CPJiNan")
         }
         dependencies {
+            name("PlaceholderAPI").optional(true)
+            name("MythicMobs").optional(true)
             name("AttributePlus").optional(true)
             name("SX-Attribute").optional(true)
             name("OriginAttribute").optional(true)
