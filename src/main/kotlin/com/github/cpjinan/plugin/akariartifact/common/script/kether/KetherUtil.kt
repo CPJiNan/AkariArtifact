@@ -1,4 +1,4 @@
-package com.github.cpjinan.plugin.akariartifact.utils
+package com.github.cpjinan.plugin.akariartifact.common.script.kether
 
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common5.util.replace
@@ -7,11 +7,6 @@ import taboolib.module.kether.ScriptOptions
 import taboolib.module.kether.printKetherErrorMessage
 import taboolib.platform.BukkitPlugin
 
-/**
- * kether util
- * @author Lanscarlos
- * @since 2022-08-19
- */
 object KetherUtil {
     fun String.evalKether(
         sender: Any,
@@ -40,7 +35,7 @@ object KetherUtil {
             return KetherShell.eval(
                 script,
                 ScriptOptions.builder().namespace(namespace).sender(adaptPlayer(sender)).build()
-            ).thenApply { it }
+            ).thenApply { it }.get()
         } catch (e: Exception) {
             e.printKetherErrorMessage()
             return null

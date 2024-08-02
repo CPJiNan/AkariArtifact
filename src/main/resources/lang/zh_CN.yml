@@ -1,0 +1,24 @@
+Language: "zh_CN"
+
+# 插件相关
+Plugin-Loading: '&7正在加载 &3Akari&bArtifact&8&f... &8{0}'
+Plugin-Enabled: '&8[&3Akari&bArtifact&8] &b信息 &8| &6插件加载完毕.'
+Plugin-Disable: '&8[&3Akari&bArtifact&8] &b信息 &8| &6插件卸载完毕.'
+Plugin-Reloaded: '&8[&3Akari&bArtifact&8] &b信息 &8| &6插件重载完毕.'
+Plugin-Update:
+  - '&r===============[&e&l插件更新&r]=============='
+  - '&r| &r插件 &6AkariArtifact &7=>'
+  - '&r| &b◈ &r发现了一个新的插件版本！'
+  - '&r| &b◈ &r最新版本: %latestVersion%'
+  - '&r| &b◈ &r当前版本: %currentVersion%'
+  - '&r| &b◈ &r查看详情: 此消息尚未填写，如看到请加群704109949联系群主'
+  - '&r===============[&e&l插件更新&r]=============='
+Config-Update:
+  - '&r===============[&e&l配置更新&r]=============='
+  - '&r| &6配置文件 &7=>'
+  - '&r| &b◈ &r发现了一个新的配置文件版本！'
+  - '&r| &b◈ &r最新版本: %latestVersion%'
+  - '&r| &b◈ &r当前版本: %currentVersion%'
+  - '&r| &b◈ &r请保存备份并重新生成配置文件！'
+  - '&r===============[&e&l配置更新&r]=============='
+No-Permission: "&c无进行当前操作的权限！"

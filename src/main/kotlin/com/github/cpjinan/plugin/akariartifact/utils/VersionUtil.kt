@@ -2,11 +2,7 @@ package com.github.cpjinan.plugin.akariartifact.utils
 
 import org.bukkit.plugin.Plugin
 
-/**
- * version util
- * @author CPJiNan
- * @since 2024/01/15
- */
+
 object VersionUtil {
     data class SemanticVersion(
         val major: String,
