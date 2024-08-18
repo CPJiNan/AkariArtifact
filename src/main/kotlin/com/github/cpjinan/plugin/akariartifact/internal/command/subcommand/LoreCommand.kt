@@ -18,10 +18,9 @@ object LoreCommand {
                     sender.castSafely<Player>().let {
                         val item = it?.inventory?.itemInMainHand
                         item?.modifyLore {
-                            add(context["lore"])
-                            colored()
+                            add(context["lore"].colored())
                         }
-                        sender.sendLang("Add-Lore", context["lore"])
+                        sender.sendLang("Add-Lore", context["lore"].colored())
                     }
                 }
             }.dynamic("options") {
@@ -38,12 +37,11 @@ object LoreCommand {
                     sender.castSafely<Player>().let {
                         val item = it?.inventory?.itemInMainHand
                         item?.modifyLore {
-                            add(context["lore"])
-                            colored()
+                            add(context["lore"].colored())
                         }
                     }
 
-                    if (!silent) sender.sendLang("Add-Lore", context["lore"])
+                    if (!silent) sender.sendLang("Add-Lore", context["lore"].colored())
                 }
             }
         }
@@ -55,7 +53,6 @@ object LoreCommand {
                         val item = it?.inventory?.itemInMainHand
                         item?.modifyLore {
                             removeAt(context.int("line") - 1)
-                            colored()
                         }
                         sender.sendLang("Remove-Lore", context.int("line"))
                     }
@@ -75,7 +72,6 @@ object LoreCommand {
                         val item = it?.inventory?.itemInMainHand
                         item?.modifyLore {
                             removeAt(context.int("line") - 1)
-                            colored()
                         }
                     }
 
@@ -90,10 +86,9 @@ object LoreCommand {
                     sender.castSafely<Player>().let {
                         val item = it?.inventory?.itemInMainHand
                         item?.modifyLore {
-                            set(context.int("line") - 1, context["lore"])
-                            colored()
+                            set(context.int("line") - 1, context["lore"].colored())
                         }
-                        sender.sendLang("Set-Lore", context.int("line"), context["lore"])
+                        sender.sendLang("Set-Lore", context.int("line"), context["lore"].colored())
                     }
                 }
             }.dynamic("options") {
@@ -110,12 +105,11 @@ object LoreCommand {
                     sender.castSafely<Player>().let {
                         val item = it?.inventory?.itemInMainHand
                         item?.modifyLore {
-                            set(context.int("line") - 1, context["lore"])
-                            colored()
+                            set(context.int("line") - 1, context["lore"].colored())
                         }
                     }
 
-                    if (!silent) sender.sendLang("Set-Lore", context.int("line"), context["lore"])
+                    if (!silent) sender.sendLang("Set-Lore", context.int("line"), context["lore"].colored())
                 }
             }
         }
@@ -126,10 +120,9 @@ object LoreCommand {
                     sender.castSafely<Player>().let {
                         val item = it?.inventory?.itemInMainHand
                         item?.modifyLore {
-                            add(context.int("line") - 1, context["lore"])
-                            colored()
+                            add(context.int("line") - 1, context["lore"].colored())
                         }
-                        sender.sendLang("Insert-Lore", context.int("line"), context.int("line") + 1, context["lore"])
+                        sender.sendLang("Insert-Lore", context.int("line"), context.int("line") + 1, context["lore"].colored())
                     }
                 }
             }.dynamic("options") {
@@ -146,7 +139,7 @@ object LoreCommand {
                     sender.castSafely<Player>().let {
                         val item = it?.inventory?.itemInMainHand
                         item?.modifyLore {
-                            add(context.int("line") - 1, context["lore"])
+                            add(context.int("line") - 1, context["lore"].colored())
                             colored()
                         }
                     }
@@ -155,7 +148,7 @@ object LoreCommand {
                         "Insert-Lore",
                         context.int("line"),
                         context.int("line") + 1,
-                        context["lore"]
+                        context["lore"].colored()
                     )
                 }
             }
