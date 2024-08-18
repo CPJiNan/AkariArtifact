@@ -1,4 +1,4 @@
-package com.github.cpjinan.plugin.akarilevel.internal.command
+package com.github.cpjinan.plugin.akariartifact.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.internal.command.subcommand.LoreCommand
 import com.github.cpjinan.plugin.akariartifact.internal.manager.ConfigManager
@@ -18,8 +18,8 @@ object MainCommand {
     @CommandBody(permission = "akariartifact.help", hidden = true)
     val help = mainCommand { createHelper() }
 
-    @CommandBody(permission = "akarilevel.lore")
-    val level = LoreCommand.lore
+    @CommandBody(permission = "akariartifact.lore")
+    val lore = LoreCommand.lore
 
     @CommandBody(permission = "akariartifact.reload")
     val reload = subCommand {

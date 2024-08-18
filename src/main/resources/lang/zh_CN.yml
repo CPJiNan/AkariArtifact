@@ -24,4 +24,7 @@ Config-Update:
 No-Permission: "&c无进行当前操作的权限！"
 
 # Lore 相关
-Add-Lore: "&7已新增 Lore {0} 至手中物品！"
+Add-Lore: "&7已新增 Lore &f{0} &7至手中物品！"
+Remove-Lore: "&7已移除手中物品的第 &f{0} &7行 Lore！"
+Set-Lore: "&7已设置手中物品的第 &f{0} &7行 Lore 为 &f{1} &7！"
+Insert-Lore: "&7已在手中物品第 &f{0} &7行与第 &f{1} &7行 Lore 之间插入内容 &f{2} &7!"
