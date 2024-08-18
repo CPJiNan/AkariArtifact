@@ -52,7 +52,7 @@ object UpdateUtil {
     fun sendPlayerUpdateNotify(player: Player) {
         Thread {
             val urlConnection =
-                URL("https://cpjinan.github.io/Pages/AkariLevel/version.html").openConnection() as HttpURLConnection
+                URL("https://cpjinan.github.io/Pages/AkariArtifact/version.html").openConnection() as HttpURLConnection
             try {
                 val latestVersion = urlConnection.inputStream.bufferedReader().readText().toSemanticVersion()!!
                 val currentVersion = BukkitPlugin.getInstance().description.version.toSemanticVersion()!!
