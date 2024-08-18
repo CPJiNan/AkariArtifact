@@ -28,15 +28,20 @@ taboolib {
         dependencies {
             name("PlaceholderAPI").optional(true)
             name("MythicMobs").optional(true)
+            name("SX-Attribute").optional(true)
+            name("OriginAttribute").optional(true)
+            name("AzureFlow").optional(true)
         }
     }
     version { taboolib = "6.1.2-test1" }
-    relocate("kotlinx.serialization", "kotlinx.serialization162")
+    relocate("kotlinx.serialization", "com.github.cpjinan.plugin.akariartifact.serialization")
+    relocate("ink.ptms.um", "com.github.cpjinan.plugin.akariartifact.um")
 }
 
 repositories {
     mavenCentral()
     maven(url = "https://mvn.lumine.io/repository/maven-public/")
+    maven("https://r.irepo.space/maven/")
 }
 
 dependencies {
@@ -44,9 +49,8 @@ dependencies {
     compileOnly("ink.ptms.core:v11902:11902-minimize:mapped")
     compileOnly("ink.ptms.core:v11902:11902-minimize:universal")
     compileOnly(kotlin("stdlib"))
-    compileOnly("io.lumine.xikage:MythicMobs:4.11.0@jar")
-    compileOnly("io.lumine:Mythic-Dist:5.3.5@jar")
     compileOnly(fileTree("libs"))
+    taboo("ink.ptms:um:1.0.1")
     taboo("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.6.2")
     taboo("org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:1.6.2")
 }

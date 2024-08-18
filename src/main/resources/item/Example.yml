@@ -1,0 +1,6 @@
+Apple:
+  Id: APPLE
+  Data: 0
+  Display: '&bBad Apple!!'
+  Lore:
+    - "&fMr.Black's Apple"

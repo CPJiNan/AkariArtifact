@@ -14,6 +14,7 @@ object ConfigManager {
     fun getConfigVersion() = settings.getInt("Options.Config-Version")
     fun isEnabledCheckUpdate() = settings.getBoolean("Options.Check-Update")
     fun isEnabledSendMetrics() = settings.getBoolean("Options.Send-Metrics")
+    fun isEnabledOPNotify() = settings.getBoolean("Options.OP-Notify")
     fun isEnabledDebug() = settings.getBoolean("Options.Debug")
 
     // Database
@@ -21,6 +22,5 @@ object ConfigManager {
     fun getJsonSection() = settings.getConfigurationSection("Database.JSON")!!
     fun getCborSection() = settings.getConfigurationSection("Database.CBOR")!!
     fun getSqlTable() = settings.getString("Database.SQL.table")!!
-    fun isEnabledUUID() = settings.getBoolean("Database.UUID")
 
 }

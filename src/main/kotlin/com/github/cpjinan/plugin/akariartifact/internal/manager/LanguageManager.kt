@@ -14,5 +14,9 @@ object LanguageManager {
             "settings_${lang}.yml",
             File(FileUtil.dataFolder, "settings.yml")
         )
+        plugin.saveDefaultResource(
+            "item/Example.yml",
+            File(FileUtil.dataFolder, "item/Example.yml")
+        )
     }
 }
