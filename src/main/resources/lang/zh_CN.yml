@@ -36,7 +36,7 @@ Insert-Lore: "&7已在手中物品第 &f{0} &7行与第 &f{1} &7行 Lore 之间�
 Clear-Lore: "&7已清除手中物品的全部 Lore!"
 Clone-Lore: "&7已将手中物品第 &f{0} &7行 Lore 复制至第 &f{1} &7行!"
 Copy-Lore: "&7已复制手中物品的第 &f{0} &7行 Lore &f{1} &7至剪贴板！"
-Paste-Lore: "&7已将剪贴板内容 {1} 粘贴至手中物品的第 &f{0} 行 Lore！"
+Paste-Lore: "&7已将剪贴板内容 {1} &7粘贴至手中物品的第 &f{0} &7行 Lore！"
 
 # Lore 剪贴板相关
 Clipboard-Check: "&7当前 Lore 剪贴板中的内容为 &f{0} &7!"
