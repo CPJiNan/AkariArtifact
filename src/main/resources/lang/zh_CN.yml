@@ -21,9 +21,14 @@ Config-Update:
   - '&r| &b◈ &r当前版本: %currentVersion%'
   - '&r| &b◈ &r请保存备份并重新生成配置文件！'
   - '&r===============[&e&l配置更新&r]=============='
+
+# 报错相关
 No-Permission: "&c无进行当前操作的权限！"
+Air-In-Hand: "&c手中物品为空气！"
+Illegal-Argument: "&c参数不合法!"
 
 # Lore 相关
+Check-Lore: "&8========&f当前手中物品的 Lore &8========"
 Add-Lore: "&7已新增 Lore &f{0} &7至手中物品！"
 Remove-Lore: "&7已移除手中物品的第 &f{0} &7行 Lore！"
 Set-Lore: "&7已设置手中物品的第 &f{0} &7行 Lore 为 &f{1} &7！"
