@@ -25,7 +25,6 @@ Config-Update:
 # 报错相关
 No-Permission: "&c无进行当前操作的权限！"
 Air-In-Hand: "&c手中物品为空气！"
-Illegal-Argument: "&c参数不合法!"
 
 # Lore 相关
 Check-Lore: "&8========&f当前手中物品的 Lore &8========"

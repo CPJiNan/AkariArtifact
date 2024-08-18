@@ -60,7 +60,7 @@ object LoreCommand {
                                 add(context["lore"].colored())
                             }
                             if (!silent) sender.sendLang("Add-Lore", context["lore"].colored())
-                        } else sender.sendLang("Air-In-Hand")
+                        } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
                 }
             }
@@ -97,7 +97,7 @@ object LoreCommand {
                                 removeAt(context.int("line") - 1)
                             }
                             if (!silent) sender.sendLang("Remove-Lore", context.int("line"))
-                        } else sender.sendLang("Air-In-Hand")
+                        } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
                 }
             }
@@ -134,7 +134,7 @@ object LoreCommand {
                                 set(context.int("line") - 1, context["lore"].colored())
                             }
                             if (!silent) sender.sendLang("Set-Lore", context.int("line"), context["lore"].colored())
-                        } else sender.sendLang("Air-In-Hand")
+                        } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
                 }
             }
@@ -181,7 +181,7 @@ object LoreCommand {
                                 context.int("line") + 1,
                                 context["lore"].colored()
                             )
-                        } else sender.sendLang("Air-In-Hand")
+                        } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
                 }
             }
@@ -217,7 +217,7 @@ object LoreCommand {
                             clear()
                         }
                         if (!silent) sender.sendLang("Clear-Lore")
-                    } else sender.sendLang("Air-In-Hand")
+                    } else if (!silent) sender.sendLang("Air-In-Hand")
                 }
             }
         }
@@ -253,7 +253,7 @@ object LoreCommand {
                                 set(context.int("lineB") - 1, get(context.int("lineA") - 1))
                             }
                             if (!silent) sender.sendLang("Clone-Lore", context.int("lineA"), context.int("lineB"))
-                        } else sender.sendLang("Air-In-Hand")
+                        } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
                 }
             }
@@ -292,7 +292,7 @@ object LoreCommand {
                                 clipboard[it] = value
                                 if (!silent) sender.sendLang("Copy-Lore", context.int("line"), value)
                             }
-                        } else sender.sendLang("Air-In-Hand")
+                        } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
 
                 }
@@ -338,7 +338,7 @@ object LoreCommand {
                                     } else if (!silent) sender.sendLang("Clipboard-Empty")
                                 }
                             }
-                        } else sender.sendLang("Air-In-Hand")
+                        } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
                 }
             }
