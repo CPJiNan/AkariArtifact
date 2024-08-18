@@ -368,7 +368,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     clipboard[it]?.colored()?.let { value ->
                                         if (clipboard.isNotEmpty()) {
-                                            set(context.int("line"), value)
+                                            set(context.int("line") - 1, value)
                                             sender.sendLang("Paste-Lore", context.int("line"), value)
                                         } else sender.sendLang("Clipboard-Empty")
                                     }
