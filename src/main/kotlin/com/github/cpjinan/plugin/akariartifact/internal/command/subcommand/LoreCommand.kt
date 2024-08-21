@@ -411,6 +411,55 @@ object LoreCommand {
             }
         }
 
+        literal("cut") {
+            int("line") {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                    try {
+                        sender.castSafely<Player>().let {
+                            val item = it?.inventory?.itemInMainHand
+                            if (item.isNotAir()) {
+                                item.modifyLore {
+                                    val value = get(context.int("line") - 1)
+                                    clipboard[it] = value
+                                    removeAt(context.int("line") - 1)
+                                    sender.sendLang("Cut-Lore", context.int("line"), value)
+                                }
+                            } else sender.sendLang("Air-In-Hand")
+                        }
+                    } catch (error: IndexOutOfBoundsException) {
+                        sender.sendLang("Index-Out-Of-Bounds")
+                    }
+                }
+            }.dynamic("options") {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                    try {
+                        val args = CommandUtil.parseOptions(content.split(" "))
+                        var silent = false
+
+                        for ((k, _) in args) {
+                            when (k.lowercase()) {
+                                "silent" -> silent = true
+                            }
+                        }
+
+                        sender.castSafely<Player>().let {
+                            val item = it?.inventory?.itemInMainHand
+                            if (item.isNotAir()) {
+                                item.modifyLore {
+                                    val value = get(context.int("line") - 1)
+                                    clipboard[it] = value
+                                    removeAt(context.int("line") - 1)
+                                    if (!silent) sender.sendLang("Cut-Lore", context.int("line"), value)
+                                }
+                            } else if (!silent) sender.sendLang("Air-In-Hand") else return@execute
+                        }
+                    } catch (error: IndexOutOfBoundsException) {
+                        sender.sendLang("Index-Out-Of-Bounds")
+                    }
+                }
+            }
+        }
+
         literal("clipboard") {
 
             literal("check") {
