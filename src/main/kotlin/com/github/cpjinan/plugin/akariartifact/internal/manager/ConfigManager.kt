@@ -1,5 +1,7 @@
 package com.github.cpjinan.plugin.akariartifact.internal.manager
 
+import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
+import com.github.cpjinan.plugin.akariartifact.utils.ConfigUtil.saveDefaultResource
 import com.github.cpjinan.plugin.akariartifact.utils.FileUtil
 import org.bukkit.configuration.file.YamlConfiguration
 import java.io.File
@@ -23,4 +25,15 @@ object ConfigManager {
     fun getCborSection() = settings.getConfigurationSection("Database.CBOR")!!
     fun getSqlTable() = settings.getString("Database.SQL.table")!!
 
+    // Save Default Resource
+    fun saveDefaultResource() {
+        plugin.saveDefaultResource(
+            "settings.yml",
+            File(FileUtil.dataFolder, "settings.yml")
+        )
+        plugin.saveDefaultResource(
+            "item/Example.yml",
+            File(FileUtil.dataFolder, "item/Example.yml")
+        )
+    }
 }

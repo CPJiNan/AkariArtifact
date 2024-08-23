@@ -2,7 +2,6 @@ package com.github.cpjinan.plugin.akariartifact.internal
 
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.internal.manager.ConfigManager
-import com.github.cpjinan.plugin.akariartifact.internal.manager.LanguageManager
 import com.github.cpjinan.plugin.akariartifact.utils.LoggerUtil
 import com.github.cpjinan.plugin.akariartifact.utils.UpdateUtil
 import taboolib.common.LifeCycle
@@ -16,7 +15,7 @@ import taboolib.module.metrics.Metrics
 object PluginLoader {
     @Awake(LifeCycle.LOAD)
     fun load() {
-        LanguageManager.saveDefaultResource()
+        ConfigManager.saveDefaultResource()
         console().sendLang("Plugin-Loading", plugin.description.version)
         if (ConfigManager.isEnabledSendMetrics()) Metrics(18992, plugin.description.version, Platform.BUKKIT)
     }
