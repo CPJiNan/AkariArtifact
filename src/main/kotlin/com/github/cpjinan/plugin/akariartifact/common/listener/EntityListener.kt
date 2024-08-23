@@ -17,6 +17,7 @@ object EntityListener {
             }
         }
     }
+
     @SubscribeEvent
     fun onProjectileHit(event: ProjectileHitEvent) {
         if (ConfigManager.isEnabledAutoRemoveArrow() && event.entity is Arrow) event.entity.remove()
