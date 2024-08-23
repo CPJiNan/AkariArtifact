@@ -12,7 +12,7 @@ object EntityListener {
     @SubscribeEvent
     fun onProjectileLaunch(event: ProjectileLaunchEvent) {
         if (ConfigManager.isEnabledAutoRemoveArrow() && event.entity is Arrow && event.entity.shooter is Player) {
-            submit(async = true, delay = 20) {
+            submit(async = true, delay = 120L) {
                 event.entity.takeIf { !it.isOnGround && !it.isDead }?.remove()
             }
         }
