@@ -28,6 +28,7 @@ object ConfigManager {
 
     // Arrow
     fun isEnabledAutoRemoveArrow() = arrow.getBoolean("Arrow.Auto-Remove")
+    fun getRemoveArrowDelay() = arrow.getLong("Arrow.Delay")
 
     // Save Default Resource
     fun saveDefaultResource() {
