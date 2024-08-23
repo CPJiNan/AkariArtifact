@@ -13,6 +13,7 @@ taboolib {
         install(
             UNIVERSAL,
             UI,
+            NMS_UTIL,
             KETHER,
             METRICS,
             DATABASE,
@@ -33,7 +34,7 @@ taboolib {
             name("AzureFlow").optional(true)
         }
     }
-    version { taboolib = "6.1.2-test1" }
+    version { taboolib = "6.1.2-beta10" }
     relocate("kotlinx.serialization", "com.github.cpjinan.plugin.akariartifact.serialization")
     relocate("ink.ptms.um", "com.github.cpjinan.plugin.akariartifact.um")
 }

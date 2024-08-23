@@ -44,7 +44,7 @@ object ItemAPI {
      * @return 文件指定路径下的 ItemStack
      * @author CPJiNan
      */
-    fun loadItem(file: File, path: String): ItemStack? {
+    fun getItem(file: File, path: String): ItemStack? {
         val config = YamlConfiguration.loadConfiguration(file)
         return config.getItemStack(path)
     }
@@ -56,7 +56,7 @@ object ItemAPI {
      * @return 文件指定路径下的 ItemStack
      * @author CPJiNan
      */
-    fun loadItem(file: String, path: String): ItemStack? {
+    fun getItem(file: String, path: String): ItemStack? {
         val config = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, file))
         return config.getItemStack(path)
     }
@@ -68,7 +68,7 @@ object ItemAPI {
      * @return 插件下指定索引的 ItemStack
      * @author CPJiNan
      */
-    fun loadExternalItem(plugin: String, key: String): ItemStack? {
+    fun getExternalItem(plugin: String, key: String): ItemStack? {
         var item: ItemStack? = null
         when (plugin) {
             "MythicMobs" -> item = Mythic.API.getItemStack(key)
