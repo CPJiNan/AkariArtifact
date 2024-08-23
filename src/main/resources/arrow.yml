@@ -1,0 +1,4 @@
+# 箭矢设置
+Arrow:
+  # 命中/落地 自动清理
+  Auto-Remove: false

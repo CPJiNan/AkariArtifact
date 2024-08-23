@@ -8,6 +8,7 @@ import java.io.File
 
 object ConfigManager {
     var settings: YamlConfiguration = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, "settings.yml"))
+    var arrow: YamlConfiguration = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, "arrow.yml"))
 
     // Config Version
     const val VERSION = 1
@@ -25,15 +26,19 @@ object ConfigManager {
     fun getCborSection() = settings.getConfigurationSection("Database.CBOR")!!
     fun getSqlTable() = settings.getString("Database.SQL.table")!!
 
+    // Arrow
+    fun isEnabledAutoRemoveArrow() = arrow.getBoolean("Arrow.Auto-Remove")
+
     // Save Default Resource
     fun saveDefaultResource() {
         plugin.saveDefaultResource(
-            "settings.yml",
-            File(FileUtil.dataFolder, "settings.yml")
+            "settings.yml"
+        )
+        plugin.saveDefaultResource(
+            "arrow.yml"
         )
         plugin.saveDefaultResource(
             "item/Example.yml",
-            File(FileUtil.dataFolder, "item/Example.yml")
         )
     }
 }

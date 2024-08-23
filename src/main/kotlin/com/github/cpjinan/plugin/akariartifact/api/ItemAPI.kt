@@ -1,5 +1,6 @@
-package com.github.cpjinan.plugin.akariartifact.utils
+package com.github.cpjinan.plugin.akariartifact.api
 
+import com.github.cpjinan.plugin.akariartifact.utils.FileUtil
 import github.saukiya.sxattribute.SXAttribute
 import ink.ptms.um.Mythic
 import io.rokuko.azureflow.features.item.factory.AzureFlowItemFactoryService
@@ -9,7 +10,7 @@ import org.bukkit.inventory.ItemStack
 import taboolib.platform.util.buildItem
 import java.io.File
 
-object ItemUtil {
+object ItemAPI {
     /**
      * 保存物品至配置文件
      * @param item 物品
