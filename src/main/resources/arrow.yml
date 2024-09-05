@@ -1,6 +1,0 @@
-# 箭矢设置
-Arrow:
-  # 命中/落地 自动清理
-  Auto-Remove: false
-  # 清除延迟 (默认:120)
-  Delay: 120
