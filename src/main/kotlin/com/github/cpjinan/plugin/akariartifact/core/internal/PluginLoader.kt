@@ -4,7 +4,6 @@ import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil
 import com.github.cpjinan.plugin.akariartifact.module.config.ModuleConfig
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
-import com.github.cpjinan.plugin.akariartifact.module.update.utils.UpdateUtil
 import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
