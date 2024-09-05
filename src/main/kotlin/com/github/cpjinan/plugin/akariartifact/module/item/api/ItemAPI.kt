@@ -85,11 +85,10 @@ object ItemAPI {
      * @author CPJiNan
      */
     fun getExternalItem(plugin: String, key: String): ItemStack? {
-        var item: ItemStack? = null
-        when (plugin) {
-            "MythicMobs" -> item = Mythic.API.getItemStack(key)
+        val item: ItemStack? = when (plugin) {
+            "MythicMobs" -> Mythic.API.getItemStack(key)
 
-            "SX-Attribute" -> item = SXAttribute.getApi().getItem(key, null)
+            "SX-Attribute" -> SXAttribute.getApi().getItem(key, null)
 
             else -> throw IllegalArgumentException("Unable to find item $key in plugin $plugin.")
         }

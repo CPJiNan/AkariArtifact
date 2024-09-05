@@ -35,9 +35,6 @@ object PluginLoader {
             ""
         )
         console().sendLang("Plugin-Enabled")
-        if (ModuleConfig.isEnabledCheckUpdate()) UpdateUtil.getPluginUpdate()
-        UpdateUtil.getPluginNotice()
-        UpdateUtil.getConfigUpdate()
         simpleCommand("testSave") { sender, args ->
             val item = sender.cast<Player>().inventory.itemInMainHand
             ItemAPI.saveItem(item, "item/Example.yml", "TestItem")
