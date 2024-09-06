@@ -1,9 +1,13 @@
-package com.github.cpjinan.plugin.akariartifact.module.update.utils
+package com.github.cpjinan.plugin.akariartifact.core.common
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil.message
+import com.github.cpjinan.plugin.akariartifact.core.utils.VersionUtil.toSemanticVersion
 import com.github.cpjinan.plugin.akariartifact.module.config.ModuleConfig
-import com.github.cpjinan.plugin.akariartifact.module.update.utils.VersionUtil.toSemanticVersion
 import org.bukkit.entity.Player
+import org.bukkit.event.player.PlayerJoinEvent
+import taboolib.common.LifeCycle
+import taboolib.common.platform.Awake
+import taboolib.common.platform.event.SubscribeEvent
 import taboolib.common.platform.function.console
 import taboolib.common5.util.replace
 import taboolib.module.chat.colored
@@ -13,8 +17,19 @@ import taboolib.platform.util.asLangTextList
 import java.net.HttpURLConnection
 import java.net.URL
 
-object UpdateUtil {
-    fun getPluginNotice() {
+object PluginUpdate {
+    @Awake(LifeCycle.ENABLE)
+    fun onEnable() {
+        if (ModuleConfig.isEnabledCheckUpdate()) getPluginUpdate()
+        getPluginNotice()
+    }
+
+    @SubscribeEvent
+    fun onPlayerJoin(event: PlayerJoinEvent) {
+        if (event.player.isOp && ModuleConfig.isEnabledOPNotify()) sendPlayerUpdateNotify(event.player)
+    }
+
+    private fun getPluginNotice() {
         Thread {
             val urlConnection =
                 URL("https://cpjinan.github.io/Pages/AkariArtifact/notice.html").openConnection() as HttpURLConnection
@@ -28,7 +43,7 @@ object UpdateUtil {
         }.start()
     }
 
-    fun getPluginUpdate() {
+    private fun getPluginUpdate() {
         Thread {
             val urlConnection =
                 URL("https://cpjinan.github.io/Pages/AkariArtifact/version.html").openConnection() as HttpURLConnection
@@ -49,7 +64,7 @@ object UpdateUtil {
         }.start()
     }
 
-    fun sendPlayerUpdateNotify(player: Player) {
+    private fun sendPlayerUpdateNotify(player: Player) {
         Thread {
             val urlConnection =
                 URL("https://cpjinan.github.io/Pages/AkariArtifact/version.html").openConnection() as HttpURLConnection
@@ -68,17 +83,5 @@ object UpdateUtil {
                 urlConnection.disconnect()
             }
         }.start()
-    }
-
-    fun getConfigUpdate() {
-        val latestVersion = ModuleConfig.VERSION
-        val currentVersion = ModuleConfig.getConfigVersion()
-        if (currentVersion < latestVersion) {
-            console().asLangTextList("Config-Update")
-                .replace(Pair("%latestVersion%", latestVersion), Pair("%currentVersion%", currentVersion))
-                .forEach {
-                    message(it.colored())
-                }
-        }
     }
 }

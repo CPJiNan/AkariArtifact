@@ -1,4 +1,4 @@
-package com.github.cpjinan.plugin.akariartifact.module.update.utils
+package com.github.cpjinan.plugin.akariartifact.core.utils
 
 import org.bukkit.plugin.Plugin
 

@@ -1,4 +1,4 @@
-package com.github.cpjinan.plugin.akariartifact.module.script.kether
+package com.github.cpjinan.plugin.akariartifact.core.common.script.kether
 
 import taboolib.common.platform.function.adaptPlayer
 import taboolib.common5.util.replace
