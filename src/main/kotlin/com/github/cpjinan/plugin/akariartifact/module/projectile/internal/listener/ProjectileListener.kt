@@ -1,6 +1,6 @@
-package com.github.cpjinan.plugin.akariartifact.module.projectile.listener
+package com.github.cpjinan.plugin.akariartifact.module.projectile.internal.listener
 
-import com.github.cpjinan.plugin.akariartifact.module.config.ModuleConfig
+import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
 import org.bukkit.entity.Arrow
 import org.bukkit.entity.Player
 import org.bukkit.event.entity.ProjectileHitEvent
@@ -11,8 +11,8 @@ import taboolib.common.platform.function.submit
 object ProjectileListener {
     @SubscribeEvent
     fun onProjectileLaunch(event: ProjectileLaunchEvent) {
-        if (ModuleConfig.isEnabledAutoRemoveArrow() && event.entity is Arrow && event.entity.shooter is Player) {
-            submit(async = true, delay = ModuleConfig.getRemoveArrowDelay()) {
+        if (ModuleProjectile.isEnabledAutoRemoveArrow() && event.entity is Arrow && event.entity.shooter is Player) {
+            submit(async = true, delay = ModuleProjectile.getRemoveArrowDelay()) {
                 event.entity.takeIf { !it.isOnGround && !it.isDead }?.remove()
             }
         }
@@ -20,6 +20,6 @@ object ProjectileListener {
 
     @SubscribeEvent
     fun onProjectileHit(event: ProjectileHitEvent) {
-        if (ModuleConfig.isEnabledAutoRemoveArrow() && event.entity is Arrow) event.entity.remove()
+        if (ModuleProjectile.isEnabledAutoRemoveArrow() && event.entity is Arrow) event.entity.remove()
     }
 }

@@ -1,4 +1,4 @@
-package com.github.cpjinan.plugin.akariartifact.module.item.command
+package com.github.cpjinan.plugin.akariartifact.module.item.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
 import org.bukkit.entity.Player
