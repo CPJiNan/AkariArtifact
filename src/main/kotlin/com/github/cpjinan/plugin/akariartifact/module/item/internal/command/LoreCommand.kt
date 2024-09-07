@@ -1,21 +1,25 @@
 package com.github.cpjinan.plugin.akariartifact.module.item.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
+import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
-import taboolib.common.platform.command.*
+import taboolib.common.platform.command.CommandBody
+import taboolib.common.platform.command.CommandContext
+import taboolib.common.platform.command.int
+import taboolib.common.platform.command.subCommand
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
 import taboolib.platform.util.isNotAir
 import taboolib.platform.util.modifyLore
 
-@CommandHeader(name = "Lore", permission = "akariartifact.lore")
 object LoreCommand {
     private val clipboard: HashMap<Player, String> = hashMapOf()
 
     @CommandBody
-    val main = mainCommand {
+    val lore = subCommand {
+        if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
         literal("check") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->

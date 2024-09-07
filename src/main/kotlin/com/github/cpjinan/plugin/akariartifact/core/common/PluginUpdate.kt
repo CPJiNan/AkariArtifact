@@ -2,7 +2,6 @@ package com.github.cpjinan.plugin.akariartifact.core.common
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil.message
 import com.github.cpjinan.plugin.akariartifact.core.utils.VersionUtil.toSemanticVersion
-import com.github.cpjinan.plugin.akariartifact.module.config.ModuleConfig
 import org.bukkit.entity.Player
 import org.bukkit.event.player.PlayerJoinEvent
 import taboolib.common.LifeCycle
@@ -20,13 +19,13 @@ import java.net.URL
 object PluginUpdate {
     @Awake(LifeCycle.ENABLE)
     fun onEnable() {
-        if (ModuleConfig.isEnabledCheckUpdate()) getPluginUpdate()
+        if (PluginConfig.isEnabledCheckUpdate()) getPluginUpdate()
         getPluginNotice()
     }
 
     @SubscribeEvent
     fun onPlayerJoin(event: PlayerJoinEvent) {
-        if (event.player.isOp && ModuleConfig.isEnabledOPNotify()) sendPlayerUpdateNotify(event.player)
+        if (event.player.isOp && PluginConfig.isEnabledOPNotify()) sendPlayerUpdateNotify(event.player)
     }
 
     private fun getPluginNotice() {

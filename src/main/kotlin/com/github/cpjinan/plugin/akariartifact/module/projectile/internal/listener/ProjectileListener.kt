@@ -11,6 +11,7 @@ import taboolib.common.platform.function.submit
 object ProjectileListener {
     @SubscribeEvent
     fun onProjectileLaunch(event: ProjectileLaunchEvent) {
+        if (!ModuleProjectile.isEnabledModule()) return
         if (ModuleProjectile.isEnabledAutoRemoveArrow() && event.entity is Arrow && event.entity.shooter is Player) {
             submit(async = true, delay = ModuleProjectile.getRemoveArrowDelay()) {
                 event.entity.takeIf { !it.isOnGround && !it.isDead }?.remove()
@@ -20,6 +21,7 @@ object ProjectileListener {
 
     @SubscribeEvent
     fun onProjectileHit(event: ProjectileHitEvent) {
+        if (!ModuleProjectile.isEnabledModule()) return
         if (ModuleProjectile.isEnabledAutoRemoveArrow() && event.entity is Arrow) event.entity.remove()
     }
 }

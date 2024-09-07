@@ -12,10 +12,11 @@ object ModuleProjectile {
     const val MODULE_NAME = "Projectile"
     const val MODULE_VERSION = 1
 
-    val configFile = File(FileUtil.dataFolder, "module/projectile.yml")
+    var configFile = File(FileUtil.dataFolder, "module/projectile.yml")
     var config: YamlConfiguration =
         YamlConfiguration.loadConfiguration(configFile)
 
+    fun isEnabledModule() = config.getBoolean("Enable")
     fun isEnabledAutoRemoveArrow() = config.getBoolean("Arrow.Auto-Remove")
     fun getRemoveArrowDelay() = config.getLong("Arrow.Delay")
 
