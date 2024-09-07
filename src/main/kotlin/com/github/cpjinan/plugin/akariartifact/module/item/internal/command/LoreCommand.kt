@@ -59,6 +59,7 @@ object LoreCommand {
             }.dynamic("options") {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
                     try {
+                        val lore = context["lore"] + CommandUtil.parseContentAfterSpace(content.split(" "))
                         val args = CommandUtil.parseOptions(content.split(" "))
                         var silent = false
 
@@ -72,9 +73,9 @@ object LoreCommand {
                             val item = it?.inventory?.itemInMainHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
-                                    add(context["lore"].colored())
+                                    add(lore.colored())
                                 }
-                                if (!silent) sender.sendLang("Add-Lore", context["lore"].colored())
+                                if (!silent) sender.sendLang("Add-Lore", lore.colored())
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -149,6 +150,7 @@ object LoreCommand {
             }.dynamic("options") {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
                     try {
+                        val lore = context["lore"] + CommandUtil.parseContentAfterSpace(content.split(" "))
                         val args = CommandUtil.parseOptions(content.split(" "))
                         var silent = false
 
@@ -162,9 +164,9 @@ object LoreCommand {
                             val item = it?.inventory?.itemInMainHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
-                                    set(context.int("line") - 1, context["lore"].colored())
+                                    set(context.int("line") - 1, lore.colored())
                                 }
-                                if (!silent) sender.sendLang("Set-Lore", context.int("line"), context["lore"].colored())
+                                if (!silent) sender.sendLang("Set-Lore", context.int("line"), lore.colored())
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -199,6 +201,7 @@ object LoreCommand {
             }.dynamic("options") {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
                     try {
+                        val lore = context["lore"] + CommandUtil.parseContentAfterSpace(content.split(" "))
                         val args = CommandUtil.parseOptions(content.split(" "))
                         var silent = false
 
@@ -212,13 +215,13 @@ object LoreCommand {
                             val item = it?.inventory?.itemInMainHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
-                                    add(context.int("line"), context["lore"].colored())
+                                    add(context.int("line"), lore.colored())
                                 }
                                 if (!silent) sender.sendLang(
                                     "Insert-Lore",
                                     context.int("line"),
                                     context.int("line") + 1,
-                                    context["lore"].colored()
+                                    lore.colored()
                                 )
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
@@ -491,6 +494,7 @@ object LoreCommand {
                     }
                 }.dynamic("options") {
                     execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                        val value = context["value"] + CommandUtil.parseContentAfterSpace(content.split(" "))
                         val args = CommandUtil.parseOptions(content.split(" "))
                         var silent = false
 
@@ -501,10 +505,10 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            clipboard[it!!] = context["value"]
+                            clipboard[it!!] = value
                         }
 
-                        if (!silent) sender.sendLang("Clipboard-Set", context["value"])
+                        if (!silent) sender.sendLang("Clipboard-Set", value)
                     }
                 }
             }

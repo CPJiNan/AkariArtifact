@@ -27,4 +27,16 @@ object CommandUtil {
         }
         return options
     }
+
+    fun parseContentAfterSpace(args: List<String>): String {
+        var i = 0
+        var content = ""
+        while (i < args.size) {
+            val arg = args[i]
+            if (arg.startsWith("--") || arg.startsWith("-")) break
+            else content += " $arg"
+            i++
+        }
+        return content
+    }
 }
