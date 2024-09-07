@@ -1,6 +1,7 @@
 package com.github.cpjinan.plugin.akariartifact.core.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.common.PluginConfig
+import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.LoreCommand
 import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
 import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.platform.ProxyCommandSender
@@ -14,7 +15,10 @@ object MainCommand {
     val main = mainCommand { createHelper() }
 
     @CommandBody(permission = "akariartifact.help", hidden = true)
-    val help = mainCommand { createHelper() }
+    val help = subCommand { createHelper() }
+
+    @CommandBody(permission = "akariartifact.lore")
+    val lore = LoreCommand.lore
 
     @CommandBody(permission = "akariartifact.reload")
     val reload = subCommand {
