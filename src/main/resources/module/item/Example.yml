@@ -1,6 +1,5 @@
 Apple:
-  Id: APPLE
-  Data: 0
-  Display: '&bBad Apple!!'
+  Type: APPLE
+  Display: §bBad Apple!!
   Lore:
-    - "&fMr.Black's Apple"
+    - §fMr.Black's Apple

@@ -127,7 +127,9 @@ object ItemAPI {
             is LeatherArmorMeta -> config.set("$path.Options.Color", meta.color.asRGB())
             // 药水
             is PotionMeta -> {
+                val potionTypeName = meta.basePotionData.type.name
                 val effects = meta.customEffects.map { "${it.type.name}-${it.amplifier}-${it.duration}" }
+                config.set("$path.Options.BasePotionData", potionTypeName)
                 config.set("$path.Options.PotionEffects", effects)
             }
             // 头颅
