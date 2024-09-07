@@ -128,8 +128,12 @@ object ItemAPI {
             // 药水
             is PotionMeta -> {
                 val potionTypeName = meta.basePotionData.type.name
+                val isExtended = meta.basePotionData.isExtended
+                val isUpgraded = meta.basePotionData.isUpgraded
                 val effects = meta.customEffects.map { "${it.type.name}-${it.amplifier}-${it.duration}" }
-                config.set("$path.Options.BasePotionData", potionTypeName)
+                config.set("$path.Options.BasePotionData.Type", potionTypeName)
+                config.set("$path.Options.BasePotionData.Extended", isExtended)
+                config.set("$path.Options.BasePotionData.Upgraded", isUpgraded)
                 config.set("$path.Options.PotionEffects", effects)
             }
             // 头颅
@@ -187,9 +191,11 @@ object ItemAPI {
             }
 
             is PotionMeta -> {
-                config.getString("$path.Options.BasePotionData")?.let { potionTypeName ->
+                config.getString("$path.Options.BasePotionData.Type")?.let { potionTypeName ->
                     val potionType = PotionType.valueOf(potionTypeName)
-                    val potionData = PotionData(potionType)
+                    val isExtended = config.getBoolean("$path.Options.BasePotionData.Extended")
+                    val isUpgraded = config.getBoolean("$path.Options.BasePotionData.Upgraded")
+                    val potionData = PotionData(potionType, isExtended, isUpgraded)
                     meta.basePotionData = potionData
                 }
                 config.getStringList("$path.Options.PotionEffects")?.forEach { effect ->
