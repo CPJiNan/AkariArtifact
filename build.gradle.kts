@@ -5,7 +5,6 @@ plugins {
     `maven-publish`
     id("io.izzel.taboolib") version "2.0.12"
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
-    id("org.jetbrains.kotlin.plugin.serialization") version "1.9.22"
 }
 
 taboolib {
@@ -30,12 +29,9 @@ taboolib {
             name("PlaceholderAPI").optional(true)
             name("MythicMobs").optional(true)
             name("SX-Attribute").optional(true)
-            name("OriginAttribute").optional(true)
-            name("AzureFlow").optional(true)
         }
     }
     version { taboolib = "6.1.2-beta10" }
-    relocate("kotlinx.serialization", "com.github.cpjinan.plugin.akariartifact.serialization")
     relocate("ink.ptms.um", "com.github.cpjinan.plugin.akariartifact.um")
 }
 
@@ -47,13 +43,10 @@ repositories {
 
 dependencies {
     compileOnly("ink.ptms:nms-all:1.0.0")
-    compileOnly("ink.ptms.core:v11902:11902-minimize:mapped")
-    compileOnly("ink.ptms.core:v11902:11902-minimize:universal")
+    compileOnly("ink.ptms.core:v11200:11200")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
     taboo("ink.ptms:um:1.0.1")
-    taboo("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:1.6.2")
-    taboo("org.jetbrains.kotlinx:kotlinx-serialization-cbor-jvm:1.6.2")
 }
 
 tasks.withType<JavaCompile> {

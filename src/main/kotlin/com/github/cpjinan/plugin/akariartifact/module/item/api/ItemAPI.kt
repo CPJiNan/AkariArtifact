@@ -3,12 +3,24 @@ package com.github.cpjinan.plugin.akariartifact.module.item.api
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
 import github.saukiya.sxattribute.SXAttribute
 import ink.ptms.um.Mythic
+import org.bukkit.Color
+import org.bukkit.DyeColor
+import org.bukkit.Material
+import org.bukkit.block.banner.Pattern
+import org.bukkit.block.banner.PatternType
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.enchantments.Enchantment
+import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemFlag
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.BannerMeta
 import org.bukkit.inventory.meta.LeatherArmorMeta
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.inventory.meta.SkullMeta
+import org.bukkit.potion.PotionData
+import org.bukkit.potion.PotionEffect
+import org.bukkit.potion.PotionEffectType
+import org.bukkit.potion.PotionType
 import taboolib.module.nms.getName
 import java.io.File
 
@@ -39,63 +51,47 @@ object ItemAPI {
         config.save(File(FileUtil.dataFolder, file))
     }
 
-//    /**
-//     * 读取配置文件中的物品
-//     * @param file 配置文件
-//     * @param path 配置项路径
-//     * @return 文件指定路径下的 ItemStack
-//     * @author CPJiNan
-//     */
-//    fun getItem(file: File, path: String): ItemStack? {
-//        val config = YamlConfiguration.loadConfiguration(file)
-//        val item = buildItem(Material.getMaterial(config.getString("$path.Type") ?: return null) ?: return null) {
-//            name = config.getString("$path.Name")
-//            lore.addAll(config.getStringList("$path.Lore"))
-//            colored()
-//        }
-//        item.itemTagReader {
-//            config.getConfigurationSection("$path.ItemTag")
-//        }
-//        return item
-//    }
-//
-//    /**
-//     * 读取配置文件中的物品
-//     * @param file 配置文件路径 (插件目录为根目录)
-//     * @param path 配置项路径
-//     * @return 文件指定路径下的 ItemStack
-//     * @author CPJiNan
-//     */
-//    fun getItem(file: String, path: String): ItemStack? {
-//        val config = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, file))
-//        val item = buildItem(Material.getMaterial(config.getString("$path.Type") ?: return null) ?: return null) {
-//            name = config.getString("$path.Name")
-//            lore.addAll(config.getStringList("$path.Lore"))
-//            colored()
-//        }
-//        item.setItemTag(config.get("$path.ItemTag") as ItemTag)
-//        return item
-//    }
+    /**
+     * 从配置文件获取物品
+     * @param file 配置文件
+     * @param path 配置项路径
+     * @author CPJiNan
+     */
+    fun getItem(file: File, path: String): ItemStack {
+        val config = YamlConfiguration.loadConfiguration(file)
+        return getItemFromConfig(config, path)
+    }
 
     /**
-     * 读取外部插件中的物品
+     * 从配置文件获取物品
+     * @param file 配置文件路径 (插件目录为根目录)
+     * @param path 配置项路径
+     * @author CPJiNan
+     */
+    fun getItem(file: String, path: String): ItemStack {
+        val config = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, file))
+        return getItemFromConfig(config, path)
+    }
+
+    /**
+     * 从其他插件获取物品
      * @param plugin 插件名称
      * @param key 物品索引
+     * @param player 执行玩家 (默认为 null)
      * @return 插件下指定索引的 ItemStack
      * @author CPJiNan
      */
-    fun getExternalItem(plugin: String, key: String): ItemStack? {
+    fun getItem(plugin: String, key: String, player: Player? = null): ItemStack? {
         val item: ItemStack? = when (plugin) {
             "MythicMobs" -> Mythic.API.getItemStack(key)
 
-            "SX-Attribute" -> SXAttribute.getApi().getItem(key, null)
+            "SX-Attribute" -> SXAttribute.getApi().getItem(key, player)
 
             else -> throw IllegalArgumentException("Unable to find item $key in plugin $plugin.")
         }
         return item
     }
 
-    @Suppress("DEPRECATION")
     private fun saveItemToConfig(item: ItemStack, config: YamlConfiguration, path: String) {
         val meta = item.itemMeta ?: return
 
@@ -136,6 +132,79 @@ object ItemAPI {
                 meta.owner?.let { config.set("$path.Options.SkullOwner", it) }
             }
         }
+    }
+
+    private fun getItemFromConfig(config: YamlConfiguration, path: String): ItemStack {
+        val type = Material.getMaterial(config.getString("$path.Type") ?: "AIR") ?: Material.AIR
+        val item = ItemStack(type)
+
+        // 基本属性
+        val meta = item.itemMeta ?: return item
+        config.getString("$path.Display")?.let { meta.displayName = it }
+        config.getStringList("$path.Lore")?.let { meta.lore = it }
+
+        // 附魔属性
+        if (config.getBoolean("$path.Options.Glow", false)) {
+            config.getConfigurationSection("$path.Enchantments")?.let { enchantments ->
+                enchantments.getKeys(false).forEach { enchantmentKey ->
+                    val enchantment = Enchantment.getByName(enchantmentKey)
+                    val level = enchantments.getInt(enchantmentKey)
+                    if (enchantment != null) {
+                        meta.addEnchant(enchantment, level, true)
+                    }
+                }
+            }
+        }
+
+        // 常规物品设置
+        config.getInt("$path.Options.Durability", 0).let { item.durability = it.toShort() }
+        if (config.getBoolean("$path.Options.Unbreakable", false)) {
+            meta.isUnbreakable = true
+        }
+        config.getStringList("$path.Options.HideFlags")?.mapNotNull { ItemFlag.valueOf(it) }
+            ?.let { meta.addItemFlags(*it.toTypedArray()) }
+
+        // 特殊物品设置
+        when (meta) {
+            is BannerMeta -> {
+                config.getStringList("$path.Options.BannerPatterns")?.forEach { pattern ->
+                    val (colorName, patternName) = pattern.split("-", limit = 2)
+                    val color = DyeColor.valueOf(colorName)
+                    val bannerPattern = Pattern(color, PatternType.getByIdentifier(patternName)!!)
+                    meta.addPattern(bannerPattern)
+                }
+            }
+
+            is LeatherArmorMeta -> {
+                config.getInt("$path.Options.Color").let { colorInt ->
+                    meta.color = Color.fromRGB(colorInt)
+                }
+            }
+
+            is PotionMeta -> {
+                config.getString("$path.Options.BasePotionData")?.let { potionTypeName ->
+                    val potionType = PotionType.valueOf(potionTypeName)
+                    val potionData = PotionData(potionType)
+                    meta.basePotionData = potionData
+                }
+                config.getStringList("$path.Options.PotionEffects")?.forEach { effect ->
+                    val (typeName, amplifier, duration) = effect.split("-", limit = 3)
+                    val potionEffectType = PotionEffectType.getByName(typeName)
+                    if (potionEffectType != null) {
+                        meta.addCustomEffect(PotionEffect(potionEffectType, duration.toInt(), amplifier.toInt()), true)
+                    }
+                }
+            }
+
+            is SkullMeta -> {
+                config.getString("$path.Options.SkullOwner")?.let { owner ->
+                    meta.owner = owner
+                }
+            }
+        }
+
+        item.itemMeta = meta
+        return item
     }
 
 }
