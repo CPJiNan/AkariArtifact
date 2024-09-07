@@ -9,7 +9,7 @@ import taboolib.common.platform.command.*
 import taboolib.expansion.createHelper
 import taboolib.module.lang.sendLang
 
-@CommandHeader(name = "AkariArtifact")
+@CommandHeader(name = "AkariArtifact", aliases = ["aa"])
 object MainCommand {
     @CommandBody
     val main = mainCommand { createHelper() }
