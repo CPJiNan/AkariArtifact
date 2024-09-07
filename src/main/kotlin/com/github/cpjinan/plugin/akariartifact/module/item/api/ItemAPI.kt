@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
+import taboolib.module.chat.colored
 import taboolib.module.nms.getName
 import java.io.File
 
@@ -140,8 +141,8 @@ object ItemAPI {
 
         // 基本属性
         val meta = item.itemMeta ?: return item
-        config.getString("$path.Display")?.let { meta.displayName = it }
-        config.getStringList("$path.Lore")?.let { meta.lore = it }
+        config.getString("$path.Display")?.let { meta.displayName = it.colored() }
+        config.getStringList("$path.Lore")?.let { meta.lore = it.colored() }
 
         // 附魔属性
         if (config.getBoolean("$path.Options.Glow", false)) {
