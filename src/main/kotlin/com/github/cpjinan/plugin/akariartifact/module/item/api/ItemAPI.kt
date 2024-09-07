@@ -100,6 +100,7 @@ object ItemAPI {
 
         // 基本属性
         config.set("$path.Type", item.type.name)
+        item.durability.takeIf { it != 0.toShort() }?.let { config.set("$path.Data", it.toInt()) }
         config.set("$path.Display", item.getName())
         meta.lore?.let { config.set("$path.Lore", it) }
 
@@ -112,7 +113,6 @@ object ItemAPI {
         }
 
         // 常规物品设置
-        item.durability.takeIf { it != 0.toShort() }?.let { config.set("$path.Options.Durability", it.toInt()) }
         meta.isUnbreakable.takeIf { it }?.let { config.set("$path.Options.Unbreakable", it) }
         meta.itemFlags.takeIf { it.isNotEmpty() }?.map { it.name }?.let { config.set("$path.Options.HideFlags", it) }
 
@@ -148,6 +148,7 @@ object ItemAPI {
         val item = ItemStack(type)
 
         // 基本属性
+        config.getInt("$path.Data", 0).let { item.durability = it.toShort() }
         val meta = item.itemMeta ?: return item
         config.getString("$path.Display")?.let { meta.displayName = it.colored() }
         config.getStringList("$path.Lore")?.let { meta.lore = it.colored() }
@@ -166,7 +167,6 @@ object ItemAPI {
         }
 
         // 常规物品设置
-        config.getInt("$path.Options.Durability", 0).let { item.durability = it.toShort() }
         if (config.getBoolean("$path.Options.Unbreakable", false)) {
             meta.isUnbreakable = true
         }
