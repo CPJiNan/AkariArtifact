@@ -155,7 +155,7 @@ object ItemAPI {
                     "SkullOwner"
                 )
             ) {
-                val cacheList = HashMap<String, ArrayList<Any>>()
+                val listCache = HashMap<String, ArrayList<Any>>()
                 fun writeData(config: YamlConfiguration, key: String, value: ItemTagData) {
                     when (val data = value.unsafeData()) {
                         is ItemTag -> {
@@ -163,15 +163,15 @@ object ItemAPI {
                         }
 
                         is ItemTagList -> {
-                            cacheList[key] = ArrayList()
+                            listCache[key] = ArrayList()
                             data.forEach { writeData(config, key, it) }
-                            config.set(key, cacheList[key])
-                            cacheList.remove(key)
+                            config.set(key, listCache[key])
+                            listCache.remove(key)
                         }
 
                         is Byte, is Short, is Int, is Long, is Float, is Double, is String, is Boolean, is List<*>, is ByteArray, is ShortArray, is IntArray, is LongArray -> {
-                            if (key in cacheList.keys) {
-                                cacheList[key]!! += data
+                            if (key in listCache.keys) {
+                                listCache[key]!! += data
                                 return
                             }
                             config.set(key, data)
