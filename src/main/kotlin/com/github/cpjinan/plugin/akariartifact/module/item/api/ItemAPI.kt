@@ -21,6 +21,7 @@ import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
+import taboolib.common.platform.function.info
 import taboolib.module.chat.colored
 import taboolib.module.nms.getItemTag
 import taboolib.module.nms.getName
@@ -239,8 +240,10 @@ object ItemAPI {
         config.getConfigurationSection("$path.NBT")?.let { nbtSection ->
             item.itemTagReader {
                 nbtSection.getKeys(true).forEach { key ->
-                    val value = nbtSection.get(key)
-                    if (config.getConfigurationSection(key).getKeys(false).size == 1) set(key, value)
+                    if (nbtSection.getConfigurationSection(key).getKeys(false).size == 1) {
+                        val value = nbtSection.get(key)
+                        set(key, value)
+                    }
                 }
                 write(item)
             }
