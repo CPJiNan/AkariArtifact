@@ -6,8 +6,6 @@ import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
 import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common.platform.function.console
-import taboolib.module.lang.sendLang
 import java.io.File
 
 object PluginConfig {

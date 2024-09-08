@@ -1,19 +1,12 @@
 package com.github.cpjinan.plugin.akariartifact.core.internal
 
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
-import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.saveDefaultResource
 import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil
-import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
-import org.bukkit.entity.Player
-import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common.platform.command.simpleCommand
 import taboolib.common.platform.function.console
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
-import taboolib.platform.util.countItem
-import taboolib.platform.util.giveItem
 
 object PluginLoader {
     @Awake(LifeCycle.LOAD)

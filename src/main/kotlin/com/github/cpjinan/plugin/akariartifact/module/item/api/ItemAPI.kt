@@ -160,15 +160,19 @@ object ItemAPI {
                     when (val data = value.unsafeData()) {
                         is Byte, is Short, is Int, is Long, is Float, is Double, is String, is Boolean,
                         is ByteArray, is ShortArray, is IntArray, is LongArray -> config.set(key, data)
+
                         is ItemTag -> data.entries.forEach { runAny(config, "$key.${it.key}", it.value) }
                         is ItemTagList -> {
                             val list: MutableList<Any> = mutableListOf()
                             data.forEach {
-                                if (it.unsafeData() !is ItemTag && it.unsafeData() !is ItemTagList && it.unsafeData() !is ItemTagData) list.add(it.unsafeData())
+                                if (it.unsafeData() !is ItemTag && it.unsafeData() !is ItemTagList && it.unsafeData() !is ItemTagData) list.add(
+                                    it.unsafeData()
+                                )
                                 else warn("Please avoid using NBT with nested lists.")
                             }
                             config.set(key, list)
                         }
+
                         else -> warn("Unknown NBT data type.")
                     }
                 }
