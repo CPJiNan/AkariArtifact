@@ -98,7 +98,7 @@ object ItemAPI {
     }
 
     private fun saveItemToConfig(item: ItemStack, config: YamlConfiguration, path: String) {
-        val meta = item.itemMeta ?: return
+        val meta = item.itemMeta
 
         // 基本属性
         config.set("$path.Type", item.type.name)
