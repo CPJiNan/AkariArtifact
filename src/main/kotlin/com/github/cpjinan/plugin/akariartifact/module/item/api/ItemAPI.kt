@@ -61,7 +61,7 @@ object ItemAPI {
      * @param path 配置项路径
      * @author CPJiNan
      */
-    fun getItem(file: File, path: String): ItemStack {
+    fun getItem(file: File, path: String): ItemStack? {
         val config = YamlConfiguration.loadConfiguration(file)
         return getItemFromConfig(config, path)
     }
@@ -72,7 +72,7 @@ object ItemAPI {
      * @param path 配置项路径
      * @author CPJiNan
      */
-    fun getItem(file: String, path: String): ItemStack {
+    fun getItem(file: String, path: String): ItemStack? {
         val config = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, file))
         return getItemFromConfig(config, path)
     }
@@ -91,7 +91,7 @@ object ItemAPI {
 
             "SX-Attribute" -> SXAttribute.getApi().getItem(key, player)
 
-            else -> throw IllegalArgumentException("Unable to find item $key in plugin $plugin.")
+            else -> null
         }
         return item
     }
@@ -183,8 +183,8 @@ object ItemAPI {
         }
     }
 
-    private fun getItemFromConfig(config: YamlConfiguration, path: String): ItemStack {
-        val type = XMaterial.valueOf(config.getString("$path.Type"))
+    private fun getItemFromConfig(config: YamlConfiguration, path: String): ItemStack? {
+        val type = XMaterial.valueOf(config.getString("$path.Type") ?: return null)
         val item = buildItem(type) {
             // 基本属性
             config.getInt("$path.Data", 0).let { damage = it }
