@@ -102,7 +102,7 @@ object ItemAPI {
             config.set("$path.Type", XMaterial.matchXMaterial(material).name)
             damage.takeIf { it != 0 }?.let { config.set("$path.Data", it) }
             config.set("$path.Display", item.getName())
-            lore.let { config.set("$path.Lore", it) }
+            lore.takeIf { it.isNotEmpty() }.let { config.set("$path.Lore", it) }
 
             // 附魔属性
             if (enchants.isNotEmpty()) {
