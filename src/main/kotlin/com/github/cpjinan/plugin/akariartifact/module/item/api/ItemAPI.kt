@@ -164,7 +164,7 @@ object ItemAPI {
                         is ItemTagList -> {
                             val list: MutableList<Any> = mutableListOf()
                             data.forEach {
-                                if (it.unsafeData() !is ItemTag) list.add(it.unsafeData())
+                                if (it.unsafeData() !is ItemTagData) list.add(it.unsafeData())
                                 else warn("Please avoid using NBT with nested lists.")
                             }
                             config.set(key, list)
