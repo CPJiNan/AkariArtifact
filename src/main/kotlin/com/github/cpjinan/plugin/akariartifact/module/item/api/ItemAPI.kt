@@ -155,38 +155,30 @@ object ItemAPI {
                     "SkullOwner"
                 )
             ) {
-                /**
-                 * 获取多节点 NBT 数据
-                 * @author 晓劫
-                 */
-                fun runAny(config: YamlConfiguration, key: String, value: ItemTagData) {
+                val cacheList = HashMap<String, ArrayList<Any>>()
+                fun writeData(config: YamlConfiguration, key: String, value: ItemTagData) {
                     when (val data = value.unsafeData()) {
-                        // 基本类型
-                        is Byte -> config.set(key, data)
-                        is Short -> config.set(key, data)
-                        is Int -> config.set(key, data)
-                        is Long -> config.set(key, data)
-                        is Float -> config.set(key, data)
-                        is Double -> config.set(key, data)
-                        is String -> config.set(key, data)
-                        is Boolean -> config.set(key, data)
-                        // 数组和列表
-                        is ItemTag -> data.entries.forEach { runAny(config, "$key.${it.key}", it.value) }
-                        is ItemTagList -> {
-                            val list: MutableList<Any> = mutableListOf()
-                            data.forEach { if (it.unsafeData() !is ItemTag) list.add(it.unsafeData()) }
-                            config.set(key, list)
+                        is ItemTag -> {
+                            data.entries.forEach { writeData(config, "$key.${it.key}", it.value) }
                         }
 
-                        is ByteArray -> config.set(key, data)
-                        is IntArray -> config.set(key, data)
-                        is LongArray -> config.set(key, data)
-                        // 未知类型
-                        else -> throw IllegalArgumentException("Unknown data type.")
+                        is ItemTagList -> {
+                            cacheList[key] = ArrayList()
+                            data.forEach { writeData(config, key, it) }
+                            config.set(key, cacheList[key])
+                            cacheList.remove(key)
+                        }
+
+                        is Byte, is Short, is Int, is Long, is Float, is Double, is String, is Boolean, is List<*>, is ByteArray, is ShortArray, is IntArray, is LongArray -> {
+                            if (key in cacheList.keys) {
+                                cacheList[key]!! += data
+                                return
+                            }
+                            config.set(key, data)
+                        }
                     }
                 }
-
-                runAny(config, "$path.NBT.${it.key}", it.value)
+                writeData(config, "$path.NBT.${it.key}", it.value)
             }
         }
     }
