@@ -148,6 +148,7 @@ object ItemAPI {
             itemTag.entries.forEach {
                 if (it.key !in listOf(
                         "display",
+                        "Damage",
                         "ench", "Enchantments",
                         "Unbreakable",
                         "HideFlags",
