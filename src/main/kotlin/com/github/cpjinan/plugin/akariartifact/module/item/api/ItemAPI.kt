@@ -21,9 +21,7 @@ import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
-import taboolib.common.platform.function.info
 import taboolib.module.chat.colored
-import taboolib.module.nms.getItemTag
 import taboolib.module.nms.getName
 import taboolib.module.nms.itemTagReader
 import java.io.File
@@ -146,20 +144,37 @@ object ItemAPI {
         }
 
         // NBT
-        val itemTag = item.getItemTag()
-        itemTag.keys.forEach { key ->
-            if (key !in listOf(
-                    "display",
-                    "ench",
-                    "Unbreakable",
-                    "HideFlags",
-                    "BlockEntityTag",
-                    "Potion",
-                    "SkullOwner"
-                )
-            ) {
-                val value = itemTag.getDeep(key)?.unsafeData()
-                config.set("$path.NBT.$key", value)
+        item.itemTagReader {
+            getKeys().forEach { key ->
+                if (key !in listOf(
+                        "display",
+                        "ench",
+                        "Unbreakable",
+                        "HideFlags",
+                        "BlockEntityTag",
+                        "Potion",
+                        "SkullOwner"
+                    )
+                ) {
+                    val deepestKeys: HashMap<String, String?> = hashMapOf()
+
+                    fun traverse(currentKey: String) {
+                        try {
+                            val keys = getKeys(currentKey)
+                            keys.forEach { k ->
+                                val nextKey = if (currentKey.isEmpty()) k else "$currentKey.$k"
+                                traverse(nextKey)
+                            }
+                        } catch (e: ClassCastException) {
+                            deepestKeys[currentKey] = getString(currentKey)
+                        }
+                    }
+
+                    traverse(key)
+                    deepestKeys.forEach { (k, v) ->
+                        config.set("$path.NBT.$k", v)
+                    }
+                }
             }
         }
     }
@@ -240,10 +255,8 @@ object ItemAPI {
         config.getConfigurationSection("$path.NBT")?.let { nbtSection ->
             item.itemTagReader {
                 nbtSection.getKeys(true).forEach { key ->
-                    if (nbtSection.getConfigurationSection(key).getKeys(false).size == 1) {
-                        val value = nbtSection.get(key)
-                        set(key, value)
-                    }
+                    val value = nbtSection.get(key)
+                    set(key, value)
                 }
                 write(item)
             }
