@@ -234,18 +234,18 @@ object ItemAPI {
             }
         }
 
-        // NBT
+        item.itemMeta = meta
+
         config.getConfigurationSection("$path.NBT")?.let { nbtSection ->
             item.itemTagReader {
                 nbtSection.getKeys(true).forEach { key ->
                     val value = nbtSection.get(key)
-                    set(key, value)
+                    if (config.getConfigurationSection(key).getKeys(false).size == 1) set(key, value)
                 }
                 write(item)
             }
         }
 
-        item.itemMeta = meta
         return item
     }
 
