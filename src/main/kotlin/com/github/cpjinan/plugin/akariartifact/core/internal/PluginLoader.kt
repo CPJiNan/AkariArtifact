@@ -2,11 +2,15 @@ package com.github.cpjinan.plugin.akariartifact.core.internal
 
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil
+import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
+import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
+import taboolib.common.platform.command.simpleCommand
 import taboolib.common.platform.function.console
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
+import taboolib.platform.util.giveItem
 
 object PluginLoader {
     @Awake(LifeCycle.LOAD)
@@ -26,6 +30,18 @@ object PluginLoader {
             ""
         )
         console().sendLang("Plugin-Enabled")
+        simpleCommand("saveItem") { sender, args ->
+            if (args.isNotEmpty()) ItemAPI.saveItem(
+                sender.cast<Player>().inventory.itemInMainHand,
+                "module/item/Example.yml",
+                args[0]
+            )
+            else sender.sendMessage("&c用法: /saveItem 物品编辑名")
+        }
+        simpleCommand("getItem") { sender, args ->
+            if (args.isNotEmpty()) sender.cast<Player>().giveItem(ItemAPI.getItem("module/item/Example.yml", args[0]))
+            else sender.sendMessage("&c用法: /getItem 物品编辑名")
+        }
     }
 
     @Awake(LifeCycle.DISABLE)
