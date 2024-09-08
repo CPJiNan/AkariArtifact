@@ -174,7 +174,7 @@ object ItemAPI {
                         is ItemTag -> data.entries.forEach { runAny(config, "$key.${it.key}", it.value) }
                         is ItemTagList -> {
                             val list : MutableList<Any> = mutableListOf()
-                            data.forEach { list.add(it.unsafeData()) }
+                            data.forEach { if (it.unsafeData() !is ItemTag) list.add(it.unsafeData()) }
                             config.set(key, list)
                         }
                         is ByteArray -> config.set(key, data)
