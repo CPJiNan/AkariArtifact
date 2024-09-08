@@ -181,90 +181,90 @@ object ItemAPI {
             }
         }
     }
-}
 
-private fun getItemFromConfig(config: YamlConfiguration, path: String): ItemStack {
-    val type = Material.getMaterial(config.getString("$path.Type") ?: "AIR") ?: Material.AIR
-    val item = ItemStack(type)
+    private fun getItemFromConfig(config: YamlConfiguration, path: String): ItemStack {
+        val type = Material.getMaterial(config.getString("$path.Type") ?: "AIR") ?: Material.AIR
+        val item = ItemStack(type)
 
-    // 基本属性
-    config.getInt("$path.Data", 0).let { item.durability = it.toShort() }
-    val meta = item.itemMeta ?: return item
-    config.getString("$path.Display")?.let { meta.displayName = it.colored() }
-    config.getStringList("$path.Lore")?.let { meta.lore = it.colored() }
+        // 基本属性
+        config.getInt("$path.Data", 0).let { item.durability = it.toShort() }
+        val meta = item.itemMeta ?: return item
+        config.getString("$path.Display")?.let { meta.displayName = it.colored() }
+        config.getStringList("$path.Lore")?.let { meta.lore = it.colored() }
 
-    // 附魔属性
-    if (config.getBoolean("$path.Options.Glow", false)) {
-        config.getConfigurationSection("$path.Enchantments")?.let { enchantments ->
-            enchantments.getKeys(false).forEach { enchantmentKey ->
-                val enchantment = Enchantment.getByName(enchantmentKey)
-                val level = enchantments.getInt(enchantmentKey)
-                if (enchantment != null) {
-                    meta.addEnchant(enchantment, level, true)
-                }
-            }
-        }
-    }
-
-    // 常规物品设置
-    if (config.getBoolean("$path.Options.Unbreakable", false)) {
-        meta.isUnbreakable = true
-    }
-    config.getStringList("$path.Options.HideFlags")?.mapNotNull { ItemFlag.valueOf(it) }
-        ?.let { meta.addItemFlags(*it.toTypedArray()) }
-
-    // 特殊物品设置
-    when (meta) {
-        is BannerMeta -> {
-            config.getStringList("$path.Options.BannerPatterns")?.forEach { pattern ->
-                val (colorName, patternName) = pattern.split("-", limit = 2)
-                val color = DyeColor.valueOf(colorName)
-                val bannerPattern = Pattern(color, PatternType.getByIdentifier(patternName)!!)
-                meta.addPattern(bannerPattern)
-            }
-        }
-
-        is LeatherArmorMeta -> {
-            config.getInt("$path.Options.Color").let { colorInt ->
-                meta.color = Color.fromRGB(colorInt)
-            }
-        }
-
-        is PotionMeta -> {
-            config.getString("$path.Options.BasePotionData.Type")?.let { potionTypeName ->
-                val potionType = PotionType.valueOf(potionTypeName)
-                val isExtended = config.getBoolean("$path.Options.BasePotionData.Extended")
-                val isUpgraded = config.getBoolean("$path.Options.BasePotionData.Upgraded")
-                val potionData = PotionData(potionType, isExtended, isUpgraded)
-                meta.basePotionData = potionData
-            }
-            config.getStringList("$path.Options.PotionEffects")?.forEach { effect ->
-                val (typeName, amplifier, duration) = effect.split("-", limit = 3)
-                val potionEffectType = PotionEffectType.getByName(typeName)
-                if (potionEffectType != null) {
-                    meta.addCustomEffect(PotionEffect(potionEffectType, duration.toInt(), amplifier.toInt()), true)
+        // 附魔属性
+        if (config.getBoolean("$path.Options.Glow", false)) {
+            config.getConfigurationSection("$path.Enchantments")?.let { enchantments ->
+                enchantments.getKeys(false).forEach { enchantmentKey ->
+                    val enchantment = Enchantment.getByName(enchantmentKey)
+                    val level = enchantments.getInt(enchantmentKey)
+                    if (enchantment != null) {
+                        meta.addEnchant(enchantment, level, true)
+                    }
                 }
             }
         }
 
-        is SkullMeta -> {
-            config.getString("$path.Options.SkullOwner")?.let { owner ->
-                meta.owner = owner
+        // 常规物品设置
+        if (config.getBoolean("$path.Options.Unbreakable", false)) {
+            meta.isUnbreakable = true
+        }
+        config.getStringList("$path.Options.HideFlags")?.mapNotNull { ItemFlag.valueOf(it) }
+            ?.let { meta.addItemFlags(*it.toTypedArray()) }
+
+        // 特殊物品设置
+        when (meta) {
+            is BannerMeta -> {
+                config.getStringList("$path.Options.BannerPatterns")?.forEach { pattern ->
+                    val (colorName, patternName) = pattern.split("-", limit = 2)
+                    val color = DyeColor.valueOf(colorName)
+                    val bannerPattern = Pattern(color, PatternType.getByIdentifier(patternName)!!)
+                    meta.addPattern(bannerPattern)
+                }
+            }
+
+            is LeatherArmorMeta -> {
+                config.getInt("$path.Options.Color").let { colorInt ->
+                    meta.color = Color.fromRGB(colorInt)
+                }
+            }
+
+            is PotionMeta -> {
+                config.getString("$path.Options.BasePotionData.Type")?.let { potionTypeName ->
+                    val potionType = PotionType.valueOf(potionTypeName)
+                    val isExtended = config.getBoolean("$path.Options.BasePotionData.Extended")
+                    val isUpgraded = config.getBoolean("$path.Options.BasePotionData.Upgraded")
+                    val potionData = PotionData(potionType, isExtended, isUpgraded)
+                    meta.basePotionData = potionData
+                }
+                config.getStringList("$path.Options.PotionEffects")?.forEach { effect ->
+                    val (typeName, amplifier, duration) = effect.split("-", limit = 3)
+                    val potionEffectType = PotionEffectType.getByName(typeName)
+                    if (potionEffectType != null) {
+                        meta.addCustomEffect(PotionEffect(potionEffectType, duration.toInt(), amplifier.toInt()), true)
+                    }
+                }
+            }
+
+            is SkullMeta -> {
+                config.getString("$path.Options.SkullOwner")?.let { owner ->
+                    meta.owner = owner
+                }
             }
         }
-    }
 
-    item.itemMeta = meta
+        item.itemMeta = meta
 
-    config.getConfigurationSection("$path.NBT")?.let { nbtSection ->
-        item.itemTagReader {
-            nbtSection.getKeys(true).forEach { key ->
-                val value = nbtSection.get(key)
-                set(key, value)
+        config.getConfigurationSection("$path.NBT")?.let { nbtSection ->
+            item.itemTagReader {
+                nbtSection.getKeys(true).forEach { key ->
+                    val value = nbtSection.get(key)
+                    set(key, value)
+                }
+                write(item)
             }
-            write(item)
         }
-    }
 
-    return item
+        return item
+    }
 }
