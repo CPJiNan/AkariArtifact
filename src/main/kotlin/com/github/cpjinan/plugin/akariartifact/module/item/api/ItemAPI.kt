@@ -1,6 +1,7 @@
 package com.github.cpjinan.plugin.akariartifact.module.item.api
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
+import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil.warn
 import github.saukiya.sxattribute.SXAttribute
 import ink.ptms.um.Mythic
 import org.bukkit.Color
@@ -157,28 +158,18 @@ object ItemAPI {
             ) {
                 fun runAny(config: YamlConfiguration, key: String, value: ItemTagData) {
                     when (val data = value.unsafeData()) {
-                        // 基本类型
-                        is Byte -> config.set(key, data)
-                        is Short -> config.set(key, data)
-                        is Int -> config.set(key, data)
-                        is Long -> config.set(key, data)
-                        is Float -> config.set(key, data)
-                        is Double -> config.set(key, data)
-                        is String -> config.set(key, data)
-                        is Boolean -> config.set(key, data)
-                        // 数组和列表
+                        is Byte, is Short, is Int, is Long, is Float, is Double, is String, is Boolean,
+                        is ByteArray, is ShortArray, is IntArray, is LongArray -> config.set(key, data)
                         is ItemTag -> data.entries.forEach { runAny(config, "$key.${it.key}", it.value) }
                         is ItemTagList -> {
                             val list: MutableList<Any> = mutableListOf()
-                            data.forEach { if (it.unsafeData() !is ItemTag) list.add(it.unsafeData()) }
+                            data.forEach {
+                                if (it.unsafeData() !is ItemTag) list.add(it.unsafeData())
+                                else warn("Please avoid using NBT with nested lists.")
+                            }
                             config.set(key, list)
                         }
-
-                        is ByteArray -> config.set(key, data)
-                        is IntArray -> config.set(key, data)
-                        is LongArray -> config.set(key, data)
-                        // 未知类型
-                        else -> throw IllegalArgumentException("Unknown data type.")
+                        else -> warn("Unknown NBT data type.")
                     }
                 }
 
