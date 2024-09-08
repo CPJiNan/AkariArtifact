@@ -172,7 +172,11 @@ object ItemAPI {
                         is Boolean -> config.set(key, data)
                         // 数组和列表
                         is ItemTag -> data.entries.forEach { runAny(config, "$key.${it.key}", it.value) }
-                        is ItemTagList -> data.forEach { runAny(config, key, it) }
+                        is ItemTagList -> {
+                            val list : MutableList<Any> = mutableListOf()
+                            data.forEach { list.add(it) }
+                            config.set(key, list)
+                        }
                         is ByteArray -> config.set(key, data)
                         is IntArray -> config.set(key, data)
                         is LongArray -> config.set(key, data)
