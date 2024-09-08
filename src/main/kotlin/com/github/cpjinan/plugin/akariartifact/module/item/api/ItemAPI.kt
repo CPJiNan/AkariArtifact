@@ -155,10 +155,6 @@ object ItemAPI {
                     "SkullOwner"
                 )
             ) {
-                /**
-                 * 获取多节点 NBT 数据
-                 * @author 晓劫
-                 */
                 fun runAny(config: YamlConfiguration, key: String, value: ItemTagData) {
                     when (val data = value.unsafeData()) {
                         // 基本类型
