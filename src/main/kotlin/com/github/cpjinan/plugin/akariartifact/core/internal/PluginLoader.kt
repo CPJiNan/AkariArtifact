@@ -18,9 +18,6 @@ import taboolib.platform.util.giveItem
 object PluginLoader {
     @Awake(LifeCycle.LOAD)
     fun onLoad() {
-        plugin.saveDefaultResource(
-            "core/settings.yml"
-        )
         console().sendLang("Plugin-Loading", plugin.description.version)
     }
 
@@ -36,18 +33,6 @@ object PluginLoader {
             ""
         )
         console().sendLang("Plugin-Enabled")
-        simpleCommand("saveItem") { sender, args ->
-            ItemAPI.saveItem(sender.cast<Player>().inventory.itemInMainHand, "module/item/Example.yml", args[0])
-        }
-        simpleCommand("getItem") { sender, args ->
-            sender.cast<Player>().giveItem(ItemAPI.getItem("module/item/Example.yml", args[0]))
-        }
-        simpleCommand("checkAmount") { sender, _ ->
-            val matcher: (ItemStack) -> Boolean = { itemStack ->
-                itemStack == sender.cast<Player>().inventory
-            }
-            sender.sendMessage(sender.cast<Player>().inventory.countItem(matcher).toString())
-        }
     }
 
     @Awake(LifeCycle.DISABLE)
