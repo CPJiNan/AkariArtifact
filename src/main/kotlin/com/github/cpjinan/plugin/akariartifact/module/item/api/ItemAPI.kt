@@ -237,7 +237,7 @@ object ItemAPI {
         // NBT
         config.getConfigurationSection("$path.NBT")?.let { nbtSection ->
             item.itemTagReader {
-                nbtSection.getKeys(false).forEach { key ->
+                nbtSection.getKeys(true).forEach { key ->
                     val value = nbtSection.getString(key)
                     set(key, value)
                 }

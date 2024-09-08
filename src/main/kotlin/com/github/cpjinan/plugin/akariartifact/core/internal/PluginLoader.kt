@@ -5,12 +5,14 @@ import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.saveDefault
 import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import org.bukkit.entity.Player
+import org.bukkit.inventory.ItemStack
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import taboolib.common.platform.command.simpleCommand
 import taboolib.common.platform.function.console
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
+import taboolib.platform.util.countItem
 import taboolib.platform.util.giveItem
 
 object PluginLoader {
@@ -39,6 +41,12 @@ object PluginLoader {
         }
         simpleCommand("getItem") { sender, args ->
             sender.cast<Player>().giveItem(ItemAPI.getItem("module/item/Example.yml", args[0]))
+        }
+        simpleCommand("checkAmount") { sender, _ ->
+            val matcher: (ItemStack) -> Boolean = { itemStack ->
+                itemStack == sender.cast<Player>().inventory
+            }
+            sender.sendMessage(sender.cast<Player>().inventory.countItem(matcher).toString())
         }
     }
 
