@@ -36,11 +36,11 @@ object PluginLoader {
                 "module/item/Example.yml",
                 args[0]
             )
-            else sender.sendMessage("&c用法: /saveItem 物品编辑名")
+            else sender.sendMessage("&c用法: /saveItem 物品编辑名".colored())
         }
         simpleCommand("getItem") { sender, args ->
             if (args.isNotEmpty()) sender.cast<Player>().giveItem(ItemAPI.getItem("module/item/Example.yml", args[0]))
-            else sender.sendMessage("&c用法: /getItem 物品编辑名")
+            else sender.sendMessage("&c用法: /getItem 物品编辑名".colored())
         }
     }
 
