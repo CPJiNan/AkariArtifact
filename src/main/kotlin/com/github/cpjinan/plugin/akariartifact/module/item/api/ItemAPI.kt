@@ -21,7 +21,6 @@ import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
-import taboolib.common.platform.function.info
 import taboolib.module.chat.colored
 import taboolib.module.nms.*
 import java.io.File
