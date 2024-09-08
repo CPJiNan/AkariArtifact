@@ -23,6 +23,7 @@ import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
 import taboolib.module.chat.colored
 import taboolib.module.nms.getName
+import taboolib.module.nms.itemTagReader
 import java.io.File
 
 object ItemAPI {
@@ -141,6 +142,25 @@ object ItemAPI {
                 meta.owner?.let { config.set("$path.Options.SkullOwner", it) }
             }
         }
+
+        // NBT
+        item.itemTagReader {
+            getKeys().forEach { key ->
+                if (key !in listOf(
+                        "display",
+                        "ench",
+                        "Unbreakable",
+                        "HideFlags",
+                        "BlockEntityTag",
+                        "Potion",
+                        "SkullOwner"
+                    )
+                ) {
+                    val value = getString(key)
+                    config.set("$path.NBT.$key", value)
+                }
+            }
+        }
     }
 
     private fun getItemFromConfig(config: YamlConfiguration, path: String): ItemStack {
@@ -211,6 +231,17 @@ object ItemAPI {
                 config.getString("$path.Options.SkullOwner")?.let { owner ->
                     meta.owner = owner
                 }
+            }
+        }
+
+        // NBT
+        config.getConfigurationSection("$path.NBT")?.let { nbtSection ->
+            item.itemTagReader {
+                nbtSection.getKeys(false).forEach { key ->
+                    val value = nbtSection.getString(key)
+                    set(key, value)
+                }
+                write(item)
             }
         }
 
