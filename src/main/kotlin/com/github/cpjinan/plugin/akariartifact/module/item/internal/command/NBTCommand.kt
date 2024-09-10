@@ -121,6 +121,49 @@ object NBTCommand {
                 sender.castSafely<Player>()?.inventory?.itemInMainHand = item
                 if (!silent) sender.sendLang("NBT-Set", context["key"], value)
             }
+
+            literal("remove").dynamic("key") {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                    val item = sender.castSafely<Player>()?.inventory?.itemInMainHand
+                    if (item.isAir()) {
+                        sender.sendLang("Air-In-Hand")
+                        return@execute
+                    }
+
+                    item.itemTagReader {
+                        set(context["key"], null)
+                        write(item)
+                    }
+
+                    sender.castSafely<Player>()?.inventory?.itemInMainHand = item
+                    sender.sendLang("NBT-Remove", context["key"])
+                }
+            }.dynamic("options") {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                    val args = CommandUtil.parseOptions(content.split(" "))
+                    var silent = false
+
+                    for ((k, _) in args) {
+                        when (k.lowercase()) {
+                            "silent" -> silent = true
+                        }
+                    }
+
+                    val item = sender.castSafely<Player>()?.inventory?.itemInMainHand
+                    if (item.isAir()) {
+                        sender.sendLang("Air-In-Hand")
+                        return@execute
+                    }
+
+                    item.itemTagReader {
+                        set(context["key"], null)
+                        write(item)
+                    }
+
+                    sender.castSafely<Player>()?.inventory?.itemInMainHand = item
+                    if (!silent) sender.sendLang("NBT-Remove", context["key"])
+                }
+            }
         }
     }
 }
