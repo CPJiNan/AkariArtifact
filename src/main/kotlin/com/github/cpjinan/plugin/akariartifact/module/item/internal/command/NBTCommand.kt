@@ -92,7 +92,6 @@ object NBTCommand {
                     write(item)
                 }
 
-                sender.castSafely<Player>()?.inventory?.itemInMainHand = item
                 sender.sendLang("NBT-Set", context["key"], context["value"])
             }
         }.dynamic("options") {
@@ -118,7 +117,6 @@ object NBTCommand {
                     write(item)
                 }
 
-                sender.castSafely<Player>()?.inventory?.itemInMainHand = item
                 if (!silent) sender.sendLang("NBT-Set", context["key"], value)
             }
         }
@@ -136,7 +134,6 @@ object NBTCommand {
                     write(item)
                 }
 
-                sender.castSafely<Player>()?.inventory?.itemInMainHand = item
                 sender.sendLang("NBT-Remove", context["key"])
             }
         }.dynamic("options") {
@@ -161,7 +158,6 @@ object NBTCommand {
                     write(item)
                 }
 
-                sender.castSafely<Player>()?.inventory?.itemInMainHand = item
                 if (!silent) sender.sendLang("NBT-Remove", context["key"])
             }
         }

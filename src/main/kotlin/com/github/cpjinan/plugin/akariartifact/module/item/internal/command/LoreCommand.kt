@@ -8,6 +8,7 @@ import taboolib.common.platform.command.CommandBody
 import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.int
 import taboolib.common.platform.command.subCommand
+import taboolib.common.platform.function.info
 import taboolib.common5.util.replace
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
@@ -281,8 +282,9 @@ object LoreCommand {
                             }
                         } else {
                             val lore = item.itemMeta.lore
+                            info(lore[line - 1])
                             lore[line - 1].replace(Pair(context["oldChar"], context["newChar"]))
-
+                            info(lore[line - 1])
                             item.modifyLore {
                                 set(line - 1, lore[line - 1])
                             }
