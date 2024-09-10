@@ -8,9 +8,11 @@ import taboolib.common.platform.command.CommandBody
 import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.int
 import taboolib.common.platform.command.subCommand
+import taboolib.common5.util.replace
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
+import taboolib.platform.util.isAir
 import taboolib.platform.util.isNotAir
 import taboolib.platform.util.modifyLore
 
@@ -228,6 +230,62 @@ object LoreCommand {
                     } catch (error: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
+                }
+            }
+        }
+
+        literal("replace").dynamic("oldChar").dynamic("newChar") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                try {
+                    sender.castSafely<Player>().let {
+                        val item = it?.inventory?.itemInMainHand
+                        if (item.isAir()) {
+                            sender.sendLang("Air-In-Hand")
+                            return@execute
+                        }
+
+                        val lore = item.itemMeta.lore
+                        lore.replace(Pair(context["oldChar"], context["newChar"]))
+
+                        item.itemMeta.lore = lore
+                        sender.sendLang("Lore-Replace", context["oldChar"], context["newChar"])
+                    }
+                } catch (error: IndexOutOfBoundsException) {
+                    sender.sendLang("Index-Out-Of-Bounds")
+                }
+            }
+        }.dynamic("options") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                try {
+                    val args = CommandUtil.parseOptions(content.split(" "))
+                    var silent = false
+                    var line: Int? = null
+
+                    for ((k, v) in args) {
+                        when (k.lowercase()) {
+                            "silent" -> silent = true
+                            "line" -> line = v?.toInt()
+                        }
+                    }
+
+                    sender.castSafely<Player>().let {
+                        val item = it?.inventory?.itemInMainHand
+                        if (item.isAir()) {
+                            sender.sendLang("Air-In-Hand")
+                            return@execute
+                        }
+
+                        val lore = item.itemMeta.lore
+
+                        if (line == null) {
+                            lore.replace(Pair(context["oldChar"], context["newChar"]))
+                        } else lore[line - 1].replace(Pair(context["oldChar"], context["newChar"]))
+
+                        item.itemMeta.lore = lore
+                        if (!silent) sender.sendLang("Lore-Replace", context["oldChar"], context["newChar"])
+                    }
+                } catch (error: IndexOutOfBoundsException) {
+                    sender.sendLang("Index-Out-Of-Bounds")
                 }
             }
         }
