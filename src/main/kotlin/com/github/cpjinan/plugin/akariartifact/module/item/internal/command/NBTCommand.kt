@@ -7,7 +7,6 @@ import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.subCommand
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
-import taboolib.module.configuration.util.asMap
 import taboolib.module.lang.sendLang
 import taboolib.module.nms.ItemTag
 import taboolib.module.nms.ItemTagList
@@ -49,7 +48,7 @@ object NBTCommand {
                                                 }
 
                                                 else -> {
-                                                    player.sendMessage("$indent  &f- &f$value".colored())
+                                                    player.sendMessage("$indent  &f- &f$v".colored())
                                                 }
                                             }
 
@@ -67,25 +66,7 @@ object NBTCommand {
                                                     }
                                                 }
 
-                                                is Map<*, *> -> {
-                                                    player.sendMessage("&7$indent$key&8:".colored())
-                                                    u.forEach { o ->
-                                                        o.asMap().forEach { (k, v) ->
-                                                            player.sendMessage("$indent  &f$k: $v".colored())
-                                                        }
-                                                    }
-                                                }
-
                                                 else -> player.sendMessage("$indent  &f- &f$value".colored())
-                                            }
-                                        }
-                                    }
-
-                                    is Map<*, *> -> {
-                                        player.sendMessage("§7$indent$key:")
-                                        value.forEach { u ->
-                                            u.asMap().forEach { (k, v) ->
-                                                player.sendMessage("$indent  &f$k: $v".colored())
                                             }
                                         }
                                     }
