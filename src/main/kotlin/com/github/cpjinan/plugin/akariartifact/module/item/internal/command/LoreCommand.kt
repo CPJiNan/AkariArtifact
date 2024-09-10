@@ -244,10 +244,10 @@ object LoreCommand {
                             return@execute
                         }
 
-                        val lore = item.itemMeta.lore
-                        lore.replace(Pair(context["oldChar"], context["newChar"]))
+                        item.modifyLore {
+                            replace(Pair(context["oldChar"], context["newChar"]))
+                        }
 
-                        item.itemMeta.lore = lore
                         sender.sendLang("Lore-Replace", context["oldChar"], context["newChar"])
                     }
                 } catch (error: IndexOutOfBoundsException) {
@@ -275,13 +275,19 @@ object LoreCommand {
                             return@execute
                         }
 
-                        val lore = item.itemMeta.lore
-
                         if (line == null) {
-                            lore.replace(Pair(context["oldChar"], context["newChar"]))
-                        } else lore[line - 1].replace(Pair(context["oldChar"], context["newChar"]))
+                            item.modifyLore {
+                                replace(Pair(context["oldChar"], context["newChar"]))
+                            }
+                        } else {
+                            val lore = item.itemMeta.lore
+                            lore[line - 1].replace(Pair(context["oldChar"], context["newChar"]))
 
-                        item.itemMeta.lore = lore
+                            item.modifyLore {
+                                set(line - 1, lore[line - 1])
+                            }
+                        }
+
                         if (!silent) sender.sendLang("Lore-Replace", context["oldChar"], context["newChar"])
                     }
                 } catch (error: IndexOutOfBoundsException) {
