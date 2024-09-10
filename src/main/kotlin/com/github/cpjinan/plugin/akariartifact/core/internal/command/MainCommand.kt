@@ -2,6 +2,7 @@ package com.github.cpjinan.plugin.akariartifact.core.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.common.PluginConfig
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.LoreCommand
+import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.NBTCommand
 import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
 import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.platform.ProxyCommandSender
@@ -19,6 +20,9 @@ object MainCommand {
 
     @CommandBody(permission = "akariartifact.lore")
     val lore = LoreCommand.lore
+
+    @CommandBody(permission = "akariartifact.nbt")
+    val nbt = NBTCommand.nbt
 
     @CommandBody(permission = "akariartifact.reload")
     val reload = subCommand {

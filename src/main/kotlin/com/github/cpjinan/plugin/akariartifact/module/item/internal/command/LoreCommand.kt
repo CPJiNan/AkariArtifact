@@ -27,7 +27,7 @@ object LoreCommand {
                     sender.castSafely<Player>().let {
                         val item = it?.inventory?.itemInMainHand
                         if (item.isNotAir()) {
-                            sender.sendLang("Check-Lore")
+                            sender.sendLang("Lore-Check")
                             item.itemMeta?.lore?.forEachIndexed { index, content ->
                                 sender.sendMessage("&7${index + 1} &8| $content".colored())
                             }
@@ -49,7 +49,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     add(context["lore"].colored())
                                 }
-                                sender.sendLang("Add-Lore", context["lore"].colored())
+                                sender.sendLang("Lore-Add", context["lore"].colored())
                             } else sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -75,7 +75,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     add(lore.colored())
                                 }
-                                if (!silent) sender.sendLang("Add-Lore", lore.colored())
+                                if (!silent) sender.sendLang("Lore-Add", lore.colored())
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -95,7 +95,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     removeAt(context.int("line") - 1)
                                 }
-                                sender.sendLang("Remove-Lore", context.int("line"))
+                                sender.sendLang("Lore-Remove", context.int("line"))
                             } else sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -120,7 +120,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     removeAt(context.int("line") - 1)
                                 }
-                                if (!silent) sender.sendLang("Remove-Lore", context.int("line"))
+                                if (!silent) sender.sendLang("Lore-Remove", context.int("line"))
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -140,7 +140,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     set(context.int("line") - 1, context["lore"].colored())
                                 }
-                                sender.sendLang("Set-Lore", context.int("line"), context["lore"].colored())
+                                sender.sendLang("Lore-Set", context.int("line"), context["lore"].colored())
                             } else sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -166,7 +166,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     set(context.int("line") - 1, lore.colored())
                                 }
-                                if (!silent) sender.sendLang("Set-Lore", context.int("line"), lore.colored())
+                                if (!silent) sender.sendLang("Lore-Set", context.int("line"), lore.colored())
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -187,7 +187,7 @@ object LoreCommand {
                                     add(context.int("line"), context["lore"].colored())
                                 }
                                 sender.sendLang(
-                                    "Insert-Lore",
+                                    "Lore-Insert",
                                     context.int("line"),
                                     context.int("line") + 1,
                                     context["lore"].colored()
@@ -218,7 +218,7 @@ object LoreCommand {
                                     add(context.int("line"), lore.colored())
                                 }
                                 if (!silent) sender.sendLang(
-                                    "Insert-Lore",
+                                    "Lore-Insert",
                                     context.int("line"),
                                     context.int("line") + 1,
                                     lore.colored()
@@ -241,7 +241,7 @@ object LoreCommand {
                             item.modifyLore {
                                 clear()
                             }
-                            sender.sendLang("Clear-Lore")
+                            sender.sendLang("Lore-Clear")
                         } else sender.sendLang("Air-In-Hand")
                     }
                 } catch (error: IndexOutOfBoundsException) {
@@ -266,7 +266,7 @@ object LoreCommand {
                             item.modifyLore {
                                 clear()
                             }
-                            if (!silent) sender.sendLang("Clear-Lore")
+                            if (!silent) sender.sendLang("Lore-Clear")
                         } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
                 } catch (error: IndexOutOfBoundsException) {
@@ -285,7 +285,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     set(context.int("lineB") - 1, get(context.int("lineA") - 1))
                                 }
-                                sender.sendLang("Clone-Lore", context.int("lineA"), context.int("lineB"))
+                                sender.sendLang("Lore-Clone", context.int("lineA"), context.int("lineB"))
                             } else sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -310,7 +310,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     set(context.int("lineB") - 1, get(context.int("lineA") - 1))
                                 }
-                                if (!silent) sender.sendLang("Clone-Lore", context.int("lineA"), context.int("lineB"))
+                                if (!silent) sender.sendLang("Lore-Clone", context.int("lineA"), context.int("lineB"))
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
                     } catch (error: IndexOutOfBoundsException) {
@@ -330,7 +330,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     val value = get(context.int("line") - 1)
                                     clipboard[it] = value
-                                    sender.sendLang("Copy-Lore", context.int("line"), value)
+                                    sender.sendLang("Lore-Copy", context.int("line"), value)
                                 }
                             } else sender.sendLang("Air-In-Hand")
                         }
@@ -356,7 +356,7 @@ object LoreCommand {
                                 item.modifyLore {
                                     val value = get(context.int("line") - 1)
                                     clipboard[it] = value
-                                    if (!silent) sender.sendLang("Copy-Lore", context.int("line"), value)
+                                    if (!silent) sender.sendLang("Lore-Copy", context.int("line"), value)
                                 }
                             } else if (!silent) sender.sendLang("Air-In-Hand") else return@execute
                         }
@@ -378,8 +378,8 @@ object LoreCommand {
                                     clipboard[it]?.colored()?.let { value ->
                                         if (clipboard.isNotEmpty()) {
                                             set(context.int("line") - 1, value)
-                                            sender.sendLang("Paste-Lore", context.int("line"), value)
-                                        } else sender.sendLang("Clipboard-Empty")
+                                            sender.sendLang("Lore-Paste", context.int("line"), value)
+                                        } else sender.sendLang("Lore-Clipboard-Empty")
                                     }
                                 }
                             } else sender.sendLang("Air-In-Hand")
@@ -407,8 +407,8 @@ object LoreCommand {
                                     clipboard[it]?.colored()?.let { value ->
                                         if (clipboard.isNotEmpty()) {
                                             set(context.int("line"), value)
-                                            if (!silent) sender.sendLang("Paste-Lore", context.int("line"), value)
-                                        } else if (!silent) sender.sendLang("Clipboard-Empty")
+                                            if (!silent) sender.sendLang("Lore-Paste", context.int("line"), value)
+                                        } else if (!silent) sender.sendLang("Lore-Clipboard-Empty")
                                     }
                                 }
                             } else if (!silent) sender.sendLang("Air-In-Hand") else return@execute
@@ -431,7 +431,7 @@ object LoreCommand {
                                     val value = get(context.int("line") - 1)
                                     clipboard[it] = value
                                     removeAt(context.int("line") - 1)
-                                    sender.sendLang("Cut-Lore", context.int("line"), value)
+                                    sender.sendLang("Lore-Cut", context.int("line"), value)
                                 }
                             } else sender.sendLang("Air-In-Hand")
                         }
@@ -458,7 +458,7 @@ object LoreCommand {
                                     val value = get(context.int("line") - 1)
                                     clipboard[it] = value
                                     removeAt(context.int("line") - 1)
-                                    if (!silent) sender.sendLang("Cut-Lore", context.int("line"), value)
+                                    if (!silent) sender.sendLang("Lore-Cut", context.int("line"), value)
                                 }
                             } else if (!silent) sender.sendLang("Air-In-Hand") else return@execute
                         }
@@ -476,10 +476,10 @@ object LoreCommand {
                     sender.castSafely<Player>().let {
                         if (clipboard[it]?.isNotEmpty() == true) {
                             sender.sendLang(
-                                "Clipboard-Check",
+                                "Lore-Clipboard-Check",
                                 clipboard[it]!!
                             )
-                        } else sender.sendLang("Clipboard-Empty")
+                        } else sender.sendLang("Lore-Clipboard-Empty")
                     }
                 }
             }
@@ -490,7 +490,7 @@ object LoreCommand {
                         sender.castSafely<Player>().let {
                             clipboard[it!!] = context["value"]
                         }
-                        sender.sendLang("Clipboard-Set", context["value"])
+                        sender.sendLang("Lore-Clipboard-Set", context["value"])
                     }
                 }.dynamic("options") {
                     execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
@@ -508,7 +508,7 @@ object LoreCommand {
                             clipboard[it!!] = value
                         }
 
-                        if (!silent) sender.sendLang("Clipboard-Set", value)
+                        if (!silent) sender.sendLang("Lore-Clipboard-Set", value)
                     }
                 }
             }
@@ -517,7 +517,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                     sender.castSafely<Player>().let {
                         clipboard[it!!] = ""
-                        sender.sendLang("Clipboard-Clear")
+                        sender.sendLang("Lore-Clipboard-Clear")
                     }
                 }
             }.dynamic("options") {
@@ -535,7 +535,7 @@ object LoreCommand {
                         clipboard[it!!] = ""
                     }
 
-                    if (!silent) sender.sendLang("Clipboard-Clear")
+                    if (!silent) sender.sendLang("Lore-Clipboard-Clear")
                 }
             }
 
