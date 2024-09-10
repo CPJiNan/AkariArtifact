@@ -21,7 +21,7 @@ object LoreCommand {
     val lore = subCommand {
         if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
-        literal("check") {
+        literal("info") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                 try {
                     sender.castSafely<Player>().let {
