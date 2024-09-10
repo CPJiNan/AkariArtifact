@@ -24,6 +24,7 @@ taboolib {
     description {
         contributors {
             name("CPJiNan")
+            name("QFENG")
         }
         dependencies {
             name("PlaceholderAPI").optional(true)
