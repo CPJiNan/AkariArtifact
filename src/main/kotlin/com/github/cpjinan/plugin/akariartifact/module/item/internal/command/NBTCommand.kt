@@ -69,7 +69,7 @@ object NBTCommand {
 
                                                 is Map<*, *> -> {
                                                     player.sendMessage("&7$indent$key&8:".colored())
-                                                    value.forEach { o ->
+                                                    u.forEach { o ->
                                                         o.asMap().forEach { (k, v) ->
                                                             player.sendMessage("$indent  &f$k: $v".colored())
                                                         }
