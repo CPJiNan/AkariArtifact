@@ -35,7 +35,7 @@ object ItemCommand {
                     sender.sendLang("Item-Get", context["id"], 1)
                 } else sender.sendLang("Item-Not-Found")
             }
-        }.int("amount") {
+        }.int("amount", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = ItemAPI.getItem(itemConfig, context["id"])
                 if (item != null) {
@@ -43,7 +43,7 @@ object ItemCommand {
                     sender.sendLang("Item-Get", context["id"], context.int("amount"))
                 } else sender.sendLang("Item-Not-Found")
             }
-        }.dynamic("options") {
+        }.dynamic("options", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
                 val args = CommandUtil.parseOptions(content.split(" "))
                 var silent = false
@@ -72,7 +72,7 @@ object ItemCommand {
                     sender.sendLang("Item-Give", context["id"], 1, context["player"])
                 } else sender.sendLang("Item-Not-Found")
             }
-        }.int("amount") {
+        }.int("amount", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = ItemAPI.getItem(itemConfig, context["id"])
                 if (item != null) {
@@ -81,7 +81,7 @@ object ItemCommand {
                     sender.sendLang("Item-Give", context["id"], context.int("amount"), context["player"])
                 } else sender.sendLang("Item-Not-Found")
             }
-        }.dynamic("options") {
+        }.dynamic("options", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
                 val args = CommandUtil.parseOptions(content.split(" "))
                 var silent = false
