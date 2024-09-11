@@ -1,9 +1,9 @@
 ExampleMenu:
   Title: "示例菜单"
   Map:
-    - "#########"
-    - "#   A   #"
-    - "#########"
+    - "         "
+    - "    A    "
+    - "         "
   Slot:
     A:
       Item: Apple
