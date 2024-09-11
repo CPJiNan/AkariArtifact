@@ -251,6 +251,7 @@ object LoreCommand {
 
                             item.itemMeta = meta
 
+                            sender.cast<Player>().updateInventory()
                             sender.sendLang(
                                 "Lore-Replace",
                                 context["oldChar"],
@@ -289,11 +290,14 @@ object LoreCommand {
                                 meta.lore =
                                     item.itemMeta.lore.replace(Pair(context["oldChar"], context["newChar"]))
                             } else {
-                                meta.lore[line - 1] =
-                                    item.itemMeta.lore[line - 1].replace(Pair(context["oldChar"], context["newChar"]))
+                                val lore = meta.lore
+                                lore[line - 1] =
+                                    lore[line - 1].replace(Pair(context["oldChar"], context["newChar"]))
+                                meta.lore = lore
                             }
 
                             item.itemMeta = meta
+                            sender.cast<Player>().updateInventory()
 
                             if (!silent) sender.sendLang(
                                 "Lore-Replace",
