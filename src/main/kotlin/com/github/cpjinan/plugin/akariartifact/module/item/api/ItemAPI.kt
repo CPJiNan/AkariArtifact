@@ -1,7 +1,6 @@
 package com.github.cpjinan.plugin.akariartifact.module.item.api
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
-import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil.warn
 import github.saukiya.sxattribute.SXAttribute
 import ink.ptms.um.Mythic
 import org.bukkit.Color
@@ -138,65 +137,27 @@ object ItemAPI {
                         "SkullOwner"
                     )
                 ) {
-                    fun runAny(config: YamlConfiguration, key: String, value: ItemTagData) {
-                        fun getItemTagData(itemTagData: ItemTagData): Any {
-                            val data = itemTagData.unsafeData()
-
-                            return when (data) {
-                                is ItemTag -> {
-                                    val compoundData = mutableMapOf<String, Any>()
-                                    data.entries.forEach { entry ->
-                                        compoundData[entry.key] = getItemTagData(entry.value)
-                                    }
-                                    compoundData
+                    fun getItemTagData(itemTagData: ItemTagData): Any {
+                        return when (val data = itemTagData.unsafeData()) {
+                            is ItemTag -> {
+                                val compoundData = mutableMapOf<String, Any>()
+                                data.entries.forEach { entry ->
+                                    compoundData[entry.key] = getItemTagData(entry.value)
                                 }
-
-                                is ItemTagList -> {
-                                    val listData = mutableListOf<Any>()
-                                    data.forEach { listData.add(getItemTagData(it)) }
-                                    listData
-                                }
-
-                                else -> data
+                                compoundData
                             }
-                        }
-                        when (val data = value.unsafeData()) {
-                            is Byte, is Short, is Int, is Long, is Float, is Double, is String, is Boolean,
-                            is ByteArray, is ShortArray, is IntArray, is LongArray -> config.set(key, data)
-
-                            is ItemTag -> data.entries.forEach { runAny(config, "$key.${it.key}", it.value) }
 
                             is ItemTagList -> {
-                                val list = mutableListOf<Any>()
-                                when (data.type) {
-                                    ItemTagType.COMPOUND -> {
-                                        data.asCompound().forEach { (k, v) ->
-                                            runAny(config, "$key.$k", v)
-                                        }
-                                    }
-
-                                    else -> {
-                                        data.forEach { v ->
-                                            if (v.unsafeData() is ItemTag) {
-                                                val compoundList = mutableMapOf<String, Any>()
-                                                (v.unsafeData() as ItemTag).entries.forEach { entry ->
-                                                    compoundList[entry.key] = getItemTagData(entry.value)
-                                                }
-                                                list.add(compoundList)
-                                            } else {
-                                                list.add(v)
-                                            }
-                                        }
-                                        config.set(key, list)
-                                    }
-                                }
+                                val listData = mutableListOf<Any>()
+                                data.forEach { listData.add(getItemTagData(it)) }
+                                listData
                             }
 
-                            else -> warn("Unknown NBT data type.")
+                            else -> data
                         }
                     }
 
-                    runAny(config, "$path.NBT.${tag.key}", tag.value)
+                    config.set("$path.NBT.${tag.key}", getItemTagData(tag.value))
                 }
             }
         }
