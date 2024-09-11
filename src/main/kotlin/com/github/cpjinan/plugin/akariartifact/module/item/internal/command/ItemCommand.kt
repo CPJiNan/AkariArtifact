@@ -5,7 +5,7 @@ import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI.itemConfig
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI.itemNames
-import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI.reloadItemData
+import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI.reloadItem
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.*
@@ -103,7 +103,7 @@ object ItemCommand {
                     "module/item/SaveItems.yml",
                     item.getName(sender.cast())
                 )
-                reloadItemData()
+                reloadItem()
                 sender.sendLang("Item-Save", "SaveItems.yml", item.getName(sender.cast()))
             }
         }.dynamic("id") {
@@ -114,7 +114,7 @@ object ItemCommand {
                     "module/item/SaveItems.yml",
                     context["id"]
                 )
-                reloadItemData()
+                reloadItem()
                 sender.sendLang("Item-Save", "SaveItems.yml", context["id"])
             }
         }.dynamic("path") {
@@ -125,7 +125,7 @@ object ItemCommand {
                     "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
                     context["id"]
                 )
-                reloadItemData()
+                reloadItem()
                 sender.sendLang(
                     "Item-Save",
                     context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml",
@@ -149,7 +149,7 @@ object ItemCommand {
                     "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
                     context["id"]
                 )
-                reloadItemData()
+                reloadItem()
                 if (!silent) sender.sendLang(
                     "Item-Save",
                     context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml",

@@ -34,7 +34,7 @@ object MainCommand {
         execute { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
             PluginConfig.settings = YamlConfiguration.loadConfiguration(PluginConfig.settingsFile)
             ModuleProjectile.config = YamlConfiguration.loadConfiguration(ModuleProjectile.configFile)
-            ItemAPI.reloadItemData()
+            ItemAPI.reloadItem()
             sender.sendLang("Plugin-Reloaded")
         }
     }

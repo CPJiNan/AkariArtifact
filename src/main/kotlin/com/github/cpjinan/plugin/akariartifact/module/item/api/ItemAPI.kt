@@ -35,10 +35,10 @@ object ItemAPI {
     var itemConfig: YamlConfiguration = YamlConfiguration()
 
     init {
-        reloadItemData()
+        reloadItem()
     }
 
-    fun reloadItemData() {
+    fun reloadItem() {
         itemFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/item"), true)
             .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
         itemSections = itemFiles.getConfigSections()
