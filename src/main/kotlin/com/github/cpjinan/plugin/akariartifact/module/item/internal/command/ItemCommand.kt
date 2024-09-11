@@ -6,6 +6,8 @@ import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.getConfigSe
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
 import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
+import org.bukkit.configuration.ConfigurationSection
+import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.*
@@ -17,15 +19,27 @@ import taboolib.platform.util.giveItem
 import java.io.File
 
 object ItemCommand {
-    private val itemFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/item"), true)
-        .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
-    private val itemSections = itemFiles.getConfigSections()
-    private val itemNames = itemSections.map { it.key }.toCollection(ArrayList())
-    private val itemConfig = ConfigUtil.getMergedConfig(itemSections)
+    private var itemFiles: ArrayList<File> = arrayListOf()
+    private var itemSections: HashMap<String, ConfigurationSection> = hashMapOf()
+    private var itemNames: ArrayList<String> = arrayListOf()
+    private var itemConfig: YamlConfiguration = YamlConfiguration()
+
+    init {
+        reloadItemData()
+    }
+
+    fun reloadItemData() {
+        itemFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/item"), true)
+            .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
+        itemSections = itemFiles.getConfigSections()
+        itemNames = itemSections.map { it.key }.toCollection(ArrayList())
+        itemConfig = ConfigUtil.getMergedConfig(itemSections)
+    }
 
     val item = subCommand {
         if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
+        reloadItemData()
 
         literal("get").dynamic("id") {
             suggest { itemNames }
