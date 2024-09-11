@@ -3,8 +3,6 @@ package com.github.cpjinan.plugin.akariartifact.module.item.internal.command
 import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
 import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
-import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI.itemConfig
-import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI.itemNames
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI.reloadItem
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
@@ -21,9 +19,9 @@ object ItemCommand {
         createHelper()
 
         literal("get").dynamic("id") {
-            suggest { itemNames }
+            suggest { ItemAPI.getItemNames() }
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = ItemAPI.getItem(itemConfig, context["id"])
+                val item = ItemAPI.getItem(ItemAPI.getItemConfig(), context["id"])
                 if (item != null) {
                     sender.cast<Player>().giveItem(item)
                     sender.sendLang("Item-Get", context["id"], 1)
@@ -31,7 +29,7 @@ object ItemCommand {
             }
         }.int("amount", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = ItemAPI.getItem(itemConfig, context["id"])
+                val item = ItemAPI.getItem(ItemAPI.getItemConfig(), context["id"])
                 if (item != null) {
                     sender.cast<Player>().giveItem(item, context.int("amount"))
                     sender.sendLang("Item-Get", context["id"], context.int("amount"))
@@ -48,7 +46,7 @@ object ItemCommand {
                     }
                 }
 
-                val item = ItemAPI.getItem(itemConfig, context["id"])
+                val item = ItemAPI.getItem(ItemAPI.getItemConfig(), context["id"])
                 if (item != null) {
                     sender.cast<Player>().giveItem(item, context.int("amount"))
                     if (!silent) sender.sendLang("Item-Get", context["id"], context.int("amount"))
@@ -57,9 +55,9 @@ object ItemCommand {
         }
 
         literal("give").player("player").dynamic("id") {
-            suggest { itemNames }
+            suggest { ItemAPI.getItemNames() }
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = ItemAPI.getItem(itemConfig, context["id"])
+                val item = ItemAPI.getItem(ItemAPI.getItemConfig(), context["id"])
                 if (item != null) {
                     val player = context.player("player").cast<Player>()
                     player.giveItem(item)
@@ -68,7 +66,7 @@ object ItemCommand {
             }
         }.int("amount", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = ItemAPI.getItem(itemConfig, context["id"])
+                val item = ItemAPI.getItem(ItemAPI.getItemConfig(), context["id"])
                 if (item != null) {
                     val player = context.player("player").cast<Player>()
                     player.giveItem(item, context.int("amount"))
@@ -86,7 +84,7 @@ object ItemCommand {
                     }
                 }
 
-                val item = ItemAPI.getItem(itemConfig, context["id"])
+                val item = ItemAPI.getItem(ItemAPI.getItemConfig(), context["id"])
                 if (item != null) {
                     val player = context.player("player").cast<Player>()
                     player.giveItem(item, context.int("amount"))
@@ -161,7 +159,8 @@ object ItemCommand {
         literal("list") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                 sender.sendLang("Item-List")
-                sender.sendMessage(itemNames.joinToString(separator = "&7, ".colored()) { "&f${it}".colored() })
+                sender.sendMessage(
+                    ItemAPI.getItemNames().joinToString(separator = "&7, ".colored()) { "&f${it}".colored() })
             }
         }
     }
