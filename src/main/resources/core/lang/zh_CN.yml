@@ -20,7 +20,7 @@ Air-In-Hand: "&c手中物品为空气！"
 Index-Out-Of-Bounds: "&c所提供的数值不在可选择的范围中！"
 
 # Lore 相关
-Lore-Check: "&8========&f当前手中物品的 Lore &8========"
+Lore-Check: "&8======== &f当前手中物品的 Lore &8========"
 Lore-Add: "&7已新增 Lore &f{0} &7至手中物品！"
 Lore-Remove: "&7已移除手中物品的第 &f{0} &7行 Lore！"
 Lore-Set: "&7已设置手中物品的第 &f{0} &7行 Lore 为 &f{1} &7！"
@@ -37,11 +37,12 @@ Lore-Clipboard-Set: "&7已设置 Lore 剪贴板中的内容为 &f{0} &7!"
 Lore-Clipboard-Clear: "&7已清空 Lore 剪贴板!"
 
 # NBT 相关
-NBT-Check: "&8========&f当前手中物品的 NBT &8========"
+NBT-Check: "&8======== &f当前手中物品的 NBT &8========"
 NBT-Set: "&7已设置手中物品的 NBT 节点 &f{0} &7的值为 &f{1} &7！"
 NBT-Remove: "&7已移除手中物品的 NBT 节点 &f{0} &7！"
 
 # 物品相关
+Item-List: "&8======== &f物品列表 &8========"
 Item-Get: "&7已获取 &f{1} &7个 物品 &f{0} &7至手中."
 Item-Give: "&7已给予 &f{2} 玩家 &f{1} &7个 物品 &f{0} &7."
 Item-Save: "&7已将手中物品保存至 &f{0} &7中的 &f{1} &7."

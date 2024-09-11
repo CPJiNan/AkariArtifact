@@ -1,6 +1,7 @@
 package com.github.cpjinan.plugin.akariartifact.core.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.common.PluginConfig
+import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.ItemCommand
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.LoreCommand
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.NBTCommand
 import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
@@ -17,6 +18,9 @@ object MainCommand {
 
     @CommandBody(permission = "akariartifact.help", hidden = true)
     val help = subCommand { createHelper() }
+
+    @CommandBody(permission = "akariartifact.item")
+    val item = ItemCommand.item
 
     @CommandBody(permission = "akariartifact.lore")
     val lore = LoreCommand.lore

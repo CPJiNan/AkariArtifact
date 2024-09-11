@@ -72,4 +72,36 @@ object ConfigUtil {
             }
         }
     }
+
+    /**
+     * 将多个 YamlConfiguration 合并
+     * @return 合并后的 YamlConfiguration
+     * @author CPJiNan
+     */
+    @JvmStatic
+    fun getMergedConfig(configs: ArrayList<YamlConfiguration>): YamlConfiguration {
+        val newConfig = YamlConfiguration()
+        configs.forEach { config ->
+            config.getValues(true).forEach { (key, value) ->
+                newConfig.set(key, value)
+            }
+        }
+        return newConfig
+    }
+
+    /**
+     * 将多个 YamlConfiguration 合并
+     * @return 合并后的 YamlConfiguration
+     * @author CPJiNan
+     */
+    @JvmStatic
+    fun getMergedConfig(sections: HashMap<String, ConfigurationSection>): YamlConfiguration {
+        val newConfig = YamlConfiguration()
+        sections.forEach { (key, section) ->
+            section.getValues(true).forEach { (subKey, value) ->
+                newConfig.set("$key.$subKey", value)
+            }
+        }
+        return newConfig
+    }
 }

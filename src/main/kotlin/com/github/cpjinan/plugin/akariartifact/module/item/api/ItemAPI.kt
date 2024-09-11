@@ -76,6 +76,16 @@ object ItemAPI {
         return getItemFromConfig(config, path)
     }
 
+    /**
+     * 从配置文件获取物品
+     * @param config 配置文件
+     * @param path 配置项路径
+     * @author CPJiNan
+     */
+    fun getItem(config: YamlConfiguration, path: String): ItemStack? {
+        return getItemFromConfig(config, path)
+    }
+
     private fun saveItemToConfig(item: ItemStack, config: YamlConfiguration, path: String) {
         buildItem(item) {
             // 基本属性
