@@ -26,7 +26,16 @@ object ItemCommand {
         if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
 
-        literal("get").dynamic("id") { suggest { itemNames } }.int("amount") {
+        literal("get").dynamic("id") {
+            suggest { itemNames }
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                val item = ItemAPI.getItem(itemConfig, context["id"])
+                if (item != null) {
+                    sender.cast<Player>().giveItem(item)
+                    sender.sendLang("Item-Get", context["id"], 1)
+                } else sender.sendLang("Item-Not-Found")
+            }
+        }.int("amount") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = ItemAPI.getItem(itemConfig, context["id"])
                 if (item != null) {
@@ -53,7 +62,17 @@ object ItemCommand {
             }
         }
 
-        literal("give").player("player").dynamic("id") { suggest { itemNames } }.int("amount") {
+        literal("give").player("player").dynamic("id") {
+            suggest { itemNames }
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                val item = ItemAPI.getItem(itemConfig, context["id"])
+                if (item != null) {
+                    val player = context.player("player").cast<Player>()
+                    player.giveItem(item)
+                    sender.sendLang("Item-Give", context["id"], 1, context["player"])
+                } else sender.sendLang("Item-Not-Found")
+            }
+        }.int("amount") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = ItemAPI.getItem(itemConfig, context["id"])
                 if (item != null) {
