@@ -12,6 +12,7 @@ import taboolib.common.platform.command.*
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
+import taboolib.module.nms.getName
 import taboolib.platform.util.giveItem
 import java.io.File
 
@@ -98,6 +99,65 @@ object ItemCommand {
                     player.giveItem(item, context.int("amount"))
                     if (!silent) sender.sendLang("Item-Give", context["id"], context.int("amount"), context["player"])
                 } else if (!silent) sender.sendLang("Item-Not-Found")
+            }
+        }
+
+        literal("save") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
+                val item = sender.cast<Player>().inventory.itemInMainHand
+                ItemAPI.saveItem(
+                    item,
+                    "module/item/SaveItems.yml",
+                    item.getName(sender.cast())
+                )
+                sender.sendLang("Item-Save", "SaveItems.yml", item.getName(sender.cast()))
+            }
+        }.dynamic("id") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                val item = sender.cast<Player>().inventory.itemInMainHand
+                ItemAPI.saveItem(
+                    item,
+                    "module/item/SaveItems.yml",
+                    context["id"]
+                )
+                sender.sendLang("Item-Save", "SaveItems.yml", context["id"])
+            }
+        }.dynamic("path") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                val item = sender.cast<Player>().inventory.itemInMainHand
+                ItemAPI.saveItem(
+                    item,
+                    "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
+                    context["id"]
+                )
+                sender.sendLang(
+                    "Item-Save",
+                    context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml",
+                    context["id"]
+                )
+            }
+        }.dynamic("options") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                val args = CommandUtil.parseOptions(content.split(" "))
+                var silent = false
+
+                for ((k, _) in args) {
+                    when (k.lowercase()) {
+                        "silent" -> silent = true
+                    }
+                }
+
+                val item = sender.cast<Player>().inventory.itemInMainHand
+                ItemAPI.saveItem(
+                    item,
+                    "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
+                    context["id"]
+                )
+                if (!silent) sender.sendLang(
+                    "Item-Save",
+                    context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml",
+                    context["id"]
+                )
             }
         }
 

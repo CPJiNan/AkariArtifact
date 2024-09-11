@@ -48,7 +48,8 @@ object ItemAPI {
      * @author CPJiNan
      */
     fun saveItem(item: ItemStack, file: String, path: String) {
-        val config = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, file))
+        val itemFile = FileUtil.getFileOrCreate(path)
+        val config = YamlConfiguration.loadConfiguration(itemFile)
         config.set(path, null)
         saveItemToConfig(item, config, path)
         config.save(File(FileUtil.dataFolder, file))
