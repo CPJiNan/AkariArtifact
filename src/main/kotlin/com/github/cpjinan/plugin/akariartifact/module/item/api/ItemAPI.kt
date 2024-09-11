@@ -29,21 +29,13 @@ import taboolib.platform.util.buildItem
 import java.io.File
 
 object ItemAPI {
-    var itemFiles: ArrayList<File> = arrayListOf()
-    var itemSections: HashMap<String, ConfigurationSection> = hashMapOf()
-    var itemNames: ArrayList<String> = arrayListOf()
-    var itemConfig: YamlConfiguration = YamlConfiguration()
+    private var itemFiles: ArrayList<File> = arrayListOf()
+    private var itemSections: HashMap<String, ConfigurationSection> = hashMapOf()
+    private var itemNames: ArrayList<String> = arrayListOf()
+    private var itemConfig: YamlConfiguration = YamlConfiguration()
 
     init {
         reloadItem()
-    }
-
-    fun reloadItem() {
-        itemFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/item"), true)
-            .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
-        itemSections = itemFiles.getConfigSections()
-        itemNames = itemSections.map { it.key }.toCollection(ArrayList())
-        itemConfig = ConfigUtil.getMergedConfig(itemSections)
     }
 
     /**
@@ -77,53 +69,100 @@ object ItemAPI {
 
     /**
      * 从配置文件获取物品
-     * @param file 配置文件
-     * @param path 配置项路径
+     * @param id 物品 ID
+     * @return 指定物品的 ItemStack
      * @author CPJiNan
      */
-    fun getItem(file: File, path: String): ItemStack? {
+    fun getItem(id: String): ItemStack? {
+        return getItemFromConfig(itemConfig, id)
+    }
+
+    /**
+     * 从配置文件获取物品
+     * @param file 配置文件
+     * @param id 物品 ID
+     * @return 指定物品的 ItemStack
+     * @author CPJiNan
+     */
+    fun getItem(file: File, id: String): ItemStack? {
         val config = YamlConfiguration.loadConfiguration(file)
-        return getItemFromConfig(config, path)
+        return getItemFromConfig(config, id)
     }
 
     /**
      * 从配置文件获取物品
      * @param file 配置文件路径 (插件目录为根目录)
-     * @param path 配置项路径
+     * @param id 物品 ID
+     * @return 指定物品的 ItemStack
      * @author CPJiNan
      */
-    fun getItem(file: String, path: String): ItemStack? {
+    fun getItem(file: String, id: String): ItemStack? {
         val config = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, file))
-        return getItemFromConfig(config, path)
+        return getItemFromConfig(config, id)
     }
 
     /**
      * 从配置文件获取物品
      * @param config 配置文件
-     * @param path 配置项路径
+     * @param id 物品 ID
+     * @return 指定物品的 ItemStack
      * @author CPJiNan
      */
-    fun getItem(config: YamlConfiguration, path: String): ItemStack? {
-        return getItemFromConfig(config, path)
+    fun getItem(config: YamlConfiguration, id: String): ItemStack? {
+        return getItemFromConfig(config, id)
     }
 
     /**
      * 从其他插件获取物品
      * @param plugin 插件名称
-     * @param id 物品名称
+     * @param id 物品 ID
      * @param player 执行玩家 (默认为 null)
+     * @return 指定物品的 ItemStack
      * @author CPJiNan
      */
     fun getItem(plugin: String, id: String, player: Player? = null): ItemStack? {
-        val item: ItemStack? = when (plugin) {
-            "MythicMobs" -> Mythic.API.getItemStack(id)
-
-            "SX-Attribute" -> SXAttribute.getApi().getItem(id, player)
-
-            else -> null
-        }
-        return item
+        return getItemFromPlugin(plugin, id, player)
     }
+
+    /**
+     * 重载物品配置文件
+     * @author CPJiNan
+     */
+    fun reloadItem() {
+        itemFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/item"), true)
+            .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
+        itemSections = itemFiles.getConfigSections()
+        itemNames = itemSections.map { it.key }.toCollection(ArrayList())
+        itemConfig = ConfigUtil.getMergedConfig(itemSections)
+    }
+
+    /**
+     * 获取所有物品的配置文件
+     * @return 物品配置文件列表
+     * @author CPJiNan
+     */
+    fun getItemFiles(): ArrayList<File> = itemFiles
+
+    /**
+     * 获取所有物品的配置节点
+     * @return 物品配置节点列表 (由 物品ID 及其 配置节点 组成)
+     * @author CPJiNan
+     */
+    fun getItemSections(): HashMap<String, ConfigurationSection> = itemSections
+
+    /**
+     * 获取所有物品的名称
+     * @return 物品名称列表
+     * @author CPJiNan
+     */
+    fun getItemNames(): ArrayList<String> = itemNames
+
+    /**
+     * 获取所有物品配置合并后的新配置
+     * @return 物品配置
+     * @author CPJiNan
+     */
+    fun getItemConfig(): YamlConfiguration = itemConfig
 
     private fun saveItemToConfig(item: ItemStack, config: YamlConfiguration, path: String) {
         buildItem(item) {
@@ -216,7 +255,7 @@ object ItemAPI {
         // 从其他插件获取物品
         val plugin = config.getString("$path.Plugin")
         val id = config.getString("$path.ID")
-        if (plugin in listOf("MythicMobs", "SX-Attribute")) return getItem(plugin = plugin, id = id)
+        if (plugin in listOf("MythicMobs", "SX-Attribute")) return getItemFromPlugin(plugin = plugin, id = id)
 
         // 从配置文件获取物品
         val type = XMaterial.valueOf(config.getString("$path.Type") ?: return null)
@@ -299,6 +338,17 @@ object ItemAPI {
             }
         }
 
+        return item
+    }
+
+    private fun getItemFromPlugin(plugin: String, id: String, player: Player? = null): ItemStack? {
+        val item: ItemStack? = when (plugin) {
+            "MythicMobs" -> Mythic.API.getItemStack(id)
+
+            "SX-Attribute" -> SXAttribute.getApi().getItem(id, player)
+
+            else -> null
+        }
         return item
     }
 }
