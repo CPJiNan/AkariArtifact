@@ -9,6 +9,12 @@ object ItemCommand {
         if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
 
-        literal("")
+        literal("list") {
+
+        }
+
+        literal("get").dynamic("id").literal("amount") {
+
+        }
     }
 }
