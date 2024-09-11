@@ -129,19 +129,36 @@ object ItemAPI {
             itemTag.entries.forEach { tag ->
                 if (tag.key !in listOf(
                         "display",
-//                        "Damage",
-//                        "ench", "Enchantments",
-//                        "Unbreakable",
-//                        "HideFlags",
-//                        "BlockEntityTag",
-//                        "Potion",
-//                        "SkullOwner"
+                        "Damage",
+                        "ench", "Enchantments",
+                        "Unbreakable",
+                        "HideFlags",
+                        "BlockEntityTag",
+                        "Potion",
+                        "SkullOwner"
                     )
                 ) {
                     fun runAny(config: YamlConfiguration, key: String, value: ItemTagData) {
-                        fun getItemTagData(itemTagData: ItemTagData) : Any {
+                        fun getItemTagData(itemTagData: ItemTagData): Any {
                             val data = itemTagData.unsafeData()
-                            return if (data is ItemTag) getItemTagData(data) else data
+
+                            return when (data) {
+                                is ItemTag -> {
+                                    val compoundData = mutableMapOf<String, Any>()
+                                    data.entries.forEach { entry ->
+                                        compoundData[entry.key] = getItemTagData(entry.value)
+                                    }
+                                    compoundData
+                                }
+
+                                is ItemTagList -> {
+                                    val listData = mutableListOf<Any>()
+                                    data.forEach { listData.add(getItemTagData(it)) }
+                                    listData
+                                }
+
+                                else -> data
+                            }
                         }
                         when (val data = value.unsafeData()) {
                             is Byte, is Short, is Int, is Long, is Float, is Double, is String, is Boolean,
