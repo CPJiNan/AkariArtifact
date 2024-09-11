@@ -141,7 +141,7 @@ object ItemAPI {
                     fun runAny(config: YamlConfiguration, key: String, value: ItemTagData) {
                         fun getItemTagData(itemTagData: ItemTagData) : Any {
                             val data = itemTagData.unsafeData()
-                            return if (data is ItemTag) data.unsafeData() else data
+                            return if (data is ItemTag) getItemTagData(data) else data
                         }
                         when (val data = value.unsafeData()) {
                             is Byte, is Short, is Int, is Long, is Float, is Double, is String, is Boolean,
