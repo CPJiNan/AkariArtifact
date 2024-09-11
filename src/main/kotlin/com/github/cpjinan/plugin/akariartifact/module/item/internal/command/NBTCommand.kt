@@ -52,22 +52,6 @@ object NBTCommand {
                                     }
                                 }
 
-                                is List<*> -> {
-                                    player.sendMessage("§7$indent$key:")
-                                    value.forEach { u ->
-                                        when (u) {
-                                            is ItemTagList -> {
-                                                player.sendMessage("&7$indent$key&8:".colored())
-                                                u.forEach { v ->
-                                                    player.sendMessage("$indent  &f- &f$v".colored())
-                                                }
-                                            }
-
-                                            else -> player.sendMessage("$indent  &f- &f$value".colored())
-                                        }
-                                    }
-                                }
-
                                 else -> {
                                     player.sendMessage("$indent&7$key&8: &f$value".colored())
                                 }
