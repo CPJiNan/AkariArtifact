@@ -42,13 +42,13 @@ object ItemAPI {
      * 保存物品至配置文件
      * @param item 物品
      * @param file 配置文件
-     * @param path 配置项路径
+     * @param id 物品 ID
      * @author CPJiNan
      */
-    fun saveItem(item: ItemStack, file: File, path: String) {
+    fun saveItem(item: ItemStack, file: File, id: String) {
         val config = YamlConfiguration.loadConfiguration(file)
-        config.set(path, null)
-        saveItemToConfig(item, config, path)
+        config.set(id, null)
+        saveItemToConfig(item, config, id)
         config.save(file)
     }
 
@@ -56,14 +56,14 @@ object ItemAPI {
      * 保存物品至配置文件
      * @param item 物品
      * @param file 配置文件路径 (插件目录为根目录)
-     * @param path 配置项路径
+     * @param id 物品 ID
      * @author CPJiNan
      */
-    fun saveItem(item: ItemStack, file: String, path: String) {
+    fun saveItem(item: ItemStack, file: String, id: String) {
         val itemFile = FileUtil.getFileOrCreate(file)
         val config = YamlConfiguration.loadConfiguration(itemFile)
-        config.set(path, null)
-        saveItemToConfig(item, config, path)
+        config.set(id, null)
+        saveItemToConfig(item, config, id)
         config.save(itemFile)
     }
 
