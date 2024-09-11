@@ -8,9 +8,11 @@ import taboolib.common.platform.command.CommandBody
 import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.int
 import taboolib.common.platform.command.subCommand
+import taboolib.common5.util.replace
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
+import taboolib.platform.util.isAir
 import taboolib.platform.util.isNotAir
 import taboolib.platform.util.modifyLore
 
@@ -224,6 +226,81 @@ object LoreCommand {
                                     lore.colored()
                                 )
                             } else if (!silent) sender.sendLang("Air-In-Hand")
+                        }
+                    } catch (error: IndexOutOfBoundsException) {
+                        sender.sendLang("Index-Out-Of-Bounds")
+                    }
+                }
+            }
+        }
+
+        literal("replace") {
+            dynamic("oldChar").dynamic("newChar") {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                    try {
+                        sender.castSafely<Player>().let {
+                            val item = it?.inventory?.itemInMainHand
+                            if (item.isAir()) {
+                                sender.sendLang("Air-In-Hand")
+                                return@execute
+                            }
+
+                            val meta = item.itemMeta
+                            meta.lore =
+                                item.itemMeta.lore.replace(Pair(context["oldChar"], context["newChar"]))
+
+                            item.itemMeta = meta
+
+                            sender.sendLang(
+                                "Lore-Replace",
+                                context["oldChar"],
+                                context["newChar"],
+                                "All"
+                            )
+                        }
+                    } catch (error: IndexOutOfBoundsException) {
+                        sender.sendLang("Index-Out-Of-Bounds")
+                    }
+                }
+            }.dynamic("options") {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                    try {
+                        sender.castSafely<Player>().let {
+                            val args = CommandUtil.parseOptions(content.split(" "))
+                            var silent = false
+                            var line: Int? = null
+
+                            for ((k, v) in args) {
+                                when (k.lowercase()) {
+                                    "silent" -> silent = true
+                                    "line" -> line = v?.toInt()
+                                }
+                            }
+
+                            val item = it?.inventory?.itemInMainHand
+                            if (item.isAir()) {
+                                sender.sendLang("Air-In-Hand")
+                                return@execute
+                            }
+
+                            val meta = item.itemMeta
+
+                            if (line == null) {
+                                meta.lore =
+                                    item.itemMeta.lore.replace(Pair(context["oldChar"], context["newChar"]))
+                            } else {
+                                meta.lore[line - 1] =
+                                    item.itemMeta.lore[line - 1].replace(Pair(context["oldChar"], context["newChar"]))
+                            }
+
+                            item.itemMeta = meta
+
+                            if (!silent) sender.sendLang(
+                                "Lore-Replace",
+                                context["oldChar"],
+                                context["newChar"],
+                                line ?: "All"
+                            )
                         }
                     } catch (error: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
