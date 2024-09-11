@@ -10,7 +10,6 @@ import taboolib.common.platform.command.simpleCommand
 import taboolib.common.platform.function.console
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
-import taboolib.platform.util.giveItem
 
 object PluginLoader {
     @Awake(LifeCycle.LOAD)
@@ -39,15 +38,6 @@ object PluginLoader {
                 )
                 sender.sendMessage("&7已将手中物品存入 &fmodule/item/Example.yml &7中的 &f${args[0]} &7.".colored())
             } else sender.sendMessage("&c用法: /saveItem 物品编辑名".colored())
-        }
-        simpleCommand("getItem") { sender, args ->
-            if (args.isNotEmpty()) {
-                val item = ItemAPI.getItem("module/item/Example.yml", args[0])
-                if (item != null) {
-                    sender.cast<Player>().giveItem(item)
-                    sender.sendMessage("&7已将从 &fmodule/item/Example.yml &7中的 &f${args[0]} &7构建物品到手中.".colored())
-                } else sender.sendMessage("&c未从 module/item/Example.yml 中的 ${args[0]} 找到指定物品.".colored())
-            } else sender.sendMessage("&c用法: /getItem 物品编辑名".colored())
         }
     }
 
