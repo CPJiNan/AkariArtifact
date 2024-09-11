@@ -77,25 +77,6 @@ object ItemAPI {
         return getItemFromConfig(config, path)
     }
 
-    /**
-     * 从其他插件获取物品
-     * @param plugin 插件名称
-     * @param key 物品索引
-     * @param player 执行玩家 (默认为 null)
-     * @return 插件下指定索引的 ItemStack
-     * @author CPJiNan
-     */
-    fun getItem(plugin: String, key: String, player: Player? = null): ItemStack? {
-        val item: ItemStack? = when (plugin) {
-            "MythicMobs" -> Mythic.API.getItemStack(key)
-
-            "SX-Attribute" -> SXAttribute.getApi().getItem(key, player)
-
-            else -> null
-        }
-        return item
-    }
-
     private fun saveItemToConfig(item: ItemStack, config: YamlConfiguration, path: String) {
         buildItem(item) {
             // 基本属性
@@ -185,6 +166,12 @@ object ItemAPI {
     }
 
     private fun getItemFromConfig(config: YamlConfiguration, path: String): ItemStack? {
+        // 从其他插件获取物品
+        val plugin = config.getString("$path.Plugin")
+        val id = config.getString("$path.ID")
+        if (plugin in listOf("MythicMobs", "SX-Attribute")) return getItemFromPlugin(plugin, id)
+
+        // 从配置文件获取物品
         val type = XMaterial.valueOf(config.getString("$path.Type") ?: return null)
         val item = buildItem(type) {
             // 基本属性
@@ -265,6 +252,17 @@ object ItemAPI {
             }
         }
 
+        return item
+    }
+
+    private fun getItemFromPlugin(plugin: String, key: String, player: Player? = null): ItemStack? {
+        val item: ItemStack? = when (plugin) {
+            "MythicMobs" -> Mythic.API.getItemStack(key)
+
+            "SX-Attribute" -> SXAttribute.getApi().getItem(key, player)
+
+            else -> null
+        }
         return item
     }
 }
