@@ -140,7 +140,7 @@ object ItemAPI {
                     fun getItemTagData(itemTagData: ItemTagData): Any {
                         return when (val data = itemTagData.unsafeData()) {
                             is ItemTag -> {
-                                val compoundData = mutableMapOf<String, Any>()
+                                val compoundData = mutableMapOf<Any, Any>()
                                 data.entries.forEach { entry ->
                                     compoundData[entry.key] = getItemTagData(entry.value)
                                 }
