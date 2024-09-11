@@ -28,12 +28,12 @@ object NBTCommand {
 
                     val itemTag = item.getItemTag()
                     sender.sendLang("NBT-Check")
-                    fun runAny(player: Player, data: ItemTag, indent: String) {
+                    fun sendItemTagInfo(player: Player, data: ItemTag, indent: String) {
                         for ((key, value) in data) {
                             when (value) {
                                 is ItemTag -> {
                                     player.sendMessage("§7$indent$key:")
-                                    runAny(player, value, "$indent  ")
+                                    sendItemTagInfo(player, value, "$indent  ")
                                 }
 
                                 is ItemTagList -> {
@@ -41,7 +41,7 @@ object NBTCommand {
                                     value.forEach { v ->
                                         when (v.type) {
                                             ItemTagType.COMPOUND -> {
-                                                runAny(player, v.asCompound(), "$indent  ")
+                                                sendItemTagInfo(player, v.asCompound(), "$indent  ")
                                             }
 
                                             else -> {
@@ -58,7 +58,7 @@ object NBTCommand {
                             }
                         }
                     }
-                    runAny(sender.cast(), itemTag, "  ")
+                    sendItemTagInfo(sender.cast(), itemTag, "  ")
                 }
             }
         }
