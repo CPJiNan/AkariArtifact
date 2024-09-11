@@ -31,7 +31,7 @@ object LoreCommand {
                         if (item.isNotAir()) {
                             sender.sendLang("Lore-Check")
                             item.itemMeta?.lore?.forEachIndexed { index, content ->
-                                sender.sendMessage("&7${index + 1} &8| $content".colored())
+                                sender.sendMessage("&7${index + 1} &8| &r$content".colored())
                             }
                         } else sender.sendLang("Air-In-Hand")
                     }
