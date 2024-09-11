@@ -24,5 +24,8 @@ object ModuleUI {
         plugin.saveDefaultResource(
             "module/ui.yml"
         )
+        plugin.saveDefaultResource(
+            "module/ui/Example.yml"
+        )
     }
 }
