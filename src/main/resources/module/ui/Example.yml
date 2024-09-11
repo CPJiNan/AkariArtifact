@@ -1,0 +1,11 @@
+ExampleMenu:
+  Title: "示例菜单"
+  Map:
+    - "#########"
+    - "#   A   #"
+    - "#########"
+  Slot:
+    A:
+      Item: Apple
+      Action:
+        - tell Mr.Black's Apple
