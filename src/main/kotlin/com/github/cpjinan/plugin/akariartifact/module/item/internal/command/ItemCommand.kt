@@ -10,6 +10,7 @@ import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.int
+import taboolib.common.platform.command.player
 import taboolib.common.platform.command.subCommand
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
@@ -51,6 +52,35 @@ object ItemCommand {
                 if (item != null) {
                     sender.cast<Player>().giveItem(item, context.int("amount"))
                     if (!silent) sender.sendLang("Item-Get", context["id"], context.int("amount"))
+                } else if (!silent) sender.sendLang("Item-Not-Found")
+            }
+        }
+
+        literal("give").player("player").dynamic("id").int("amount") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                val item = ItemAPI.getItem(itemConfig, context["id"])
+                if (item != null) {
+                    val player = context.player("player").cast<Player>()
+                    player.giveItem(item, context.int("amount"))
+                    sender.sendLang("Item-Give", context["id"], context.int("amount"), context["player"])
+                } else sender.sendLang("Item-Not-Found")
+            }
+        }.dynamic("options") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                val args = CommandUtil.parseOptions(content.split(" "))
+                var silent = false
+
+                for ((k, _) in args) {
+                    when (k.lowercase()) {
+                        "silent" -> silent = true
+                    }
+                }
+
+                val item = ItemAPI.getItem(itemConfig, context["id"])
+                if (item != null) {
+                    val player = context.player("player").cast<Player>()
+                    player.giveItem(item, context.int("amount"))
+                    if (!silent) sender.sendLang("Item-Give", context["id"], context.int("amount"), context["player"])
                 } else if (!silent) sender.sendLang("Item-Not-Found")
             }
         }
