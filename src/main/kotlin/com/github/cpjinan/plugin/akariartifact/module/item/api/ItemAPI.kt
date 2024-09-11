@@ -126,26 +126,31 @@ object ItemAPI {
 
             // NBT
             val itemTag = item.getItemTag()
-            itemTag.entries.forEach {
-                if (it.key !in listOf(
+            itemTag.entries.forEach { tag ->
+                if (tag.key !in listOf(
                         "display",
-                        "Damage",
-                        "ench", "Enchantments",
-                        "Unbreakable",
-                        "HideFlags",
-                        "BlockEntityTag",
-                        "Potion",
-                        "SkullOwner"
+//                        "Damage",
+//                        "ench", "Enchantments",
+//                        "Unbreakable",
+//                        "HideFlags",
+//                        "BlockEntityTag",
+//                        "Potion",
+//                        "SkullOwner"
                     )
                 ) {
                     fun runAny(config: YamlConfiguration, key: String, value: ItemTagData) {
+                        fun getItemTagData(itemTagData: ItemTagData) : Any {
+                            val data = itemTagData.unsafeData()
+                            return if (data is ItemTag) data.unsafeData() else data
+                        }
                         when (val data = value.unsafeData()) {
                             is Byte, is Short, is Int, is Long, is Float, is Double, is String, is Boolean,
                             is ByteArray, is ShortArray, is IntArray, is LongArray -> config.set(key, data)
 
                             is ItemTag -> data.entries.forEach { runAny(config, "$key.${it.key}", it.value) }
+
                             is ItemTagList -> {
-                                val list: MutableList<Any> = mutableListOf()
+                                val list = mutableListOf<Any>()
                                 when (data.type) {
                                     ItemTagType.COMPOUND -> {
                                         data.asCompound().forEach { (k, v) ->
@@ -154,8 +159,16 @@ object ItemAPI {
                                     }
 
                                     else -> {
-                                        data.forEach {
-                                            list.add(it.unsafeData())
+                                        data.forEach { v ->
+                                            if (v.unsafeData() is ItemTag) {
+                                                val compoundList = mutableMapOf<String, Any>()
+                                                (v.unsafeData() as ItemTag).entries.forEach { entry ->
+                                                    compoundList[entry.key] = getItemTagData(entry.value)
+                                                }
+                                                list.add(compoundList)
+                                            } else {
+                                                list.add(v)
+                                            }
                                         }
                                         config.set(key, list)
                                     }
@@ -166,7 +179,7 @@ object ItemAPI {
                         }
                     }
 
-                    runAny(config, "$path.NBT.${it.key}", it.value)
+                    runAny(config, "$path.NBT.${tag.key}", tag.value)
                 }
             }
         }
