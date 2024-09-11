@@ -8,4 +8,4 @@ ExampleMenu:
     A:
       Item: Apple
       Action:
-        - tell Mr.Black's Apple
+        - tell "Mr.Black's Apple"
