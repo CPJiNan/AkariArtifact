@@ -39,7 +39,6 @@ object ItemCommand {
     val item = subCommand {
         if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
-        reloadItemData()
 
         literal("get").dynamic("id") {
             suggest { itemNames }
@@ -124,6 +123,7 @@ object ItemCommand {
                     "module/item/SaveItems.yml",
                     item.getName(sender.cast())
                 )
+                reloadItemData()
                 sender.sendLang("Item-Save", "SaveItems.yml", item.getName(sender.cast()))
             }
         }.dynamic("id") {
@@ -134,6 +134,7 @@ object ItemCommand {
                     "module/item/SaveItems.yml",
                     context["id"]
                 )
+                reloadItemData()
                 sender.sendLang("Item-Save", "SaveItems.yml", context["id"])
             }
         }.dynamic("path") {
@@ -144,6 +145,7 @@ object ItemCommand {
                     "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
                     context["id"]
                 )
+                reloadItemData()
                 sender.sendLang(
                     "Item-Save",
                     context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml",
@@ -167,6 +169,7 @@ object ItemCommand {
                     "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
                     context["id"]
                 )
+                reloadItemData()
                 if (!silent) sender.sendLang(
                     "Item-Save",
                     context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml",

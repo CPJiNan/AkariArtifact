@@ -10,7 +10,7 @@ import java.io.File
 
 object ModuleItem {
     const val MODULE_NAME = "Item"
-    const val MODULE_VERSION = 1
+    const val MODULE_VERSION = 2
 
     var configFile = File(FileUtil.dataFolder, "module/item.yml")
     var config: YamlConfiguration =

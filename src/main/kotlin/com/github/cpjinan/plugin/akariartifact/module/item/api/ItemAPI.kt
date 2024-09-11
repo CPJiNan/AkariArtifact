@@ -52,7 +52,7 @@ object ItemAPI {
         val config = YamlConfiguration.loadConfiguration(itemFile)
         config.set(path, null)
         saveItemToConfig(item, config, path)
-        config.save(File(FileUtil.dataFolder, file))
+        config.save(itemFile)
     }
 
     /**
@@ -85,6 +85,24 @@ object ItemAPI {
      */
     fun getItem(config: YamlConfiguration, path: String): ItemStack? {
         return getItemFromConfig(config, path)
+    }
+
+    /**
+     * 从其他插件获取物品
+     * @param plugin 插件名称
+     * @param id 物品名称
+     * @param player 执行玩家 (默认为 null)
+     * @author CPJiNan
+     */
+    fun getItem(plugin: String, id: String, player: Player? = null): ItemStack? {
+        val item: ItemStack? = when (plugin) {
+            "MythicMobs" -> Mythic.API.getItemStack(id)
+
+            "SX-Attribute" -> SXAttribute.getApi().getItem(id, player)
+
+            else -> null
+        }
+        return item
     }
 
     private fun saveItemToConfig(item: ItemStack, config: YamlConfiguration, path: String) {
@@ -178,7 +196,7 @@ object ItemAPI {
         // 从其他插件获取物品
         val plugin = config.getString("$path.Plugin")
         val id = config.getString("$path.ID")
-        if (plugin in listOf("MythicMobs", "SX-Attribute")) return getItemFromPlugin(plugin, id)
+        if (plugin in listOf("MythicMobs", "SX-Attribute")) return getItem(plugin = plugin, id = id)
 
         // 从配置文件获取物品
         val type = XMaterial.valueOf(config.getString("$path.Type") ?: return null)
@@ -261,17 +279,6 @@ object ItemAPI {
             }
         }
 
-        return item
-    }
-
-    private fun getItemFromPlugin(plugin: String, key: String, player: Player? = null): ItemStack? {
-        val item: ItemStack? = when (plugin) {
-            "MythicMobs" -> Mythic.API.getItemStack(key)
-
-            "SX-Attribute" -> SXAttribute.getApi().getItem(key, player)
-
-            else -> null
-        }
         return item
     }
 }
