@@ -1,5 +1,7 @@
 package com.github.cpjinan.plugin.akariartifact.module.item.api
 
+import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil
+import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.getConfigSections
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
 import github.saukiya.sxattribute.SXAttribute
 import ink.ptms.um.Mythic
@@ -7,6 +9,7 @@ import org.bukkit.Color
 import org.bukkit.DyeColor
 import org.bukkit.block.banner.Pattern
 import org.bukkit.block.banner.PatternType
+import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.entity.Player
@@ -26,6 +29,23 @@ import taboolib.platform.util.buildItem
 import java.io.File
 
 object ItemAPI {
+    var itemFiles: ArrayList<File> = arrayListOf()
+    var itemSections: HashMap<String, ConfigurationSection> = hashMapOf()
+    var itemNames: ArrayList<String> = arrayListOf()
+    var itemConfig: YamlConfiguration = YamlConfiguration()
+
+    init {
+        reloadItemData()
+    }
+
+    fun reloadItemData() {
+        itemFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/item"), true)
+            .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
+        itemSections = itemFiles.getConfigSections()
+        itemNames = itemSections.map { it.key }.toCollection(ArrayList())
+        itemConfig = ConfigUtil.getMergedConfig(itemSections)
+    }
+
     /**
      * 保存物品至配置文件
      * @param item 物品

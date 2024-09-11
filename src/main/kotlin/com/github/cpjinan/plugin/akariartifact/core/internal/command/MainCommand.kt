@@ -1,6 +1,7 @@
 package com.github.cpjinan.plugin.akariartifact.core.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.common.PluginConfig
+import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.ItemCommand
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.LoreCommand
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.NBTCommand
@@ -33,7 +34,7 @@ object MainCommand {
         execute { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
             PluginConfig.settings = YamlConfiguration.loadConfiguration(PluginConfig.settingsFile)
             ModuleProjectile.config = YamlConfiguration.loadConfiguration(ModuleProjectile.configFile)
-            ItemCommand.reloadItemData()
+            ItemAPI.reloadItemData()
             sender.sendLang("Plugin-Reloaded")
         }
     }
