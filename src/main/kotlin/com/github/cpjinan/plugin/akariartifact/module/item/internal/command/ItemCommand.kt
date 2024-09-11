@@ -8,10 +8,7 @@ import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
-import taboolib.common.platform.command.CommandContext
-import taboolib.common.platform.command.int
-import taboolib.common.platform.command.player
-import taboolib.common.platform.command.subCommand
+import taboolib.common.platform.command.*
 import taboolib.expansion.createHelper
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
@@ -29,7 +26,7 @@ object ItemCommand {
         if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
 
-        literal("get").dynamic("id").int("amount") {
+        literal("get").dynamic("id") { suggest { itemNames } }.int("amount") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = ItemAPI.getItem(itemConfig, context["id"])
                 if (item != null) {
@@ -56,7 +53,7 @@ object ItemCommand {
             }
         }
 
-        literal("give").player("player").dynamic("id").int("amount") {
+        literal("give").player("player").dynamic("id") { suggest { itemNames } }.int("amount") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = ItemAPI.getItem(itemConfig, context["id"])
                 if (item != null) {
