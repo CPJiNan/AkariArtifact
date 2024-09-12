@@ -28,10 +28,10 @@ object UICommand {
             }
         }.player("player") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                context.player().cast<Player>().openUI(context["id"])
+                context.player("player").cast<Player>().openUI(context["id"])
                 sender.sendLang(
                     "UI-Open",
-                    context.player().cast<Player>().name,
+                    context.player("player").cast<Player>().name,
                     context["id"]
                 )
             }
@@ -46,10 +46,10 @@ object UICommand {
                     }
                 }
 
-                context.player().cast<Player>().openUI(context["id"])
+                context.player("player").cast<Player>().openUI(context["id"])
                 if (!silent) sender.sendLang(
                     "UI-Open",
-                    context.player().cast<Player>().name,
+                    context.player("player").cast<Player>().name,
                     context["id"]
                 )
             }
@@ -57,10 +57,10 @@ object UICommand {
 
         literal("close").player("player") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                context.player().cast<Player>().closeUI()
+                context.player("player").cast<Player>().closeUI()
                 sender.sendLang(
                     "UI-Close",
-                    context.player().name
+                    context.player("player").cast<Player>().name
                 )
             }
         }.dynamic("options") {
@@ -82,10 +82,10 @@ object UICommand {
                     null
                 }
 
-                context.player().cast<Player>().closeUI(inventoryType)
+                context.player("player").cast<Player>().closeUI(inventoryType)
                 if (!silent) sender.sendLang(
                     "UI-Close",
-                    context.player().name
+                    context.player("player").cast<Player>().name
                 )
             }
         }
