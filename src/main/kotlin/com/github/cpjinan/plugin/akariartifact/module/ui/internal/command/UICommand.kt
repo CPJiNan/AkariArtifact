@@ -2,8 +2,10 @@ package com.github.cpjinan.plugin.akariartifact.module.ui.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
 import com.github.cpjinan.plugin.akariartifact.module.ui.api.UIAPI
+import com.github.cpjinan.plugin.akariartifact.module.ui.api.UIAPI.closeUI
 import com.github.cpjinan.plugin.akariartifact.module.ui.api.UIAPI.openUI
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryType
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.player
@@ -49,6 +51,41 @@ object UICommand {
                     "UI-Open",
                     context.player().cast<Player>().name,
                     context["id"]
+                )
+            }
+        }
+
+        literal("close").player("player") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                context.player().cast<Player>().closeUI()
+                sender.sendLang(
+                    "UI-Close",
+                    context.player().name
+                )
+            }
+        }.dynamic("options") {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                val args = CommandUtil.parseOptions(content.split(" "))
+                var silent = false
+                var type: String? = null
+
+                for ((k, v) in args) {
+                    when (k.lowercase()) {
+                        "silent" -> silent = true
+                        "type" -> type = v
+                    }
+                }
+
+                val inventoryType = try {
+                    type?.let { InventoryType.valueOf(it.uppercase()) }
+                } catch (error: IllegalArgumentException) {
+                    null
+                }
+
+                context.player().cast<Player>().closeUI(inventoryType)
+                if (!silent) sender.sendLang(
+                    "UI-Close",
+                    context.player().name
                 )
             }
         }

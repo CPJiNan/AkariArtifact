@@ -8,6 +8,7 @@ import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.InventoryType
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Chest
 import taboolib.platform.util.sendLang
@@ -62,6 +63,17 @@ object UIAPI {
     fun Player.openUI(file: String, ui: String) {
         val config = YamlConfiguration.loadConfiguration(File(FileUtil.dataFolder, file))
         openUIForPlayer(this, config, ui)
+    }
+
+    /**
+     * 为玩家关闭当前 UI
+     * @param type 要关闭的 UI 种类 (默认为 null)
+     * @author CPJiNan
+     */
+    fun Player.closeUI(type: InventoryType? = null) {
+        player.openInventory?.run {
+            if (type == null || this.type == type) player.closeInventory()
+        }
     }
 
     /**
