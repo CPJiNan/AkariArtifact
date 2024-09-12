@@ -65,6 +65,34 @@ object UIAPI {
     }
 
     /**
+     * 获取所有 UI 的配置文件
+     * @return UI 配置文件列表
+     * @author CPJiNan
+     */
+    fun getUIFiles(): ArrayList<File> = uiFiles
+
+    /**
+     * 获取所有 UI 的配置节点
+     * @return UI 配置节点列表 (由 UI 名称 及其 配置节点 组成)
+     * @author CPJiNan
+     */
+    fun getUISections(): HashMap<String, ConfigurationSection> = uiSections
+
+    /**
+     * 获取所有 UI 的名称
+     * @return UI 名称列表
+     * @author CPJiNan
+     */
+    fun getUINames(): ArrayList<String> = uiNames
+
+    /**
+     * 获取所有 UI 配置合并后的新配置
+     * @return UI 配置
+     * @author CPJiNan
+     */
+    fun getUIConfig(): YamlConfiguration = uiConfig
+
+    /**
      * 重载 UI 配置文件
      * @author CPJiNan
      */
