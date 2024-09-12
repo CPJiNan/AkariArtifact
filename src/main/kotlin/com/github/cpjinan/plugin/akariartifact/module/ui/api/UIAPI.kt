@@ -109,6 +109,14 @@ object UIAPI {
             map(*(config.getStringList("$ui.Map").toTypedArray()))
             handLocked(true)
 
+            onBuild { _, _ ->
+                config.getStringList("$ui.Build").evalKether(player)
+            }
+
+            onClose {
+                config.getStringList("$ui.Close").evalKether(player)
+            }
+
             val slots = config.getConfigurationSection("$ui.Slot")
             slots.getKeys(false).forEach { slot ->
                 val item = ItemAPI.getItem(config.getString("$ui.Slot.$slot.Item"))
@@ -118,7 +126,7 @@ object UIAPI {
                 }
 
                 set(slot[0], item) {
-                    config.getStringList("$ui.Slot.$slot.Action").evalKether(player)
+                    config.getStringList("$ui.Slot.$slot.Click").evalKether(player)
                 }
             }
 
