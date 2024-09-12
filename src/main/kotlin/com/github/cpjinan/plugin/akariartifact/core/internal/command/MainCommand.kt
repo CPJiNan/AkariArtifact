@@ -9,6 +9,7 @@ import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.NBTC
 import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
 import com.github.cpjinan.plugin.akariartifact.module.ui.ModuleUI
 import com.github.cpjinan.plugin.akariartifact.module.ui.api.UIAPI
+import com.github.cpjinan.plugin.akariartifact.module.ui.internal.command.UICommand
 import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.*
@@ -31,6 +32,9 @@ object MainCommand {
 
     @CommandBody(permission = "akariartifact.nbt")
     val nbt = NBTCommand.nbt
+
+    @CommandBody(permission = "akariartifact.ui")
+    val ui = UICommand.ui
 
     @CommandBody(permission = "akariartifact.reload")
     val reload = subCommand {

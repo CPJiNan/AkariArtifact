@@ -2,11 +2,8 @@ package com.github.cpjinan.plugin.akariartifact.core.internal
 
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil
-import com.github.cpjinan.plugin.akariartifact.module.ui.api.UIAPI.openUI
-import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common.platform.command.simpleCommand
 import taboolib.common.platform.function.console
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
@@ -29,9 +26,6 @@ object PluginLoader {
             ""
         )
         console().sendLang("Plugin-Enabled")
-        simpleCommand("testUI") { sender, args ->
-            sender.cast<Player>().openUI("ExampleMenu")
-        }
     }
 
     @Awake(LifeCycle.DISABLE)
