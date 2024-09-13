@@ -14,7 +14,6 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.platform.compat.depositBalance
 import taboolib.platform.compat.getBalance
-import taboolib.platform.util.giveItem
 import taboolib.platform.util.hasItem
 import taboolib.platform.util.modifyLore
 import taboolib.platform.util.takeItem
@@ -129,14 +128,14 @@ object GemAPI {
         if (matchLine == null) {
             player.sendMessage("物品 Lore 不满足")
             return false
+        } else {
+            meta.lore = lore
+            item.itemMeta = meta
         }
 
         gemAttribute.forEachIndexed { index, attribute ->
             item.modifyLore { add(matchLine + index + 1, attribute) }
         }
-
-        meta.lore = lore
-        item.itemMeta = meta
 
         player.inventory.takeItem { it == gemItemStack }
 
