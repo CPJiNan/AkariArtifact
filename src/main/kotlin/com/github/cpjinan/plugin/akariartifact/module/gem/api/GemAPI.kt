@@ -6,10 +6,14 @@ import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.getConfigSe
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
 import com.github.cpjinan.plugin.akariartifact.module.gem.ModuleGem
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
+import org.black_ixx.playerpoints.PlayerPoints
+import org.bukkit.Bukkit
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
+import taboolib.platform.compat.depositBalance
+import taboolib.platform.compat.getBalance
 import taboolib.platform.util.giveItem
 import taboolib.platform.util.hasItem
 import taboolib.platform.util.modifyLore
@@ -81,19 +85,17 @@ object GemAPI {
             return false
         }
 
-//        if (socketMoneyCost > 0 && player.getBalance() < socketMoneyCost) {
-//            player.sendMessage("金钱不满足")
-//            return false
-//        } else if (socketMoneyCost > 0) {
-//            player.depositBalance(socketMoneyCost)
-//        }
-//
-//        if (socketPointCost > 0 && PlayerPoints.getInstance().api.look(player.uniqueId) < socketPointCost) {
-//            player.sendMessage("点券不满足")
-//            return false
-//        } else if (socketPointCost > 0) {
-//            PlayerPoints.getInstance().api.take(player.uniqueId, socketPointCost)
-//        }
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("Vault") && player.getBalance() < socketMoneyCost) {
+            player.sendMessage("金钱不满足")
+            return false
+        } else player.depositBalance(socketMoneyCost)
+
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints") && socketPointCost > 0 && PlayerPoints.getInstance().api.look(player.uniqueId) < socketPointCost) {
+            player.sendMessage("点券不满足")
+            return false
+        } else if (socketPointCost > 0) {
+            PlayerPoints.getInstance().api.take(player.uniqueId, socketPointCost)
+        }
 
         val hasEnoughItems = socketItemCost.all { itemCost ->
             val (itemName, amount) = itemCost.split("<=>", limit = 2)
