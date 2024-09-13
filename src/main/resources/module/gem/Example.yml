@@ -5,18 +5,18 @@ DefaultGem:
   Attribute:
     - "§6⏏ §f生命力: §a+10"
   Socket:
-    Chance: 0.90
+    Chance: 0.9
     Condition: [ ]
     Cost:
-      Money: 0.00
+      Money: 0.0
       Point: 0
       Item: [ ]
     Return-Item: false
   Unsocket:
-    Chance: 0.30
+    Chance: 0.3
     Condition: [ ]
     Cost:
-      Money: 0.00
+      Money: 0.0
       Point: 0
       Item: [ ]
     Return-Item: true
