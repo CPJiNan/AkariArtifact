@@ -25,7 +25,7 @@ object ModuleUI {
             "module/ui.yml"
         )
         plugin.saveDefaultResource(
-            "module/ui/Example.yml"
+            "module/ui/custom/Example.yml"
         )
     }
 }
