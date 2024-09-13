@@ -72,7 +72,6 @@ object GemAPI {
             player.sendMessage("宝石不满足")
             return false
         }
-        player.inventory.takeItem { it == gemItemStack }
 
         if (Random.nextDouble(1.0) < socketChance) {
             player.sendMessage("几率不满足")
@@ -138,6 +137,8 @@ object GemAPI {
 
         meta.lore = lore
         item.itemMeta = meta
+
+        player.inventory.takeItem { it == gemItemStack }
 
         return true
     }
