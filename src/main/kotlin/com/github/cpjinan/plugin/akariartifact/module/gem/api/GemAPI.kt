@@ -14,9 +14,7 @@ import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.platform.compat.depositBalance
 import taboolib.platform.compat.getBalance
-import taboolib.platform.util.hasItem
-import taboolib.platform.util.modifyLore
-import taboolib.platform.util.takeItem
+import taboolib.platform.util.*
 import java.io.File
 import kotlin.random.Random
 
@@ -59,51 +57,63 @@ object GemAPI {
         val socketMoneyCost = gemSection.getDouble("Socket.Cost.Money", 0.0)
         val socketPointCost = gemSection.getInt("Socket.Cost.Point", 0)
         val socketItemCost = gemSection.getStringList("Socket.Cost.Item")
-        val socketIsReturnItem = gemSection.getBoolean("Socket.Return-Item", true)
+        val socketIsReturnItem = gemSection.getBoolean("Socket.Return.Item", true)
+        val socketIsReturnGem = gemSection.getBoolean("Socket.Return.Gem", true)
 
         if (!player.inventory.hasItem { it.amount == 1 }) {
-            player.sendMessage("手中物品数量需为 1")
+            player.sendLang("Gem-Too-Many-Item")
             return false
         }
 
-        val gemItemStack = ItemAPI.getItem(gemItem)
-        if (!player.inventory.hasItem { it == gemItemStack }) {
-            player.sendMessage("宝石不满足")
+        val gemItemStack = ItemAPI.getItem(gemItem) ?: return false
+        if (!player.inventory.hasItem { buildItem(it) { amount = 1 } == buildItem(gemItemStack) { amount = 1 } }) {
+            player.sendLang("Gem-No-Material")
             return false
         }
 
         if (Random.nextDouble(1.0) >= socketChance) {
-            player.sendMessage("几率不满足")
-            if (!socketIsReturnItem) player.inventory.takeItem { it == gemItemStack }
+            player.sendLang("Gem-Socket-Fail")
+            if (!socketIsReturnItem) player.inventory.takeItem {
+                buildItem(it) {
+                    amount = 1
+                } == buildItem(gemItemStack) { amount = 1 }
+            }
             return false
         }
 
         if (!socketCondition.all { it.evalKether(player).toString().toBoolean() }) {
-            player.sendMessage("条件不满足")
+            player.sendLang("Gem-Socket-Condition-Not-Met")
             return false
         }
 
         if (Bukkit.getServer().pluginManager.isPluginEnabled("Vault")) {
             if (player.getBalance() < socketMoneyCost) {
-                player.sendMessage("金钱不满足")
+                player.sendLang("Gem-No-Enough-Money", player.getBalance(), socketMoneyCost)
                 return false
             } else player.depositBalance(socketMoneyCost)
         }
 
         if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints")) {
             if (PlayerPoints.getInstance().api.look(player.uniqueId) < socketPointCost) {
-                player.sendMessage("点券不满足")
+                player.sendLang(
+                    "Gem-No-Enough-Point",
+                    PlayerPoints.getInstance().api.look(player.uniqueId),
+                    socketPointCost
+                )
                 return false
             } else PlayerPoints.getInstance().api.take(player.uniqueId, socketPointCost)
         }
 
         val hasEnoughItems = socketItemCost.all { itemCost ->
-            val (itemName, amount) = itemCost.split("<=>", limit = 2)
-            player.inventory.hasItem(amount.toInt()) { it == ItemAPI.getItem(itemName) }
+            val (itemName, costAmount) = itemCost.split("<=>", limit = 2)
+            val itemStack = ItemAPI.getItem(itemName) ?: return@all false
+            player.inventory.hasItem(costAmount.toInt()) {
+                buildItem(it) { amount = 1 } == buildItem(itemStack) { amount = 1 }
+            }
         }
 
         if (!hasEnoughItems) {
-            player.sendMessage("物品不满足")
+            player.sendLang("Gem-No-Enough-Item")
             return false
         }
 
@@ -126,7 +136,7 @@ object GemAPI {
         }
 
         if (matchLine == null) {
-            player.sendMessage("物品 Lore 不满足")
+            player.sendLang("Gem-No-Slot")
             return false
         } else {
             meta.lore = lore
@@ -137,7 +147,8 @@ object GemAPI {
             item.modifyLore { add(matchLine + index + 1, attribute) }
         }
 
-        player.inventory.takeItem { it == gemItemStack }
+        player.inventory.takeItem { buildItem(it) { amount = 1 } == buildItem(gemItemStack) { amount = 1 } }
+        player.sendLang("Gem-Socket-Success")
 
         return true
     }

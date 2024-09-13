@@ -31,13 +31,7 @@ object PluginLoader {
         console().sendLang("Plugin-Enabled")
         simpleCommand("testGem") { sender, args ->
             val item = sender.cast<Player>().inventory.itemInMainHand
-            sender.sendMessage(
-                GemAPI.socketGem(
-                    sender.cast(),
-                    item = item,
-                    gem = "DefaultGem",
-                ).toString()
-            )
+            GemAPI.socketGem(sender.cast(), item, "DefaultGem")
         }
     }
 

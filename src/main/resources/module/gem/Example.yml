@@ -11,7 +11,9 @@ DefaultGem:
       Money: 0.0
       Point: 0
       Item: [ ]
-    Return-Item: false
+    Return:
+      Item: true
+      Gem: false
   Unsocket:
     Chance: 0.3
     Condition: [ ]
@@ -19,4 +21,6 @@ DefaultGem:
       Money: 0.0
       Point: 0
       Item: [ ]
-    Return-Item: true
+    Return:
+      Item: true
+      Gem: true
