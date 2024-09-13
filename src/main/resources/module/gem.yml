@@ -6,3 +6,5 @@
 
 # 启用镶嵌模块
 Enable: true
+# 该模块使用的 UI 界面
+UI: "GemUI"
