@@ -76,6 +76,11 @@ object GemAPI {
             if (!socketIsReturnItem) player.inventory.takeItem {
                 buildItem(it) {
                     amount = 1
+                } == buildItem(item) { amount = 1 }
+            }
+            if (!socketIsReturnGem) player.inventory.takeItem {
+                buildItem(it) {
+                    amount = 1
                 } == buildItem(gemItemStack) { amount = 1 }
             }
             return false
@@ -108,7 +113,9 @@ object GemAPI {
             val (itemName, costAmount) = itemCost.split("<=>", limit = 2)
             val itemStack = ItemAPI.getItem(itemName) ?: return@all false
             player.inventory.hasItem(costAmount.toInt()) {
-                buildItem(it) { amount = 1 } == buildItem(itemStack) { amount = 1 }
+                buildItem(it) {
+                    amount = 1
+                } == buildItem(itemStack) { amount = 1 }
             }
         }
 
