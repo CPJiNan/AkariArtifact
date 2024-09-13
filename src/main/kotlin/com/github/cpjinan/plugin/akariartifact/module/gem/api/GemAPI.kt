@@ -85,16 +85,18 @@ object GemAPI {
             return false
         }
 
-        if (Bukkit.getServer().pluginManager.isPluginEnabled("Vault") && player.getBalance() < socketMoneyCost) {
-            player.sendMessage("金钱不满足")
-            return false
-        } else player.depositBalance(socketMoneyCost)
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("Vault")) {
+            if (player.getBalance() < socketMoneyCost) {
+                player.sendMessage("金钱不满足")
+                return false
+            } else player.depositBalance(socketMoneyCost)
+        }
 
-        if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints") && socketPointCost > 0 && PlayerPoints.getInstance().api.look(player.uniqueId) < socketPointCost) {
-            player.sendMessage("点券不满足")
-            return false
-        } else if (socketPointCost > 0) {
-            PlayerPoints.getInstance().api.take(player.uniqueId, socketPointCost)
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints")) {
+            if (PlayerPoints.getInstance().api.look(player.uniqueId) < socketPointCost) {
+                player.sendMessage("点券不满足")
+                return false
+            } else PlayerPoints.getInstance().api.take(player.uniqueId, socketPointCost)
         }
 
         val hasEnoughItems = socketItemCost.all { itemCost ->
