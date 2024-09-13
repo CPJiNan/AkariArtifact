@@ -75,7 +75,7 @@ object GemAPI {
 
         if (Random.nextDouble(1.0) >= socketChance) {
             player.sendMessage("几率不满足")
-            if (socketIsReturnItem) player.giveItem(gemItemStack)
+            if (!socketIsReturnItem) player.inventory.takeItem { it == gemItemStack }
             return false
         }
 
