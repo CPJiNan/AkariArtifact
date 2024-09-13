@@ -27,6 +27,8 @@ taboolib {
             name("QFeng")
         }
         dependencies {
+            name("Vault").optional(true)
+            name("PlayerPoints").optional(true)
             name("PlaceholderAPI").optional(true)
             name("MythicMobs").optional(true)
             name("SX-Attribute").optional(true)
