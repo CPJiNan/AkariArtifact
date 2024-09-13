@@ -25,7 +25,10 @@ object ModuleUI {
             "module/ui.yml"
         )
         plugin.saveDefaultResource(
-            "module/ui/custom/Example.yml"
+            "module/ui/Example.yml"
+        )
+        plugin.saveDefaultResource(
+            "module/ui/GemUI.yml"
         )
     }
 }

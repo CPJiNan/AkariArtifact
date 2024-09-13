@@ -1,0 +1,17 @@
+GemUI:
+  Title: "示例菜单"
+  Map:
+    - "         "
+    - "         "
+    - "    A    "
+    - "         "
+    - "         "
+  Slot:
+    A:
+      Item: Apple
+      Click:
+        - tell "§7Click §fMr.Black's Apple §7."
+  Build:
+    - tell "§7Open §fExample Menu §7."
+  Close:
+    - tell "§7Close §fExample Menu §7."

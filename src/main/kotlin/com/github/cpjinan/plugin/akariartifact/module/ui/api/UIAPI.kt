@@ -109,7 +109,7 @@ object UIAPI {
      * @author CPJiNan
      */
     fun reloadUI() {
-        uiFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/ui/custom"), true)
+        uiFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/ui"), true)
             .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
         uiSections = uiFiles.getConfigSections()
         uiNames = uiSections.map { it.key }.toCollection(ArrayList())
