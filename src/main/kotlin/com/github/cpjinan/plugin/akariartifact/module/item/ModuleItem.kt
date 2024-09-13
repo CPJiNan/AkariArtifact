@@ -26,5 +26,8 @@ object ModuleItem {
         plugin.saveDefaultResource(
             "module/item/Example.yml"
         )
+        plugin.saveDefaultResource(
+            "module/item/GemItems.yml"
+        )
     }
 }

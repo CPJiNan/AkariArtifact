@@ -8,3 +8,7 @@
 Enable: true
 # 该模块使用的 UI 界面
 UI: "GemUI"
+# 镶嵌槽位设置
+Slot:
+  Prefix: "§7「"
+  Suffix: "§7」"

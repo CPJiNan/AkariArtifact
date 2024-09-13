@@ -1,0 +1,8 @@
+ExampleGem:
+  Type: BLUE_DYE
+  Data: 10
+  Display: §a一阶生命宝石
+  Lore:
+    - §7镶嵌功能示例物品
+    - §7可镶嵌在含有 Lore §f「生命宝石槽位」§7的物品上(颜色需与配置一致)
+    - §7镶嵌后可使物品获得带有 §f10§7点 §a生命 §7加成的 Lore

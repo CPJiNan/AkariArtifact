@@ -1,0 +1,22 @@
+DefaultGem:
+  Item: ExampleGem
+  Slot: "§f生命宝石槽位"
+  Display: "§a生命宝石·一阶"
+  Attribute:
+    - "§6⏏ §f生命力: §a+10"
+  Socket:
+    Chance: 0.90
+    Condition: [ ]
+    Cost:
+      Money: 0.00
+      Point: 0
+      Item: [ ]
+    Return-Item: false
+  Unsocket:
+    Chance: 0.30
+    Condition: [ ]
+    Cost:
+      Money: 0.00
+      Point: 0
+      Item: [ ]
+    Return-Item: true

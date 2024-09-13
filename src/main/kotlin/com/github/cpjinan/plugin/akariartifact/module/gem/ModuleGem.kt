@@ -3,7 +3,6 @@ package com.github.cpjinan.plugin.akariartifact.module.gem
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.saveDefaultResource
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
-import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -17,13 +16,18 @@ object ModuleGem {
     var config: YamlConfiguration =
         YamlConfiguration.loadConfiguration(configFile)
 
-    fun isEnabledModule() = ModuleItem.config.getBoolean("Enable")
-    fun getUIName() = ModuleItem.config.getString("UI")
+    fun isEnabledModule() = config.getBoolean("Enable")
+    fun getUI() = config.getString("UI")
+    fun getSlotPrefix() = config.getString("Slot.Prefix")
+    fun getSlotSuffix() = config.getString("Slot.Suffix")
 
     @Awake(LifeCycle.LOAD)
     fun onLoad() {
         plugin.saveDefaultResource(
             "module/gem.yml"
+        )
+        plugin.saveDefaultResource(
+            "module/gem/Example.yml"
         )
     }
 }
