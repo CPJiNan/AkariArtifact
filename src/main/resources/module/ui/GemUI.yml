@@ -1,17 +1,31 @@
 GemSocketUI:
   Title: "示例菜单"
   Map:
-    - "         "
-    - "         "
-    - "    A    "
-    - "         "
-    - "         "
+    - "####I####"
+    - "#@@@@@@@#"
+    - "#@@@@@@@#"
+    - "#@@@@@@@#"
+    - "#@@@@@@@#"
+    - "##P###N##"
   Slot:
-    A:
-      Item: Apple
-      Click:
-        - tell "§7Click §fMr.Black's Apple §7."
-  Build:
-    - tell "§7Open §fExample Menu §7."
-  Close:
-    - tell "§7Close §fExample Menu §7."
+    I:
+      Bind: Item
+    '@':
+      Bind: Element
+      Lore:
+        - ""
+        - "&8&m---------------------------------------------"
+        - ""
+        - "&6◆ &f所选宝石: &a%Gem%"
+        - "&6◆ &f镶嵌槽位: &a%Slot%"
+        - "&6◆ &f成功率: &a+%Chance%%"
+        - "&6◆ &f满足镶嵌条件: &a%Ready%"
+        - ""
+        - "&f>>>点击镶嵌<<<"
+      Replace:
+        - "true<=>&a✓"
+        - "false<=>&c✗"
+    '#':
+      Item: "Gem-UI-Socket-#"
+  Build: [ ]
+  Close: [ ]

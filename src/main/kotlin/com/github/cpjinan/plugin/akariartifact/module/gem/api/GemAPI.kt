@@ -77,7 +77,7 @@ object GemAPI {
         val socketIsReturnItem = gemSection.getBoolean("Socket.Return.Item", true)
         val socketIsReturnGem = gemSection.getBoolean("Socket.Return.Gem", true)
 
-        if (!player.inventory.hasItem { it.amount == 1 }) {
+        if (item.amount != 1) {
             player.sendLang("Gem-Too-Many-Item")
             return false
         }
@@ -185,6 +185,90 @@ object GemAPI {
         }
 
         player.sendLang("Gem-Socket-Success")
+
+        return true
+    }
+
+    /**
+     * 玩家是否满足镶嵌条件
+     * @author CPJiNan
+     */
+    fun isPlayerMetSocketCondition(player: Player, item: ItemStack, gem: String): Boolean {
+        val gemSection = gemSections[gem] ?: return false
+
+        val gemItem = gemSection.getString("Item") ?: return false
+        val gemSlot = gemSection.getString("Slot") ?: return false
+        val gemDisplay = gemSection.getString("Display") ?: return false
+        gemSection.getStringList("Attribute")
+
+        gemSection.getDouble("Socket.Chance", 0.0)
+        val socketCondition = gemSection.getStringList("Socket.Condition")
+        val socketMoneyCost = gemSection.getDouble("Socket.Cost.Money", 0.0)
+        val socketPointCost = gemSection.getInt("Socket.Cost.Point", 0)
+        val socketItemCost = gemSection.getStringList("Socket.Cost.Item")
+        gemSection.getBoolean("Socket.Return.Item", true)
+        gemSection.getBoolean("Socket.Return.Gem", true)
+
+        if (item.amount != 1) {
+            return false
+        }
+
+        val gemItemStack = ItemAPI.getItem(gemItem) ?: return false
+        if (!player.inventory.hasItem { buildItem(it) { amount = 1 } == buildItem(gemItemStack) { amount = 1 } }) {
+            return false
+        }
+
+        if (!socketCondition.all { it.evalKether(player).toString().toBoolean() }) {
+            return false
+        }
+
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("Vault")) {
+            if (player.getBalance() < socketMoneyCost) {
+                return false
+            }
+        }
+
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints")) {
+            if (PlayerPoints.getInstance().api.look(player.uniqueId) < socketPointCost) {
+                return false
+            }
+        }
+
+        val hasEnoughItems = socketItemCost.all { itemCost ->
+            val (itemName, costAmount) = itemCost.split("<=>", limit = 2)
+            val itemStack = ItemAPI.getItem(itemName) ?: return@all false
+            player.inventory.hasItem(costAmount.toInt()) {
+                buildItem(it) {
+                    amount = 1
+                } == buildItem(itemStack) { amount = 1 }
+            }
+        }
+
+        if (!hasEnoughItems) {
+            return false
+        }
+
+        val meta = item.itemMeta ?: return false
+        val lore = meta.lore ?: mutableListOf()
+
+        var matchLine: Int? = null
+
+        val slotPrefix = ModuleGem.getSlotPrefix()
+        val slotSuffix = ModuleGem.getSlotSuffix()
+        val searchString = "$slotPrefix$gemSlot$slotSuffix"
+        val replaceString = "$slotPrefix$gemDisplay$slotSuffix"
+
+        for (i in lore.indices) {
+            if (lore[i].contains(searchString)) {
+                lore[i] = lore[i].replace(searchString, replaceString)
+                matchLine = i
+                break
+            }
+        }
+
+        if (matchLine == null) {
+            return false
+        }
 
         return true
     }
