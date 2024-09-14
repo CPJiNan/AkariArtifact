@@ -1,6 +1,7 @@
 package com.github.cpjinan.plugin.akariartifact.module.gem.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
+import com.github.cpjinan.plugin.akariartifact.module.gem.ModuleGem
 import com.github.cpjinan.plugin.akariartifact.module.gem.api.GemAPI
 import com.github.cpjinan.plugin.akariartifact.module.gem.internal.ui.GemSocketUI.openSocketUI
 import org.bukkit.entity.Player
@@ -40,10 +41,13 @@ object GemCommand {
                 suggest { GemAPI.getGemNames() }
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     val item = sender.cast<Player>().inventory.itemInMainHand
+
                     val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
+                    val slotPrefix = ModuleGem.getSlotPrefix()
+                    val slotSuffix = ModuleGem.getSlotSuffix()
 
                     item.modifyLore {
-                        add(slot)
+                        add("$slotPrefix$slot$slotSuffix")
                     }
 
                     sender.sendLang("Gem-Slot-Add", slot)
@@ -60,10 +64,13 @@ object GemCommand {
                     }
 
                     val item = sender.cast<Player>().inventory.itemInMainHand
+
                     val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
+                    val slotPrefix = ModuleGem.getSlotPrefix()
+                    val slotSuffix = ModuleGem.getSlotSuffix()
 
                     item.modifyLore {
-                        add(slot)
+                        add("$slotPrefix$slot$slotSuffix")
                     }
 
                     if (!silent) sender.sendLang("Gem-Slot-Add", slot)
