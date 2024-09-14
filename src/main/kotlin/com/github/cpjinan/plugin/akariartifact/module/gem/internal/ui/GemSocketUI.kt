@@ -55,7 +55,7 @@ object GemSocketUI {
                         onGenerate { player, element, _, _ ->
                             buildItem(element.second) {
                                 val gemSection = GemAPI.getGemSections()[element.first] ?: return@buildItem
-                                var infoLore = uiConfig.getStringList("$ui.Slot.$slot.Lore").colored()
+                                var infoLore = uiConfig.getStringList("$ui.Slot.$slot.Info").colored()
 
                                 val slotPrefix = ModuleGem.getSlotPrefix()
                                 val slotSuffix = ModuleGem.getSlotSuffix()

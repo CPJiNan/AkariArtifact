@@ -12,7 +12,7 @@ GemSocketUI:
       Default: Item
     '@':
       Default: Element
-      Lore:
+      Info:
         - ""
         - "&8&m---------------------------------------------"
         - ""
