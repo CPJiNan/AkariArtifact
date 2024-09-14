@@ -1,15 +1,18 @@
 package com.github.cpjinan.plugin.akariartifact.module.gem.internal.ui
 
 import com.github.cpjinan.plugin.akariartifact.core.common.script.kether.Kether.evalKether
+import com.github.cpjinan.plugin.akariartifact.module.gem.ModuleGem
+import com.github.cpjinan.plugin.akariartifact.module.gem.api.GemAPI
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
-import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Chest
 import taboolib.platform.util.sendLang
 
 object GemSocketUI {
-    fun Player.openSocketUI(config: YamlConfiguration, ui: String) {
+    fun Player.openSocketUI() {
+        val config = GemAPI.getGemConfig()
+        val ui = ModuleGem.getUI()
         player.openMenu<Chest>(config.getString("$ui.Title")) {
             map(*(config.getStringList("$ui.Map").toTypedArray()))
             handLocked(true)
