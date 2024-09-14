@@ -1,5 +1,6 @@
 package com.github.cpjinan.plugin.akariartifact.module.gem.internal.command
 
+import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
 import com.github.cpjinan.plugin.akariartifact.module.gem.api.GemAPI
 import com.github.cpjinan.plugin.akariartifact.module.gem.internal.ui.GemSocketUI.openSocketUI
 import org.bukkit.entity.Player
@@ -7,6 +8,8 @@ import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.subCommand
 import taboolib.common.platform.command.suggest
+import taboolib.module.lang.sendLang
+import taboolib.platform.util.modifyLore
 
 object GemCommand {
     val gem = subCommand {
@@ -29,6 +32,35 @@ object GemCommand {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().inventory.itemInMainHand
                 GemAPI.socketGem(sender.cast(), item, context["gem"])
+            }
+        }
+
+        literal("slot").dynamic("slot") {
+            suggest { GemAPI.getGemSlotNames().map { it.value } }
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                val item = sender.cast<Player>().inventory.itemInMainHand
+                item.modifyLore {
+                    add(context["slot"])
+                }
+                sender.sendLang("Gem-Slot-Add", context["slot"])
+            }
+        }.dynamic("options", optional = true) {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                val args = CommandUtil.parseOptions(content.split(" "))
+                var silent = false
+
+                for ((k, _) in args) {
+                    when (k.lowercase()) {
+                        "silent" -> silent = true
+                    }
+                }
+
+                val item = sender.cast<Player>().inventory.itemInMainHand
+                item.modifyLore {
+                    add(context["slot"])
+                }
+
+                if (!silent) sender.sendLang("Gem-Slot-Add", context["slot"])
             }
         }
     }

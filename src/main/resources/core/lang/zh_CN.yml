@@ -54,6 +54,7 @@ UI-Open: "&7已为玩家 &f{0} &7打开 UI &f{1} &7."
 UI-Close: "&7已为玩家 &f{0} &7关闭 UI &7."
 
 # 宝石镶嵌 相关
+Gem-Slot-Add: "&7已为手持物品添加槽位 &f{0} &7."
 Gem-Socket-Success: "&7镶嵌成功."
 Gem-Socket-Fail: "&c镶嵌失败."
 Gem-Socket-Condition-Not-Met: "&c未满足镶嵌条件."

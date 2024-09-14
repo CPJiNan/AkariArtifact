@@ -155,7 +155,8 @@ object ItemAPI {
      * @return 物品名称列表
      * @author CPJiNan
      */
-    fun getItemNames(): ArrayList<String> = itemNames
+    fun getItemNames(): ArrayList<String> =
+        itemNames.filter { itemSections[it]?.getBoolean("Hide") != true }.toCollection(ArrayList())
 
     /**
      * 获取所有物品配置合并后的新配置
