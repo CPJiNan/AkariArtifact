@@ -12,7 +12,7 @@ object GemCommand {
     val gem = subCommand {
         literal("open") {
             literal("socket") {
-                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                     val item = sender.cast<Player>().inventory.itemInMainHand
                     sender.cast<Player>().openSocketUI(item)
                 }
