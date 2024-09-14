@@ -32,7 +32,7 @@ object GemAPI {
      * 获取物品 Lore 中的槽位名称
      * @author CPJiNan
      */
-    fun getSlotNames(
+    fun getItemSlotNames(
         lore: List<String>
     ): List<String> {
         val regex = Regex("\\Q${ModuleGem.getSlotPrefix()}\\E(.*)\\Q${ModuleGem.getSlotSuffix()}\\E.*")
@@ -45,7 +45,7 @@ object GemAPI {
      * 获取物品 Lore 中的槽位名称
      * @author CPJiNan
      */
-    fun getSlotNames(
+    fun getItemSlotNames(
         item: ItemStack
     ): List<String> {
         val lore = item.itemMeta.lore
