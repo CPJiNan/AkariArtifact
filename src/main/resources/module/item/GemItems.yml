@@ -7,7 +7,7 @@ ExampleGem:
     - §7可镶嵌在含有 Lore §f「生命宝石槽位」§7的物品上 (颜色需与配置一致)
     - §7镶嵌后可使物品获得带有 §f10§7点 §a生命 §7加成的 Lore
 Gem-UI-Socket-#:
-  Hidden: true
+  Hide: true
   Type: BLACK_STAINED_GLASS_PANE
   Data: 7
   Display: " "
