@@ -23,8 +23,8 @@ object GemAPI {
     private var gemSections: HashMap<String, ConfigurationSection> = hashMapOf()
     private var gemNames: ArrayList<String> = arrayListOf()
     private var gemConfig: YamlConfiguration = YamlConfiguration()
-    private var gemSlotNames: ArrayList<String> = arrayListOf()
-    private var gemDisplayNames: ArrayList<String> = arrayListOf()
+    private var gemSlotNames: HashMap<String, String> = hashMapOf()
+    private var gemDisplayNames: HashMap<String, String> = hashMapOf()
 
     init {
         reloadGem()
@@ -187,8 +187,8 @@ object GemAPI {
         gemSections = gemFiles.getConfigSections()
         gemNames = gemSections.map { it.key }.toCollection(ArrayList())
         gemConfig = ConfigUtil.getMergedConfig(gemSections)
-        gemSlotNames = gemSections.map { it.value.getString("Slot") }.distinct().toCollection(ArrayList())
-        gemDisplayNames = gemSections.map { it.value.getString("Display") }.distinct().toCollection(ArrayList())
+        gemSlotNames = gemSections.map { it.key to (it.value.getString("Slot")) }.toMap(HashMap())
+        gemDisplayNames = gemSections.map { it.key to (it.value.getString("Display")) }.toMap(HashMap())
     }
 
     /**
@@ -214,10 +214,17 @@ object GemAPI {
 
     /**
      * 获取所有镶嵌槽位的名称
-     * @return 宝石配置
+     * @return 镶嵌槽位名称列表
      * @author CPJiNan
      */
-    fun getGemSlotNames(): ArrayList<String> = gemSlotNames
+    fun getGemSlotNames(): HashMap<String, String> = gemSlotNames
+
+    /**
+     * 获取所有宝石在槽位中的显示名称
+     * @return 宝石在槽位中的显示名称列表
+     * @author CPJiNan
+     */
+    fun getGemDisplayNames(): HashMap<String, String> = gemSlotNames
 
     /**
      * 获取所有宝石配置合并后的新配置
