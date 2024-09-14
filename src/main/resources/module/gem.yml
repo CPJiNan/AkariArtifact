@@ -7,7 +7,8 @@
 # 启用镶嵌模块
 Enable: true
 # 该模块使用的 UI 界面
-UI: "GemUI"
+UI:
+  Socket: "GemSocketUI"
 # 镶嵌槽位设置
 Slot:
   Prefix: "§7「"

@@ -139,6 +139,16 @@ object GemAPI {
         if (!hasEnoughItems) {
             player.sendLang("Gem-No-Enough-Item")
             return false
+        } else {
+            socketItemCost.forEach { itemCost ->
+                val (itemName, costAmount) = itemCost.split("<=>", limit = 2)
+                val itemStack = ItemAPI.getItem(itemName) ?: return@forEach
+                player.inventory.takeItem(costAmount.toInt()) {
+                    buildItem(it) {
+                        amount = 1
+                    } == buildItem(itemStack) { amount = 1 }
+                }
+            }
         }
 
         val meta = item.itemMeta ?: return false

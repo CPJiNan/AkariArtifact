@@ -17,7 +17,7 @@ object ModuleGem {
         YamlConfiguration.loadConfiguration(configFile)
 
     fun isEnabledModule() = config.getBoolean("Enable")
-    fun getUI() = config.getString("UI")
+    fun getUI() = config.getString("UI.Socket")
     fun getSlotPrefix() = config.getString("Slot.Prefix")
     fun getSlotSuffix() = config.getString("Slot.Suffix")
 
