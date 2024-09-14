@@ -177,8 +177,11 @@ object GemAPI {
         }
 
         player.inventory.takeItem { buildItem(it) { amount = 1 } == buildItem(gemItemStack) { amount = 1 } }
-        player.withdrawBalance(socketMoneyCost)
-        PlayerPoints.getInstance().api.take(player.uniqueId, socketPointCost)
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("Vault")) player.withdrawBalance(socketMoneyCost)
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints")) PlayerPoints.getInstance().api.take(
+            player.uniqueId,
+            socketPointCost
+        )
         socketItemCost.forEach { itemCost ->
             val (itemName, costAmount) = itemCost.split("<=>", limit = 2)
             val itemStack = ItemAPI.getItem(itemName) ?: return@forEach

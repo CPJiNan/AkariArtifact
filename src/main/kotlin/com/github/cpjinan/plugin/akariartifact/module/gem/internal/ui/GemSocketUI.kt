@@ -78,7 +78,7 @@ object GemSocketUI {
                         }
                         onClick { _, element ->
                             this@openSocketUI.performCommand("AkariArtifact gem socket ${element.first}")
-                            this@openSocketUI.performCommand("AkariArtifact ui close ${this@openSocketUI.name}")
+                            this@openSocketUI.performCommand("AkariArtifact ui close ${this@openSocketUI.name} --silent")
                         }
                     }
 
