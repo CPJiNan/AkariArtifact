@@ -4,6 +4,8 @@ import com.github.cpjinan.plugin.akariartifact.core.common.script.kether.Kether.
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.getConfigSections
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
+import com.github.cpjinan.plugin.akariartifact.module.gem.ModuleGem
+import com.github.cpjinan.plugin.akariartifact.module.gem.internal.ui.GemSocketUI.openSocketUI
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
@@ -117,6 +119,13 @@ object UIAPI {
     }
 
     private fun openUIForPlayer(player: Player, config: YamlConfiguration, ui: String) {
+        when (ui) {
+            ModuleGem.getUI() -> {
+                val item = player.inventory.itemInMainHand
+                player.openSocketUI(item)
+                return
+            }
+        }
         player.openMenu<Chest>(config.getString("$ui.Title")) {
             map(*(config.getStringList("$ui.Map").toTypedArray()))
             handLocked(true)

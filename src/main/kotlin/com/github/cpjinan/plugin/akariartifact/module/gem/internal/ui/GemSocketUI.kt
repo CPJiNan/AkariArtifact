@@ -19,90 +19,69 @@ object GemSocketUI {
     fun Player.openSocketUI(socketItem: ItemStack) {
         val uiConfig = UIAPI.getUIConfig()
         val ui = ModuleGem.getUI()
+
         player.openMenu<PageableChest<Pair<String, ItemStack>>>(uiConfig.getString("$ui.Title")) {
             map(*(uiConfig.getStringList("$ui.Map").toTypedArray()))
             handLocked(true)
 
-            onBuild { _, _ ->
-                uiConfig.getStringList("$ui.Build").evalKether(player)
-            }
+            onBuild { _, _ -> uiConfig.getStringList("$ui.Build").evalKether(player) }
+            onClose { uiConfig.getStringList("$ui.Close").evalKether(player) }
 
-            onClose {
-                uiConfig.getStringList("$ui.Close").evalKether(player)
-            }
+            // 获取宝石列表
+            val gemID = GemAPI.getItemSlotNames(socketItem).flatMap { slotName ->
+                GemAPI.getGemSlotNames().entries
+                    .filter { it.value == slotName }
+                    .map { it.key }
+            }.distinct()
 
-            val gemID = mutableListOf<String>()
-            GemAPI.getItemSlotNames(socketItem).forEach { slotName ->
-                val matchingKeys = mutableListOf<String>()
-                for ((key, mapValue) in GemAPI.getGemSlotNames()) {
-                    if (mapValue == slotName) {
-                        matchingKeys.add(key)
-                    }
-                }
-                gemID.addAll(matchingKeys)
-            }
-            gemID.distinct()
-
+            // 获取宝石数据
             elements {
                 gemID.mapNotNull { id ->
                     val gemSection = GemAPI.getGemSections()[id] ?: return@mapNotNull null
                     val itemName = gemSection.getString("Item") ?: return@mapNotNull null
-                    val itemStack = ItemAPI.getItem(itemName) ?: return@mapNotNull null
-
-                    id to itemStack
+                    ItemAPI.getItem(itemName)?.let { itemStack -> id to itemStack }
                 }
             }
 
+            // 设置物品槽位
             val slots = uiConfig.getConfigurationSection("$ui.Slot")
             slots.getKeys(false).forEach { slot ->
                 when (uiConfig.getString("$ui.Slot.$slot.Default")) {
-                    "Item" -> {
-                        set(slot[0], socketItem)
-                    }
+                    "Item" -> set(slot[0], socketItem)
 
                     "Element" -> {
                         onGenerate { player, element, _, _ ->
                             buildItem(element.second) {
+                                val gemSection = GemAPI.getGemSections()[element.first] ?: return@buildItem
                                 val infoLore = uiConfig.getStringList("$ui.Slot.$slot.Lore").colored()
 
                                 infoLore.replacePlaceholder(this@openSocketUI)
-
                                 infoLore.replace(
-                                    Pair("%Gem%", GemAPI.getGemSections()[element.first]!!.getString("Display")),
-                                    Pair("%Slot%", GemAPI.getGemSections()[element.first]!!.getString("Slot")),
-                                    Pair(
-                                        "%Chance%",
-                                        GemAPI.getGemSections()[element.first]!!.getDouble("Socket.Chance") * 100
-                                    ),
-                                    Pair(
-                                        "%Ready%",
-                                        GemAPI.isPlayerMetSocketCondition(player, socketItem, element.first)
-                                    )
+                                    "%Gem%" to gemSection.getString("Display"),
+                                    "%Slot%" to gemSection.getString("Slot"),
+                                    "%Chance%" to (gemSection.getDouble("Socket.Chance") * 100).toString(),
+                                    "%Ready%" to GemAPI.isPlayerMetSocketCondition(player, socketItem, element.first)
                                 )
 
                                 uiConfig.getStringList("$ui.Slot.$slot.Replace").colored().forEach { replaceContent ->
                                     val (oldChar, newChar) = replaceContent.split("<=>", limit = 2)
-                                    infoLore.replace(Pair(oldChar, newChar))
+                                    infoLore.replace(oldChar to newChar)
                                 }
                             }
                         }
                     }
 
                     else -> {
-                        val item = ItemAPI.getItem(uiConfig.getString("$ui.Slot.$slot.Item"))
-                        if (item == null) {
-                            player.sendLang("Item-Not-Found")
-                            return
-                        }
-
-                        set(slot[0], item) {
-                            uiConfig.getStringList("$ui.Slot.$slot.Click").evalKether(player)
-                        }
+                        val itemName = uiConfig.getString("$ui.Slot.$slot.Item")
+                        ItemAPI.getItem(itemName)?.let { item ->
+                            set(slot[0], item) {
+                                uiConfig.getStringList("$ui.Slot.$slot.Click").evalKether(player)
+                            }
+                        } ?: player.sendLang("Item-Not-Found")
                     }
-
                 }
             }
-
         }
     }
+
 }
