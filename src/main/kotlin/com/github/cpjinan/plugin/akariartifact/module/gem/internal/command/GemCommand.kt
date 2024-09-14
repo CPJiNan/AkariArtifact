@@ -14,7 +14,7 @@ object GemCommand {
                 GemAPI.socketGem(sender.cast(), item, context["gem"])
             }
         }.dynamic("options", optional = true) {
-            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().inventory.itemInMainHand
                 GemAPI.socketGem(sender.cast(), item, context["gem"])
             }
