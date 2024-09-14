@@ -1,7 +1,6 @@
 package com.github.cpjinan.plugin.akariartifact.module.item.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
-import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.CommandBody
@@ -21,7 +20,6 @@ object LoreCommand {
 
     @CommandBody
     val lore = subCommand {
-        if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
         literal("check") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->

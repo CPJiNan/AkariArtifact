@@ -1,7 +1,6 @@
 package com.github.cpjinan.plugin.akariartifact.module.item.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
-import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI.reloadItem
 import org.bukkit.entity.Player
@@ -15,7 +14,6 @@ import taboolib.platform.util.giveItem
 
 object ItemCommand {
     val item = subCommand {
-        if (!ModuleItem.isEnabledModule()) return@subCommand
         createHelper()
 
         literal("get").dynamic("id") {

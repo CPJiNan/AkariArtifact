@@ -23,6 +23,7 @@ object GemAPI {
     private var gemSections: HashMap<String, ConfigurationSection> = hashMapOf()
     private var gemNames: ArrayList<String> = arrayListOf()
     private var gemConfig: YamlConfiguration = YamlConfiguration()
+    private var gemSlotNames: ArrayList<String> = arrayListOf()
 
     init {
         reloadGem()
@@ -185,6 +186,7 @@ object GemAPI {
         gemSections = gemFiles.getConfigSections()
         gemNames = gemSections.map { it.key }.toCollection(ArrayList())
         gemConfig = ConfigUtil.getMergedConfig(gemSections)
+        gemSlotNames = gemSections.map { it.value.getString("Slot") }.toCollection(ArrayList())
     }
 
     /**
@@ -207,6 +209,13 @@ object GemAPI {
      * @author CPJiNan
      */
     fun getGemNames(): ArrayList<String> = gemNames
+
+    /**
+     * 获取所有镶嵌槽位的名称
+     * @return 宝石配置
+     * @author CPJiNan
+     */
+    fun getGemSlotNames(): ArrayList<String> = gemSlotNames
 
     /**
      * 获取所有宝石配置合并后的新配置

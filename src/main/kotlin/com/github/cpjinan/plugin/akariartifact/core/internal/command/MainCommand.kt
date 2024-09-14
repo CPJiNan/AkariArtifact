@@ -1,6 +1,7 @@
 package com.github.cpjinan.plugin.akariartifact.core.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.common.PluginConfig
+import com.github.cpjinan.plugin.akariartifact.module.gem.internal.command.GemCommand
 import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.ItemCommand
@@ -35,6 +36,9 @@ object MainCommand {
 
     @CommandBody(permission = "akariartifact.ui")
     val ui = UICommand.ui
+
+    @CommandBody(permission = "akariartifact.gem")
+    val gem = GemCommand.gem
 
     @CommandBody(permission = "akariartifact.reload")
     val reload = subCommand {
