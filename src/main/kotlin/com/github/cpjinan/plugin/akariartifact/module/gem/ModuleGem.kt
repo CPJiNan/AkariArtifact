@@ -27,9 +27,9 @@ object ModuleGem {
     }
 
     fun isEnabledModule() = config.getBoolean("Enable")
-    fun getUI() = config.getString("UI.Socket")
-    fun getSlotPrefix() = config.getString("Slot.Prefix")
-    fun getSlotSuffix() = config.getString("Slot.Suffix")
+    fun getUI() = config.getString("UI.Socket") ?: "GemSocketUI"
+    fun getSlotPrefix() = config.getString("Slot.Prefix") ?: "§7「"
+    fun getSlotSuffix() = config.getString("Slot.Suffix") ?: "§7」"
 
     @Awake(LifeCycle.LOAD)
     fun onLoad() {
