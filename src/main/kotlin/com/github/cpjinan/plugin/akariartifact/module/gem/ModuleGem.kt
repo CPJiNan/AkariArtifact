@@ -21,7 +21,7 @@ object ModuleGem {
     fun getSlotPrefix() = config.getString("Slot.Prefix")
     fun getSlotSuffix() = config.getString("Slot.Suffix")
 
-    @Awake(LifeCycle.CONST)
+    @Awake(LifeCycle.LOAD)
     fun onLoad() {
         plugin.saveDefaultResource(
             "module/gem.yml"

@@ -19,7 +19,7 @@ object ModuleUI {
 
     fun isEnabledModule() = ModuleItem.config.getBoolean("Enable")
 
-    @Awake(LifeCycle.CONST)
+    @Awake(LifeCycle.LOAD)
     fun onLoad() {
         plugin.saveDefaultResource(
             "module/ui.yml"
