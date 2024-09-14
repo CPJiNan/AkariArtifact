@@ -29,6 +29,33 @@ object GemAPI {
     }
 
     /**
+     * 获取物品 Lore 中的槽位名称
+     * @author CPJiNan
+     */
+    fun getSlotNames(
+        lore: List<String>
+    ): List<String> {
+        val regex = Regex("\\Q${ModuleGem.getSlotPrefix()}\\E(.*)\\Q${ModuleGem.getSlotSuffix()}\\E.*")
+        return lore.mapNotNull { line ->
+            regex.find(line)?.groupValues?.get(1)
+        }
+    }
+
+    /**
+     * 获取物品 Lore 中的槽位名称
+     * @author CPJiNan
+     */
+    fun getSlotNames(
+        item: ItemStack
+    ): List<String> {
+        val lore = item.itemMeta.lore
+        val regex = Regex("\\Q${ModuleGem.getSlotPrefix()}\\E(.*)\\Q${ModuleGem.getSlotSuffix()}\\E.*")
+        return lore.mapNotNull { line ->
+            regex.find(line)?.groupValues?.get(1)
+        }
+    }
+
+    /**
      * 为指定物品镶嵌宝石
      * @author CPJiNan
      */

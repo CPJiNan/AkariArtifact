@@ -2,11 +2,8 @@ package com.github.cpjinan.plugin.akariartifact.core.internal
 
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.LoggerUtil
-import com.github.cpjinan.plugin.akariartifact.module.gem.api.GemAPI
-import org.bukkit.entity.Player
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
-import taboolib.common.platform.command.simpleCommand
 import taboolib.common.platform.function.console
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
@@ -29,10 +26,6 @@ object PluginLoader {
             ""
         )
         console().sendLang("Plugin-Enabled")
-        simpleCommand("testGem") { sender, args ->
-            val item = sender.cast<Player>().inventory.itemInMainHand
-            GemAPI.socketGem(sender.cast(), item, "DefaultGem")
-        }
     }
 
     @Awake(LifeCycle.DISABLE)
