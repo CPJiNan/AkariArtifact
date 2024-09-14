@@ -9,9 +9,9 @@ GemSocketUI:
     - "##P###N##"
   Slot:
     I:
-      Bind: Item
+      Default: Item
     '@':
-      Bind: Element
+      Default: Element
       Lore:
         - ""
         - "&8&m---------------------------------------------"
