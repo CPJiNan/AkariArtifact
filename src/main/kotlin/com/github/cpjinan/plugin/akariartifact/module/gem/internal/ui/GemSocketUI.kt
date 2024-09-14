@@ -83,7 +83,7 @@ object GemSocketUI {
                     }
 
                     "Previous-Page" -> {
-                        setPreviousPage(getFirstSlot(slot[0])) { page, hasPreviousPage ->
+                        setPreviousPage(getFirstSlot(slot[0])) { _, hasPreviousPage ->
                             val itemSection = uiConfig.getConfigurationSection("$ui.Slot.$slot.Item")
                             if (hasPreviousPage) {
                                 ItemAPI.getItem(itemSection.getString("Available")) ?: ItemStack(Material.AIR)
@@ -94,7 +94,7 @@ object GemSocketUI {
                     }
 
                     "Next-Page" -> {
-                        setNextPage(getFirstSlot(slot[0])) { page, hasNextPage ->
+                        setNextPage(getFirstSlot(slot[0])) { _, hasNextPage ->
                             val itemSection = uiConfig.getConfigurationSection("$ui.Slot.$slot.Item")
                             if (hasNextPage) {
                                 ItemAPI.getItem(itemSection.getString("Available")) ?: ItemStack(Material.AIR)
