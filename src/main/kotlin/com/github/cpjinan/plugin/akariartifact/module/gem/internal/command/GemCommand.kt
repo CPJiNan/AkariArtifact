@@ -35,14 +35,18 @@ object GemCommand {
             }
         }
 
-        literal("slot").dynamic("slot") {
-            suggest { GemAPI.getGemSlotNames().map { it.value } }
+        literal("slot")
+        literal("add").dynamic("gem") {
+            suggest { GemAPI.getGemNames() }
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().inventory.itemInMainHand
+                val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
+
                 item.modifyLore {
-                    add(context["slot"])
+                    add(slot)
                 }
-                sender.sendLang("Gem-Slot-Add", context["slot"])
+
+                sender.sendLang("Gem-Slot-Add", slot)
             }
         }.dynamic("options", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
@@ -56,11 +60,13 @@ object GemCommand {
                 }
 
                 val item = sender.cast<Player>().inventory.itemInMainHand
+                val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
+
                 item.modifyLore {
-                    add(context["slot"])
+                    add(slot)
                 }
 
-                if (!silent) sender.sendLang("Gem-Slot-Add", context["slot"])
+                if (!silent) sender.sendLang("Gem-Slot-Add", slot)
             }
         }
     }
