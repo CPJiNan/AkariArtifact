@@ -12,9 +12,16 @@ object ModuleProjectile {
     const val MODULE_NAME = "Projectile"
     const val MODULE_VERSION = 1
 
-    var configFile = File(FileUtil.dataFolder, "module/projectile.yml")
-    var config: YamlConfiguration =
-        YamlConfiguration.loadConfiguration(configFile)
+    var configFile: File = File(FileUtil.dataFolder, "module/projectile.yml")
+    var config: YamlConfiguration = YamlConfiguration()
+
+    init {
+        reloadConfig()
+    }
+
+    fun reloadConfig() {
+        config = YamlConfiguration.loadConfiguration(configFile)
+    }
 
     fun isEnabledModule() = config.getBoolean("Enable")
     fun isEnabledAutoRemoveArrow() = config.getBoolean("Arrow.Auto-Remove")
@@ -25,5 +32,6 @@ object ModuleProjectile {
         plugin.saveDefaultResource(
             "module/projectile.yml"
         )
+        reloadConfig()
     }
 }

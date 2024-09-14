@@ -9,16 +9,16 @@ import taboolib.common.platform.Awake
 import java.io.File
 
 object PluginConfig {
-    @Awake(LifeCycle.LOAD)
-    fun onLoad() {
-        plugin.saveDefaultResource(
-            "core/settings.yml"
-        )
+    var settingsFile = File(FileUtil.dataFolder, "core/settings.yml")
+    var settings: YamlConfiguration = YamlConfiguration()
+
+    init {
+        reloadConfig()
     }
 
-    var settingsFile = File(FileUtil.dataFolder, "core/settings.yml")
-    var settings: YamlConfiguration =
-        YamlConfiguration.loadConfiguration(settingsFile)
+    fun reloadConfig() {
+        settings = YamlConfiguration.loadConfiguration(settingsFile)
+    }
 
     // Config Version
     const val VERSION = 1
@@ -29,4 +29,12 @@ object PluginConfig {
     fun isEnabledSendMetrics() = settings.getBoolean("Options.Send-Metrics")
     fun isEnabledOPNotify() = settings.getBoolean("Options.OP-Notify")
     fun isEnabledDebug() = settings.getBoolean("Options.Debug")
+
+    @Awake(LifeCycle.LOAD)
+    fun onLoad() {
+        plugin.saveDefaultResource(
+            "core/settings.yml"
+        )
+        reloadConfig()
+    }
 }

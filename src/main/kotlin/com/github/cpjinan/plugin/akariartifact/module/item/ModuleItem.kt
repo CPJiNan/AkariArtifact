@@ -3,6 +3,7 @@ package com.github.cpjinan.plugin.akariartifact.module.item
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.saveDefaultResource
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
+import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -13,8 +14,16 @@ object ModuleItem {
     const val MODULE_VERSION = 2
 
     var configFile = File(FileUtil.dataFolder, "module/item.yml")
-    var config: YamlConfiguration =
+    var config: YamlConfiguration = YamlConfiguration()
+
+    init {
+        reloadConfig()
+    }
+
+    fun reloadConfig() {
         YamlConfiguration.loadConfiguration(configFile)
+        ItemAPI.reloadItem()
+    }
 
     fun isEnabledModule() = config.getBoolean("Enable")
 
@@ -29,5 +38,6 @@ object ModuleItem {
         plugin.saveDefaultResource(
             "module/item/GemItems.yml"
         )
+        reloadConfig()
     }
 }

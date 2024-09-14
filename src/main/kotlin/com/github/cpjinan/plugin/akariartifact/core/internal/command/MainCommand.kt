@@ -1,16 +1,15 @@
 package com.github.cpjinan.plugin.akariartifact.core.internal.command
 
 import com.github.cpjinan.plugin.akariartifact.core.common.PluginConfig
-import com.github.cpjinan.plugin.akariartifact.module.gem.api.GemAPI
+import com.github.cpjinan.plugin.akariartifact.module.gem.ModuleGem
 import com.github.cpjinan.plugin.akariartifact.module.gem.internal.command.GemCommand
-import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
+import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.ItemCommand
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.LoreCommand
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.NBTCommand
 import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
-import com.github.cpjinan.plugin.akariartifact.module.ui.api.UIAPI
+import com.github.cpjinan.plugin.akariartifact.module.ui.ModuleUI
 import com.github.cpjinan.plugin.akariartifact.module.ui.internal.command.UICommand
-import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.*
 import taboolib.expansion.createHelper
@@ -42,11 +41,11 @@ object MainCommand {
     @CommandBody(permission = "akariartifact.reload")
     val reload = subCommand {
         execute { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
-            PluginConfig.settings = YamlConfiguration.loadConfiguration(PluginConfig.settingsFile)
-            ModuleProjectile.config = YamlConfiguration.loadConfiguration(ModuleProjectile.configFile)
-            ItemAPI.reloadItem()
-            UIAPI.reloadUI()
-            GemAPI.reloadGem()
+            PluginConfig.reloadConfig()
+            ModuleItem.reloadConfig()
+            ModuleUI.reloadConfig()
+            ModuleProjectile.reloadConfig()
+            ModuleGem.reloadConfig()
             sender.sendLang("Plugin-Reloaded")
         }
     }
