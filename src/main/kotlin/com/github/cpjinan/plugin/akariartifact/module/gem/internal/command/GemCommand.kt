@@ -35,38 +35,39 @@ object GemCommand {
             }
         }
 
-        literal("slot")
-        literal("add").dynamic("gem") {
-            suggest { GemAPI.getGemNames() }
-            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.cast<Player>().inventory.itemInMainHand
-                val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
+        literal("slot") {
+            literal("add").dynamic("gem", optional = false) {
+                suggest { GemAPI.getGemNames() }
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                    val item = sender.cast<Player>().inventory.itemInMainHand
+                    val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
 
-                item.modifyLore {
-                    add(slot)
-                }
-
-                sender.sendLang("Gem-Slot-Add", slot)
-            }
-        }.dynamic("options", optional = true) {
-            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
-                val args = CommandUtil.parseOptions(content.split(" "))
-                var silent = false
-
-                for ((k, _) in args) {
-                    when (k.lowercase()) {
-                        "silent" -> silent = true
+                    item.modifyLore {
+                        add(slot)
                     }
+
+                    sender.sendLang("Gem-Slot-Add", slot)
                 }
+            }.dynamic("options", optional = true) {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
+                    val args = CommandUtil.parseOptions(content.split(" "))
+                    var silent = false
 
-                val item = sender.cast<Player>().inventory.itemInMainHand
-                val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
+                    for ((k, _) in args) {
+                        when (k.lowercase()) {
+                            "silent" -> silent = true
+                        }
+                    }
 
-                item.modifyLore {
-                    add(slot)
+                    val item = sender.cast<Player>().inventory.itemInMainHand
+                    val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
+
+                    item.modifyLore {
+                        add(slot)
+                    }
+
+                    if (!silent) sender.sendLang("Gem-Slot-Add", slot)
                 }
-
-                if (!silent) sender.sendLang("Gem-Slot-Add", slot)
             }
         }
     }
