@@ -50,7 +50,7 @@ object GemAPI {
     fun getItemSlotNames(
         item: ItemStack
     ): List<String> {
-        val lore = item.itemMeta.lore
+        val lore = item.itemMeta.lore ?: return listOf()
         val regex = Regex("\\Q${ModuleGem.getSlotPrefix()}\\E(.*)\\Q${ModuleGem.getSlotSuffix()}\\E.*")
         return lore.mapNotNull { line ->
             regex.find(line)?.groupValues?.get(1)
