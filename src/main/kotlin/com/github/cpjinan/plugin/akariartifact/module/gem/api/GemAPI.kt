@@ -29,18 +29,6 @@ object GemAPI {
     }
 
     /**
-     * 重载宝石配置文件
-     * @author CPJiNan
-     */
-    fun reloadGem() {
-        gemFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/gem"), true)
-            .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
-        gemSections = gemFiles.getConfigSections()
-        gemNames = gemSections.map { it.key }.toCollection(ArrayList())
-        gemConfig = ConfigUtil.getMergedConfig(gemSections)
-    }
-
-    /**
      * 为指定物品镶嵌宝石
      * @author CPJiNan
      */
@@ -159,4 +147,44 @@ object GemAPI {
 
         return true
     }
+
+    /**
+     * 重载宝石配置文件
+     * @author CPJiNan
+     */
+    fun reloadGem() {
+        gemFiles = FileUtil.getFile(File(FileUtil.dataFolder, "module/gem"), true)
+            .filter { it.name.endsWith(".yml") }.toCollection(ArrayList())
+        gemSections = gemFiles.getConfigSections()
+        gemNames = gemSections.map { it.key }.toCollection(ArrayList())
+        gemConfig = ConfigUtil.getMergedConfig(gemSections)
+    }
+
+    /**
+     * 获取所有宝石的配置文件
+     * @return 宝石配置文件列表
+     * @author CPJiNan
+     */
+    fun getGemFiles(): ArrayList<File> = gemFiles
+
+    /**
+     * 获取所有宝石的配置节点
+     * @return 宝石配置节点列表 (由 宝石ID 及其 配置节点 组成)
+     * @author CPJiNan
+     */
+    fun getGemSections(): HashMap<String, ConfigurationSection> = gemSections
+
+    /**
+     * 获取所有宝石的名称
+     * @return 宝石名称列表
+     * @author CPJiNan
+     */
+    fun getGemNames(): ArrayList<String> = gemNames
+
+    /**
+     * 获取所有宝石配置合并后的新配置
+     * @return 宝石配置
+     * @author CPJiNan
+     */
+    fun getGemConfig(): YamlConfiguration = gemConfig
 }
