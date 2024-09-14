@@ -24,6 +24,7 @@ object GemAPI {
     private var gemNames: ArrayList<String> = arrayListOf()
     private var gemConfig: YamlConfiguration = YamlConfiguration()
     private var gemSlotNames: ArrayList<String> = arrayListOf()
+    private var gemDisplayNames: ArrayList<String> = arrayListOf()
 
     init {
         reloadGem()
@@ -186,7 +187,8 @@ object GemAPI {
         gemSections = gemFiles.getConfigSections()
         gemNames = gemSections.map { it.key }.toCollection(ArrayList())
         gemConfig = ConfigUtil.getMergedConfig(gemSections)
-        gemSlotNames = gemSections.map { it.value.getString("Slot") }.toCollection(ArrayList())
+        gemSlotNames = gemSections.map { it.value.getString("Slot") }.distinct().toCollection(ArrayList())
+        gemDisplayNames = gemSections.map { it.value.getString("Display") }.distinct().toCollection(ArrayList())
     }
 
     /**

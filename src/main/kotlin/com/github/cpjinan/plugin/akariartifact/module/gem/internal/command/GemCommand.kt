@@ -5,10 +5,12 @@ import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.subCommand
+import taboolib.common.platform.command.suggest
 
 object GemCommand {
     val gem = subCommand {
         literal("socket").dynamic("gem") {
+            suggest { GemAPI.getGemNames() }
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().inventory.itemInMainHand
                 GemAPI.socketGem(sender.cast(), item, context["gem"])
