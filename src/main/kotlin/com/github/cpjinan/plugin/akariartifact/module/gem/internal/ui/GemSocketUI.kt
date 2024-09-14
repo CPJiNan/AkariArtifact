@@ -20,21 +20,23 @@ object GemSocketUI {
         val uiConfig = UIAPI.getUIConfig()
         val ui = ModuleGem.getUI()
 
-        player.openMenu<PageableChest<Pair<String, ItemStack>>>(uiConfig.getString("$ui.Title")) {
+        this.openMenu<PageableChest<Pair<String, ItemStack>>>(uiConfig.getString("$ui.Title")) {
+            if (GemAPI.getItemSlotNames(socketItem).isEmpty()) {
+                this@openSocketUI.sendLang("Gem-No-Slot")
+                return
+            }
             map(*(uiConfig.getStringList("$ui.Map").toTypedArray()))
             handLocked(true)
 
-            onBuild { _, _ -> uiConfig.getStringList("$ui.Build").evalKether(player) }
-            onClose { uiConfig.getStringList("$ui.Close").evalKether(player) }
+            onBuild { _, _ -> uiConfig.getStringList("$ui.Build").evalKether(this@openSocketUI) }
+            onClose { uiConfig.getStringList("$ui.Close").evalKether(this@openSocketUI) }
 
-            // 获取宝石列表
             val gemID = GemAPI.getItemSlotNames(socketItem).flatMap { slotName ->
                 GemAPI.getGemSlotNames().entries
                     .filter { it.value == slotName }
                     .map { it.key }
             }.distinct()
 
-            // 获取宝石数据
             elements {
                 gemID.mapNotNull { id ->
                     val gemSection = GemAPI.getGemSections()[id] ?: return@mapNotNull null
@@ -43,30 +45,34 @@ object GemSocketUI {
                 }
             }
 
-            // 设置物品槽位
             val slots = uiConfig.getConfigurationSection("$ui.Slot")
             slots.getKeys(false).forEach { slot ->
                 when (uiConfig.getString("$ui.Slot.$slot.Default")) {
                     "Item" -> set(slot[0], socketItem)
 
                     "Element" -> {
+                        slotsBy(slot[0])
                         onGenerate { player, element, _, _ ->
                             buildItem(element.second) {
                                 val gemSection = GemAPI.getGemSections()[element.first] ?: return@buildItem
-                                val infoLore = uiConfig.getStringList("$ui.Slot.$slot.Lore").colored()
+                                var infoLore = uiConfig.getStringList("$ui.Slot.$slot.Lore").colored()
 
-                                infoLore.replacePlaceholder(this@openSocketUI)
-                                infoLore.replace(
-                                    "%Gem%" to gemSection.getString("Display"),
-                                    "%Slot%" to gemSection.getString("Slot"),
+                                val slotPrefix = ModuleGem.getSlotPrefix()
+                                val slotSuffix = ModuleGem.getSlotSuffix()
+
+                                infoLore = infoLore.replacePlaceholder(this@openSocketUI).replace(
+                                    "%Gem%" to "${slotPrefix}${gemSection.getString("Display")}${slotSuffix}",
+                                    "%Slot%" to "${slotPrefix}${gemSection.getString("Slot")}${slotSuffix}",
                                     "%Chance%" to (gemSection.getDouble("Socket.Chance") * 100).toString(),
                                     "%Ready%" to GemAPI.isPlayerMetSocketCondition(player, socketItem, element.first)
                                 )
 
                                 uiConfig.getStringList("$ui.Slot.$slot.Replace").colored().forEach { replaceContent ->
                                     val (oldChar, newChar) = replaceContent.split("<=>", limit = 2)
-                                    infoLore.replace(oldChar to newChar)
+                                    infoLore = infoLore.replace(oldChar to newChar)
                                 }
+
+                                lore.addAll(infoLore)
                             }
                         }
                     }
@@ -75,9 +81,9 @@ object GemSocketUI {
                         val itemName = uiConfig.getString("$ui.Slot.$slot.Item")
                         ItemAPI.getItem(itemName)?.let { item ->
                             set(slot[0], item) {
-                                uiConfig.getStringList("$ui.Slot.$slot.Click").evalKether(player)
+                                uiConfig.getStringList("$ui.Slot.$slot.Click").evalKether(this@openSocketUI)
                             }
-                        } ?: player.sendLang("Item-Not-Found")
+                        } ?: this@openSocketUI.sendLang("Item-Not-Found")
                     }
                 }
             }

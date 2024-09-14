@@ -62,6 +62,11 @@ object GemAPI {
      * @author CPJiNan
      */
     fun socketGem(player: Player, item: ItemStack, gem: String): Boolean {
+        if (item.isAir()) {
+            player.sendLang("Air-In-Hand")
+            return false
+        }
+
         val gemSection = gemSections[gem] ?: return false
 
         val gemItem = gemSection.getString("Item") ?: return false
@@ -194,6 +199,11 @@ object GemAPI {
      * @author CPJiNan
      */
     fun isPlayerMetSocketCondition(player: Player, item: ItemStack, gem: String): Boolean {
+        if (item.isAir()) {
+            player.sendLang("Air-In-Hand")
+            return false
+        }
+
         val gemSection = gemSections[gem] ?: return false
 
         val gemItem = gemSection.getString("Item") ?: return false

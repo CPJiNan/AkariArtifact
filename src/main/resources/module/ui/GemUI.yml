@@ -1,5 +1,5 @@
 GemSocketUI:
-  Title: "示例菜单"
+  Title: "镶嵌界面"
   Map:
     - "####I####"
     - "#@@@@@@@#"
@@ -21,7 +21,7 @@ GemSocketUI:
         - "&6◆ &f成功率: &a+%Chance%%"
         - "&6◆ &f满足镶嵌条件: &a%Ready%"
         - ""
-        - "&f>>>点击镶嵌<<<"
+        - "&7>>>&f点击镶嵌&7<<<"
       Replace:
         - "true<=>&a✓"
         - "false<=>&c✗"
