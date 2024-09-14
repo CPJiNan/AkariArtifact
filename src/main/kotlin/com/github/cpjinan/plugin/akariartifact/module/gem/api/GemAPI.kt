@@ -12,8 +12,8 @@ import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import taboolib.platform.compat.depositBalance
 import taboolib.platform.compat.getBalance
+import taboolib.platform.compat.withdrawBalance
 import taboolib.platform.util.*
 import java.io.File
 import kotlin.random.Random
@@ -112,7 +112,7 @@ object GemAPI {
             if (player.getBalance() < socketMoneyCost) {
                 player.sendLang("Gem-No-Enough-Money", player.getBalance(), socketMoneyCost)
                 return false
-            } else player.depositBalance(socketMoneyCost)
+            } else player.withdrawBalance(socketMoneyCost)
         }
 
         if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints")) {
