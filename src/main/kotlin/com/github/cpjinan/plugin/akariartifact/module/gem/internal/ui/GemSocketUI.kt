@@ -5,6 +5,7 @@ import com.github.cpjinan.plugin.akariartifact.module.gem.ModuleGem
 import com.github.cpjinan.plugin.akariartifact.module.gem.api.GemAPI
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import com.github.cpjinan.plugin.akariartifact.module.ui.api.UIAPI
+import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.common5.util.replace
@@ -73,6 +74,32 @@ object GemSocketUI {
                                 }
 
                                 lore.addAll(infoLore)
+                            }
+                        }
+                        onClick { _, element ->
+                            this@openSocketUI.performCommand("AkariArtifact gem socket ${element.first}")
+                            this@openSocketUI.performCommand("AkariArtifact ui close ${this@openSocketUI.name}")
+                        }
+                    }
+
+                    "Previous-Page" -> {
+                        setPreviousPage(getFirstSlot(slot[0])) { page, hasPreviousPage ->
+                            val itemSection = uiConfig.getConfigurationSection("$ui.Slot.$slot.Item")
+                            if (hasPreviousPage) {
+                                ItemAPI.getItem(itemSection.getString("Available")) ?: ItemStack(Material.AIR)
+                            } else {
+                                ItemAPI.getItem(itemSection.getString("Unavailable")) ?: ItemStack(Material.AIR)
+                            }
+                        }
+                    }
+
+                    "Next-Page" -> {
+                        setNextPage(getFirstSlot(slot[0])) { page, hasNextPage ->
+                            val itemSection = uiConfig.getConfigurationSection("$ui.Slot.$slot.Item")
+                            if (hasNextPage) {
+                                ItemAPI.getItem(itemSection.getString("Available")) ?: ItemStack(Material.AIR)
+                            } else {
+                                ItemAPI.getItem(itemSection.getString("Unavailable")) ?: ItemStack(Material.AIR)
                             }
                         }
                     }

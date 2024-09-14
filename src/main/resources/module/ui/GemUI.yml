@@ -27,5 +27,15 @@ GemSocketUI:
         - "false<=>&c✗"
     '#':
       Item: "Gem-UI-Socket-#"
+    'P':
+      Default: Previous-Page
+      Item:
+        Available: "Gem-UI-Socket-P-A"
+        Unavailable: "Gem-UI-Socket-P-U"
+    'N':
+      Default: Next-Page
+      Item:
+        Available: "Gem-UI-Socket-N-A"
+        Unavailable: "Gem-UI-Socket-N-U"
   Build: [ ]
   Close: [ ]
