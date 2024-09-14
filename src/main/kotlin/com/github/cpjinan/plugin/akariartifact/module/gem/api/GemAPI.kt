@@ -88,21 +88,6 @@ object GemAPI {
             return false
         }
 
-        if (Random.nextDouble(1.0) >= socketChance) {
-            player.sendLang("Gem-Socket-Fail")
-            if (!socketIsReturnItem) player.inventory.takeItem {
-                buildItem(it) {
-                    amount = 1
-                } == buildItem(item) { amount = 1 }
-            }
-            if (!socketIsReturnGem) player.inventory.takeItem {
-                buildItem(it) {
-                    amount = 1
-                } == buildItem(gemItemStack) { amount = 1 }
-            }
-            return false
-        }
-
         if (!socketCondition.all { it.evalKether(player).toString().toBoolean() }) {
             player.sendLang("Gem-Socket-Condition-Not-Met")
             return false
@@ -112,7 +97,7 @@ object GemAPI {
             if (player.getBalance() < socketMoneyCost) {
                 player.sendLang("Gem-No-Enough-Money", player.getBalance(), socketMoneyCost)
                 return false
-            } else player.withdrawBalance(socketMoneyCost)
+            }
         }
 
         if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints")) {
@@ -123,7 +108,7 @@ object GemAPI {
                     socketPointCost
                 )
                 return false
-            } else PlayerPoints.getInstance().api.take(player.uniqueId, socketPointCost)
+            }
         }
 
         val hasEnoughItems = socketItemCost.all { itemCost ->
@@ -139,16 +124,21 @@ object GemAPI {
         if (!hasEnoughItems) {
             player.sendLang("Gem-No-Enough-Item")
             return false
-        } else {
-            socketItemCost.forEach { itemCost ->
-                val (itemName, costAmount) = itemCost.split("<=>", limit = 2)
-                val itemStack = ItemAPI.getItem(itemName) ?: return@forEach
-                player.inventory.takeItem(costAmount.toInt()) {
-                    buildItem(it) {
-                        amount = 1
-                    } == buildItem(itemStack) { amount = 1 }
-                }
+        }
+
+        if (Random.nextDouble(1.0) >= socketChance) {
+            player.sendLang("Gem-Socket-Fail")
+            if (!socketIsReturnItem) player.inventory.takeItem {
+                buildItem(it) {
+                    amount = 1
+                } == buildItem(item) { amount = 1 }
             }
+            if (!socketIsReturnGem) player.inventory.takeItem {
+                buildItem(it) {
+                    amount = 1
+                } == buildItem(gemItemStack) { amount = 1 }
+            }
+            return false
         }
 
         val meta = item.itemMeta ?: return false
@@ -172,16 +162,28 @@ object GemAPI {
         if (matchLine == null) {
             player.sendLang("Gem-No-Slot")
             return false
-        } else {
-            meta.lore = lore
-            item.itemMeta = meta
         }
+
+        meta.lore = lore
+        item.itemMeta = meta
 
         gemAttribute.forEachIndexed { index, attribute ->
             item.modifyLore { add(matchLine + index + 1, attribute) }
         }
 
         player.inventory.takeItem { buildItem(it) { amount = 1 } == buildItem(gemItemStack) { amount = 1 } }
+        player.withdrawBalance(socketMoneyCost)
+        PlayerPoints.getInstance().api.take(player.uniqueId, socketPointCost)
+        socketItemCost.forEach { itemCost ->
+            val (itemName, costAmount) = itemCost.split("<=>", limit = 2)
+            val itemStack = ItemAPI.getItem(itemName) ?: return@forEach
+            player.inventory.takeItem(costAmount.toInt()) {
+                buildItem(it) {
+                    amount = 1
+                } == buildItem(itemStack) { amount = 1 }
+            }
+        }
+
         player.sendLang("Gem-Socket-Success")
 
         return true
