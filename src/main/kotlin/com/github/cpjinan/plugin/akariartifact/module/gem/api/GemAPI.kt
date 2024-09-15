@@ -364,7 +364,6 @@ object GemAPI {
                     amount = 1
                 } == buildItem(item) { amount = 1 }
             }
-            if (unsocketIsReturnGem) player.giveItem(gemItemStack)
             return false
         }
 
@@ -411,6 +410,8 @@ object GemAPI {
                 } == buildItem(itemStack) { amount = 1 }
             }
         }
+
+        if (unsocketIsReturnGem) player.giveItem(gemItemStack)
 
         player.sendLang("Gem-Unsocket-Success")
 
