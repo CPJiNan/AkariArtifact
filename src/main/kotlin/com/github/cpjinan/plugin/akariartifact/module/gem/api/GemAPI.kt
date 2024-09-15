@@ -433,19 +433,14 @@ object GemAPI {
         val gemDisplay = gemSection.getString("Display") ?: return false
         val gemAttribute = gemSection.getStringList("Attribute")
 
-        val unsocketChance = gemSection.getDouble("Unsocket.Chance", 0.0)
         val unsocketCondition = gemSection.getStringList("Unsocket.Condition")
         val unsocketMoneyCost = gemSection.getDouble("Unsocket.Cost.Money", 0.0)
         val unsocketPointCost = gemSection.getInt("Unsocket.Cost.Point", 0)
         val unsocketItemCost = gemSection.getStringList("Unsocket.Cost.Item")
-        val unsocketIsReturnItem = gemSection.getBoolean("Unsocket.Return.Item", true)
-        val unsocketIsReturnGem = gemSection.getBoolean("Unsocket.Return.Gem", true)
 
         if (item.amount != 1) {
             return false
         }
-
-        val gemItemStack = ItemAPI.getItem(gemItem) ?: return false
 
         if (!getItemSlotNames(item).contains(gemDisplay)) {
             return false
