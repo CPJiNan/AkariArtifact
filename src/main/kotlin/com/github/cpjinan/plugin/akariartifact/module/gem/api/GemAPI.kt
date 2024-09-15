@@ -428,7 +428,6 @@ object GemAPI {
 
         val gemSection = gemSections[gem] ?: return false
 
-        val gemItem = gemSection.getString("Item") ?: return false
         val gemSlot = gemSection.getString("Slot") ?: return false
         val gemDisplay = gemSection.getString("Display") ?: return false
         val gemAttribute = gemSection.getStringList("Attribute")
