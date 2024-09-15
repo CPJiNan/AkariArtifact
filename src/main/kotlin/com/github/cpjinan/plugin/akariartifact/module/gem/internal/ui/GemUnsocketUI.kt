@@ -17,12 +17,12 @@ import taboolib.platform.util.buildItem
 import taboolib.platform.util.sendLang
 
 object GemUnsocketUI {
-    fun Player.openUnsocketUI(socketItem: ItemStack) {
+    fun Player.openUnsocketUI(unsocketItem: ItemStack) {
         val uiConfig = UIAPI.getUIConfig()
         val ui = ModuleGem.getUnsocketUI()
 
         this.openMenu<PageableChest<Pair<String, ItemStack>>>(uiConfig.getString("$ui.Title")) {
-            if (GemAPI.getItemSlotNames(socketItem).isEmpty()) {
+            if (GemAPI.getItemSlotNames(unsocketItem).isEmpty()) {
                 this@openUnsocketUI.sendLang("Gem-No-Slot")
                 return
             }
@@ -32,7 +32,7 @@ object GemUnsocketUI {
             onBuild { _, _ -> uiConfig.getStringList("$ui.Build").evalKether(this@openUnsocketUI) }
             onClose { uiConfig.getStringList("$ui.Close").evalKether(this@openUnsocketUI) }
 
-            val gemID = GemAPI.getItemSlotNames(socketItem).flatMap { slotName ->
+            val gemID = GemAPI.getItemSlotNames(unsocketItem).flatMap { slotName ->
                 GemAPI.getGemDisplayNames().entries
                     .filter { it.value == slotName }
                     .map { it.key }
@@ -49,7 +49,7 @@ object GemUnsocketUI {
             val slots = uiConfig.getConfigurationSection("$ui.Slot")
             slots.getKeys(false).forEach { slot ->
                 when (uiConfig.getString("$ui.Slot.$slot.Default")) {
-                    "Item" -> set(slot[0], socketItem)
+                    "Item" -> set(slot[0], unsocketItem)
 
                     "Element" -> {
                         slotsBy(slot[0])
@@ -64,8 +64,12 @@ object GemUnsocketUI {
                                 infoLore = infoLore.replacePlaceholder(this@openUnsocketUI).replace(
                                     "%Gem%" to "${slotPrefix}${gemSection.getString("Display")}${slotSuffix}",
                                     "%Slot%" to "${slotPrefix}${gemSection.getString("Slot")}${slotSuffix}",
-                                    "%Chance%" to (gemSection.getDouble("Socket.Chance") * 100).toString(),
-                                    "%Ready%" to GemAPI.isPlayerMetUnsocketCondition(player, socketItem, element.first)
+                                    "%Chance%" to (gemSection.getDouble("Unsocket.Chance") * 100).toString(),
+                                    "%Ready%" to GemAPI.isPlayerMetUnsocketCondition(
+                                        player,
+                                        unsocketItem,
+                                        element.first
+                                    )
                                 )
 
                                 uiConfig.getStringList("$ui.Slot.$slot.Replace").colored().forEach { replaceContent ->
