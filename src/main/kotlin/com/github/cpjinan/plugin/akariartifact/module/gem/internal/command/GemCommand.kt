@@ -9,7 +9,9 @@ import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.CommandContext
 import taboolib.common.platform.command.subCommand
 import taboolib.common.platform.command.suggest
+import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
+import taboolib.platform.util.isNotAir
 import taboolib.platform.util.modifyLore
 
 object GemCommand {
@@ -36,7 +38,32 @@ object GemCommand {
             }
         }
 
+        literal("unsocket").dynamic("gem") {
+            suggest { GemAPI.getGemNames() }
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                val item = sender.cast<Player>().inventory.itemInMainHand
+                GemAPI.unsocketGem(sender.cast(), item, context["gem"])
+            }
+        }.dynamic("options", optional = true) {
+            execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
+                val item = sender.cast<Player>().inventory.itemInMainHand
+                GemAPI.unsocketGem(sender.cast(), item, context["gem"])
+            }
+        }
+
         literal("slot") {
+            literal("check") {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
+                    val item = sender.cast<Player>().inventory?.itemInMainHand
+                    if (item.isNotAir()) {
+                        sender.sendLang("Gem-Slot-Check")
+                        GemAPI.getItemSlotNames(item).forEachIndexed { index, content ->
+                            sender.sendMessage("&7${index + 1} &8| &r${ModuleGem.getSlotPrefix()}$content${ModuleGem.getSlotSuffix()}".colored())
+                        }
+                    } else sender.sendLang("Air-In-Hand")
+                }
+            }
+
             literal("add").dynamic("gem", optional = false) {
                 suggest { GemAPI.getGemNames() }
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
@@ -50,7 +77,7 @@ object GemCommand {
                         add("$slotPrefix$slot$slotSuffix")
                     }
 
-                    sender.sendLang("Gem-Slot-Add", slot)
+                    sender.sendLang("Gem-Slot-Add", "$slotPrefix$slot$slotSuffix")
                 }
             }.dynamic("options", optional = true) {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, content: String ->
@@ -73,7 +100,7 @@ object GemCommand {
                         add("$slotPrefix$slot$slotSuffix")
                     }
 
-                    if (!silent) sender.sendLang("Gem-Slot-Add", slot)
+                    if (!silent) sender.sendLang("Gem-Slot-Add", "$slotPrefix$slot$slotSuffix")
                 }
             }
         }
