@@ -9,8 +9,10 @@ ExampleMenu:
   Slot:
     A:
       Item: Apple
-      Click:
+      Left-Click:
         - tell "§7Click §fMr.Black's Apple §7."
+      Right-Click: [ ]
+      Shift-Click: [ ]
   Build:
     - tell "§7Open §fExample Menu §7."
   Close:

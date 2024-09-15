@@ -108,7 +108,16 @@ object GemSocketUI {
                         val itemName = uiConfig.getString("$ui.Slot.$slot.Item")
                         ItemAPI.getItem(itemName)?.let { item ->
                             set(slot[0], item) {
-                                uiConfig.getStringList("$ui.Slot.$slot.Click").evalKether(this@openSocketUI)
+                                when {
+                                    clickEvent().isLeftClick -> uiConfig.getStringList("$ui.Slot.$slot.Left-Click")
+                                        ?.evalKether(this@openSocketUI)
+
+                                    clickEvent().isRightClick -> uiConfig.getStringList("$ui.Slot.$slot.Right-Click")
+                                        ?.evalKether(this@openSocketUI)
+
+                                    clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Shift-Click")
+                                        ?.evalKether(this@openSocketUI)
+                                }
                             }
                         } ?: this@openSocketUI.sendLang("Item-Not-Found")
                     }

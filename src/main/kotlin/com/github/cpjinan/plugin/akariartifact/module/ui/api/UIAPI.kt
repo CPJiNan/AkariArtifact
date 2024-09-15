@@ -154,7 +154,16 @@ object UIAPI {
                 }
 
                 set(slot[0], item) {
-                    config.getStringList("$ui.Slot.$slot.Click").evalKether(player)
+                    when {
+                        clickEvent().isLeftClick -> config.getStringList("$ui.Slot.$slot.Left-Click")
+                            ?.evalKether(player)
+
+                        clickEvent().isRightClick -> config.getStringList("$ui.Slot.$slot.Right-Click")
+                            ?.evalKether(player)
+
+                        clickEvent().isShiftClick -> config.getStringList("$ui.Slot.$slot.Shift-Click")
+                            ?.evalKether(player)
+                    }
                 }
             }
 
