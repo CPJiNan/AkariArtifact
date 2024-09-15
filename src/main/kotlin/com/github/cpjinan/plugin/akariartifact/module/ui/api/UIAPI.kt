@@ -6,6 +6,7 @@ import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.getConfigSe
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
 import com.github.cpjinan.plugin.akariartifact.module.gem.ModuleGem
 import com.github.cpjinan.plugin.akariartifact.module.gem.internal.ui.GemSocketUI.openSocketUI
+import com.github.cpjinan.plugin.akariartifact.module.gem.internal.ui.GemUnsocketUI.openUnsocketUI
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
@@ -120,9 +121,15 @@ object UIAPI {
 
     private fun openUIForPlayer(player: Player, config: YamlConfiguration, ui: String) {
         when (ui) {
-            ModuleGem.getUI() -> {
+            ModuleGem.getSocketUI() -> {
                 val item = player.inventory.itemInMainHand
                 player.openSocketUI(item)
+                return
+            }
+
+            ModuleGem.getUnsocketUI() -> {
+                val item = player.inventory.itemInMainHand
+                player.openUnsocketUI(item)
                 return
             }
         }

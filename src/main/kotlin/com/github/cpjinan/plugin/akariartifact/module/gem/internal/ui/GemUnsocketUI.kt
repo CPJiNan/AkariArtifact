@@ -16,24 +16,24 @@ import taboolib.platform.compat.replacePlaceholder
 import taboolib.platform.util.buildItem
 import taboolib.platform.util.sendLang
 
-object GemSocketUI {
-    fun Player.openSocketUI(socketItem: ItemStack) {
+object GemUnsocketUI {
+    fun Player.openUnsocketUI(socketItem: ItemStack) {
         val uiConfig = UIAPI.getUIConfig()
-        val ui = ModuleGem.getSocketUI()
+        val ui = ModuleGem.getUnsocketUI()
 
         this.openMenu<PageableChest<Pair<String, ItemStack>>>(uiConfig.getString("$ui.Title")) {
             if (GemAPI.getItemSlotNames(socketItem).isEmpty()) {
-                this@openSocketUI.sendLang("Gem-No-Slot")
+                this@openUnsocketUI.sendLang("Gem-No-Slot")
                 return
             }
             map(*(uiConfig.getStringList("$ui.Map").toTypedArray()))
             handLocked(true)
 
-            onBuild { _, _ -> uiConfig.getStringList("$ui.Build").evalKether(this@openSocketUI) }
-            onClose { uiConfig.getStringList("$ui.Close").evalKether(this@openSocketUI) }
+            onBuild { _, _ -> uiConfig.getStringList("$ui.Build").evalKether(this@openUnsocketUI) }
+            onClose { uiConfig.getStringList("$ui.Close").evalKether(this@openUnsocketUI) }
 
             val gemID = GemAPI.getItemSlotNames(socketItem).flatMap { slotName ->
-                GemAPI.getGemSlotNames().entries
+                GemAPI.getGemDisplayNames().entries
                     .filter { it.value == slotName }
                     .map { it.key }
             }.distinct()
@@ -61,11 +61,11 @@ object GemSocketUI {
                                 val slotPrefix = ModuleGem.getSlotPrefix()
                                 val slotSuffix = ModuleGem.getSlotSuffix()
 
-                                infoLore = infoLore.replacePlaceholder(this@openSocketUI).replace(
+                                infoLore = infoLore.replacePlaceholder(this@openUnsocketUI).replace(
                                     "%Gem%" to "${slotPrefix}${gemSection.getString("Display")}${slotSuffix}",
                                     "%Slot%" to "${slotPrefix}${gemSection.getString("Slot")}${slotSuffix}",
                                     "%Chance%" to (gemSection.getDouble("Socket.Chance") * 100).toString(),
-                                    "%Ready%" to GemAPI.isPlayerMetSocketCondition(player, socketItem, element.first)
+                                    "%Ready%" to GemAPI.isPlayerMetUnsocketCondition(player, socketItem, element.first)
                                 )
 
                                 uiConfig.getStringList("$ui.Slot.$slot.Replace").colored().forEach { replaceContent ->
@@ -77,8 +77,8 @@ object GemSocketUI {
                             }
                         }
                         onClick { _, element ->
-                            this@openSocketUI.performCommand("AkariArtifact gem socket ${element.first}")
-                            this@openSocketUI.performCommand("AkariArtifact ui close ${this@openSocketUI.name} --silent")
+                            this@openUnsocketUI.performCommand("AkariArtifact gem unsocket ${element.first}")
+                            this@openUnsocketUI.performCommand("AkariArtifact ui close ${this@openUnsocketUI.name} --silent")
                         }
                     }
 
@@ -108,9 +108,9 @@ object GemSocketUI {
                         val itemName = uiConfig.getString("$ui.Slot.$slot.Item")
                         ItemAPI.getItem(itemName)?.let { item ->
                             set(slot[0], item) {
-                                uiConfig.getStringList("$ui.Slot.$slot.Click").evalKether(this@openSocketUI)
+                                uiConfig.getStringList("$ui.Slot.$slot.Click").evalKether(this@openUnsocketUI)
                             }
-                        } ?: this@openSocketUI.sendLang("Item-Not-Found")
+                        } ?: this@openUnsocketUI.sendLang("Item-Not-Found")
                     }
                 }
             }

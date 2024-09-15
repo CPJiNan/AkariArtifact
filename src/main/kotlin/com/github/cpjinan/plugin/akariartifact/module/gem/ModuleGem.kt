@@ -27,7 +27,8 @@ object ModuleGem {
     }
 
     fun isEnabledModule() = config.getBoolean("Enable")
-    fun getUI() = config.getString("UI.Socket") ?: "GemSocketUI"
+    fun getSocketUI() = config.getString("UI.Socket") ?: "GemSocketUI"
+    fun getUnsocketUI() = config.getString("UI.Unsocket") ?: "GemUnsocketUI"
     fun getSlotPrefix() = config.getString("Slot.Prefix") ?: "§7「"
     fun getSlotSuffix() = config.getString("Slot.Suffix") ?: "§7」"
 

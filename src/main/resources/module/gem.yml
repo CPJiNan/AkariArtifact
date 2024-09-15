@@ -9,6 +9,7 @@ Enable: true
 # 该模块使用的 UI 界面
 UI:
   Socket: "GemSocketUI"
+  Unsocket: "GemUnsocketUI"
 # 镶嵌槽位设置
 Slot:
   Prefix: "§7「"

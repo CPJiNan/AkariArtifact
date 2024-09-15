@@ -26,16 +26,57 @@ GemSocketUI:
         - "true<=>&a✓"
         - "false<=>&c✗"
     '#':
-      Item: "Gem-UI-Socket-#"
+      Item: "Gem-UI-#"
     'P':
       Default: Previous-Page
       Item:
-        Available: "Gem-UI-Socket-P-A"
-        Unavailable: "Gem-UI-Socket-P-U"
+        Available: "Gem-UI-P-A"
+        Unavailable: "Gem-UI-P-U"
     'N':
       Default: Next-Page
       Item:
-        Available: "Gem-UI-Socket-N-A"
-        Unavailable: "Gem-UI-Socket-N-U"
+        Available: "Gem-UI-N-A"
+        Unavailable: "Gem-UI-N-U"
+  Build: [ ]
+  Close: [ ]
+GemUnsocketUI:
+  Title: "拆卸界面"
+  Map:
+    - "####I####"
+    - "#@@@@@@@#"
+    - "#@@@@@@@#"
+    - "#@@@@@@@#"
+    - "#@@@@@@@#"
+    - "##P###N##"
+  Slot:
+    I:
+      Default: Item
+    '@':
+      Default: Element
+      Info:
+        - ""
+        - "&8&m---------------------------------------------"
+        - ""
+        - "&6◆ &f所选宝石: &a%Gem%"
+        - "&6◆ &f拆卸后的槽位: &a%Slot%"
+        - "&6◆ &f成功率: &a+%Chance%%"
+        - "&6◆ &f满足拆卸条件: &a%Ready%"
+        - ""
+        - "&7>>>&f点击拆卸&7<<<"
+      Replace:
+        - "true<=>&a✓"
+        - "false<=>&c✗"
+    '#':
+      Item: "Gem-UI-#"
+    'P':
+      Default: Previous-Page
+      Item:
+        Available: "Gem-UI-P-A"
+        Unavailable: "Gem-UI-P-U"
+    'N':
+      Default: Next-Page
+      Item:
+        Available: "Gem-UI-N-A"
+        Unavailable: "Gem-UI-N-U"
   Build: [ ]
   Close: [ ]

@@ -4,6 +4,7 @@ import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
 import com.github.cpjinan.plugin.akariartifact.module.gem.ModuleGem
 import com.github.cpjinan.plugin.akariartifact.module.gem.api.GemAPI
 import com.github.cpjinan.plugin.akariartifact.module.gem.internal.ui.GemSocketUI.openSocketUI
+import com.github.cpjinan.plugin.akariartifact.module.gem.internal.ui.GemUnsocketUI.openUnsocketUI
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
 import taboolib.common.platform.command.CommandContext
@@ -21,6 +22,12 @@ object GemCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                     val item = sender.cast<Player>().inventory.itemInMainHand
                     sender.cast<Player>().openSocketUI(item)
+                }
+            }
+            literal("unsocket") {
+                execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
+                    val item = sender.cast<Player>().inventory.itemInMainHand
+                    sender.cast<Player>().openUnsocketUI(item)
                 }
             }
         }

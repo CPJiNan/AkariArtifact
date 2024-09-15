@@ -203,7 +203,6 @@ object GemAPI {
      */
     fun isPlayerMetSocketCondition(player: Player, item: ItemStack, gem: String): Boolean {
         if (item.isAir()) {
-            player.sendLang("Air-In-Hand")
             return false
         }
 
@@ -416,6 +415,93 @@ object GemAPI {
         player.sendLang("Gem-Unsocket-Success")
 
         return true
+    }
+
+    /**
+     * 玩家是否满足拆卸条件
+     * @author CPJiNan
+     */
+    fun isPlayerMetUnsocketCondition(player: Player, item: ItemStack, gem: String): Boolean {
+        if (item.isAir()) {
+            return false
+        }
+
+        val gemSection = gemSections[gem] ?: return false
+
+        val gemItem = gemSection.getString("Item") ?: return false
+        val gemSlot = gemSection.getString("Slot") ?: return false
+        val gemDisplay = gemSection.getString("Display") ?: return false
+        val gemAttribute = gemSection.getStringList("Attribute")
+
+        val unsocketChance = gemSection.getDouble("Unsocket.Chance", 0.0)
+        val unsocketCondition = gemSection.getStringList("Unsocket.Condition")
+        val unsocketMoneyCost = gemSection.getDouble("Unsocket.Cost.Money", 0.0)
+        val unsocketPointCost = gemSection.getInt("Unsocket.Cost.Point", 0)
+        val unsocketItemCost = gemSection.getStringList("Unsocket.Cost.Item")
+        val unsocketIsReturnItem = gemSection.getBoolean("Unsocket.Return.Item", true)
+        val unsocketIsReturnGem = gemSection.getBoolean("Unsocket.Return.Gem", true)
+
+        if (item.amount != 1) {
+            return false
+        }
+
+        val gemItemStack = ItemAPI.getItem(gemItem) ?: return false
+
+        if (!getItemSlotNames(item).contains(gemDisplay)) {
+            return false
+        }
+
+        if (!unsocketCondition.all { it.evalKether(player).toString().toBoolean() }) {
+            return false
+        }
+
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("Vault")) {
+            if (player.getBalance() < unsocketMoneyCost) {
+                return false
+            }
+        }
+
+        if (Bukkit.getServer().pluginManager.isPluginEnabled("PlayerPoints")) {
+            if (PlayerPoints.getInstance().api.look(player.uniqueId) < unsocketPointCost) {
+                return false
+            }
+        }
+
+        val hasEnoughItems = unsocketItemCost.all { itemCost ->
+            val (itemName, costAmount) = itemCost.split("<=>", limit = 2)
+            val itemStack = ItemAPI.getItem(itemName) ?: return@all false
+            player.inventory.hasItem(costAmount.toInt()) {
+                buildItem(it) {
+                    amount = 1
+                } == buildItem(itemStack) { amount = 1 }
+            }
+        }
+
+        if (!hasEnoughItems) {
+            return false
+        }
+
+        val meta = item.itemMeta ?: return false
+        val lore = meta.lore ?: mutableListOf()
+
+        val slotPrefix = ModuleGem.getSlotPrefix()
+        val slotSuffix = ModuleGem.getSlotSuffix()
+        val searchString = "$slotPrefix$gemDisplay$slotSuffix"
+        val replaceString = "$slotPrefix$gemSlot$slotSuffix"
+
+        var replaced = false
+
+        val listSize = gemAttribute.size
+        for (i in 0 until lore.size - listSize) {
+            if (lore[i] == searchString && lore.subList(i + 1, i + 1 + listSize) == gemAttribute) {
+                lore[i] = replaceString
+                lore.subList(i + 1, i + 1 + listSize).clear()
+                replaced = true
+                break
+            }
+        }
+
+        return replaced
     }
 
     /**
