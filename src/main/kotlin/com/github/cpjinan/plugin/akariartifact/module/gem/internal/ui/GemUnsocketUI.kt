@@ -31,6 +31,7 @@ object GemUnsocketUI {
 
             onBuild { _, _ -> uiConfig.getStringList("$ui.Build").evalKether(this@openUnsocketUI) }
             onClose { uiConfig.getStringList("$ui.Close").evalKether(this@openUnsocketUI) }
+            onClick { event -> event.isCancelled = true }
 
             val gemID = GemAPI.getItemSlotNames(unsocketItem).flatMap { slotName ->
                 GemAPI.getGemDisplayNames().entries
@@ -113,13 +114,16 @@ object GemUnsocketUI {
                         ItemAPI.getItem(itemName)?.let { item ->
                             set(slot[0], item) {
                                 when {
-                                    clickEvent().isLeftClick -> uiConfig.getStringList("$ui.Slot.$slot.Left-Click")
+                                    clickEvent().isLeftClick && !clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Left-Click")
                                         ?.evalKether(this@openUnsocketUI)
 
-                                    clickEvent().isRightClick -> uiConfig.getStringList("$ui.Slot.$slot.Right-Click")
+                                    clickEvent().isRightClick && !clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Right-Click")
                                         ?.evalKether(this@openUnsocketUI)
 
-                                    clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Shift-Click")
+                                    clickEvent().isLeftClick && clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Shift-Left-Click")
+                                        ?.evalKether(this@openUnsocketUI)
+
+                                    clickEvent().isRightClick && clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Shift-Right-Click")
                                         ?.evalKether(this@openUnsocketUI)
                                 }
                             }

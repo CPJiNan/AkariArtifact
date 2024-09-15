@@ -27,10 +27,10 @@ object GemSocketUI {
                 return
             }
             map(*(uiConfig.getStringList("$ui.Map").toTypedArray()))
-            handLocked(true)
 
             onBuild { _, _ -> uiConfig.getStringList("$ui.Build").evalKether(this@openSocketUI) }
             onClose { uiConfig.getStringList("$ui.Close").evalKether(this@openSocketUI) }
+            onClick { event -> event.isCancelled = true }
 
             val gemID = GemAPI.getItemSlotNames(socketItem).flatMap { slotName ->
                 GemAPI.getGemSlotNames().entries
@@ -109,13 +109,16 @@ object GemSocketUI {
                         ItemAPI.getItem(itemName)?.let { item ->
                             set(slot[0], item) {
                                 when {
-                                    clickEvent().isLeftClick -> uiConfig.getStringList("$ui.Slot.$slot.Left-Click")
+                                    clickEvent().isLeftClick && !clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Left-Click")
                                         ?.evalKether(this@openSocketUI)
 
-                                    clickEvent().isRightClick -> uiConfig.getStringList("$ui.Slot.$slot.Right-Click")
+                                    clickEvent().isRightClick && !clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Right-Click")
                                         ?.evalKether(this@openSocketUI)
 
-                                    clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Shift-Click")
+                                    clickEvent().isLeftClick && clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Shift-Left-Click")
+                                        ?.evalKether(this@openSocketUI)
+
+                                    clickEvent().isRightClick && clickEvent().isShiftClick -> uiConfig.getStringList("$ui.Slot.$slot.Shift-Right-Click")
                                         ?.evalKether(this@openSocketUI)
                                 }
                             }

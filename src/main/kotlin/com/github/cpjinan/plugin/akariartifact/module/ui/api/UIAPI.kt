@@ -135,7 +135,6 @@ object UIAPI {
         }
         player.openMenu<Chest>(config.getString("$ui.Title")) {
             map(*(config.getStringList("$ui.Map").toTypedArray()))
-            handLocked(true)
 
             onBuild { _, _ ->
                 config.getStringList("$ui.Build").evalKether(player)
@@ -143,6 +142,10 @@ object UIAPI {
 
             onClose {
                 config.getStringList("$ui.Close").evalKether(player)
+            }
+
+            onClick { event ->
+                event.isCancelled = true
             }
 
             val slots = config.getConfigurationSection("$ui.Slot")
@@ -155,13 +158,16 @@ object UIAPI {
 
                 set(slot[0], item) {
                     when {
-                        clickEvent().isLeftClick -> config.getStringList("$ui.Slot.$slot.Left-Click")
+                        clickEvent().isLeftClick && !clickEvent().isShiftClick -> config.getStringList("$ui.Slot.$slot.Left-Click")
                             ?.evalKether(player)
 
-                        clickEvent().isRightClick -> config.getStringList("$ui.Slot.$slot.Right-Click")
+                        clickEvent().isRightClick && !clickEvent().isShiftClick -> config.getStringList("$ui.Slot.$slot.Right-Click")
                             ?.evalKether(player)
 
-                        clickEvent().isShiftClick -> config.getStringList("$ui.Slot.$slot.Shift-Click")
+                        clickEvent().isLeftClick && clickEvent().isShiftClick -> config.getStringList("$ui.Slot.$slot.Shift-Left-Click")
+                            ?.evalKether(player)
+
+                        clickEvent().isRightClick && clickEvent().isShiftClick -> config.getStringList("$ui.Slot.$slot.Shift-Right-Click")
                             ?.evalKether(player)
                     }
                 }

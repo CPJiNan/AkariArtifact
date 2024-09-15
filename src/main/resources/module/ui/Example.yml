@@ -10,9 +10,13 @@ ExampleMenu:
     A:
       Item: Apple
       Left-Click:
-        - tell "§7Click §fMr.Black's Apple §7."
-      Right-Click: [ ]
-      Shift-Click: [ ]
+        - tell "§7Left Click."
+      Right-Click:
+        - tell "§7Right Click."
+      Shift-Left-Click:
+        - tell "§7Shift-Left Click."
+      Shift-Right-Click:
+        - tell "§7Shift-Right Click."
   Build:
     - tell "§7Open §fExample Menu §7."
   Close:
