@@ -545,7 +545,7 @@ object GemAPI {
      * @return 宝石在槽位中的显示名称列表
      * @author CPJiNan
      */
-    fun getGemDisplayNames(): HashMap<String, String> = gemSlotNames
+    fun getGemDisplayNames(): HashMap<String, String> = gemDisplayNames
 
     /**
      * 获取所有宝石配置合并后的新配置
