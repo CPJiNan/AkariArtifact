@@ -23,6 +23,7 @@ import org.bukkit.potion.PotionData
 import org.bukkit.potion.PotionEffect
 import org.bukkit.potion.PotionEffectType
 import org.bukkit.potion.PotionType
+import pers.neige.neigeitems.manager.ItemManager
 import taboolib.library.xseries.XMaterial
 import taboolib.module.nms.*
 import taboolib.platform.util.buildItem
@@ -347,6 +348,8 @@ object ItemAPI {
             "MythicMobs" -> Mythic.API.getItemStack(id)
 
             "SX-Attribute" -> SXAttribute.getApi().getItem(id, player)
+
+            "NeigeItems" -> ItemManager.getItemStack(id)
 
             else -> null
         }
