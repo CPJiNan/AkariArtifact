@@ -15,6 +15,7 @@ import taboolib.platform.util.isAir
 import taboolib.platform.util.isNotAir
 import taboolib.platform.util.modifyLore
 
+@Suppress("DEPRECATION")
 object LoreCommand {
     private val clipboard: HashMap<Player, String> = hashMapOf()
 

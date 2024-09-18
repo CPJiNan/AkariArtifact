@@ -14,9 +14,11 @@ import org.bukkit.entity.Player
 import org.bukkit.event.inventory.InventoryType
 import taboolib.module.ui.openMenu
 import taboolib.module.ui.type.Chest
+import taboolib.platform.util.isAir
 import taboolib.platform.util.sendLang
 import java.io.File
 
+@Suppress("DEPRECATION")
 object UIAPI {
     private var uiFiles: ArrayList<File> = arrayListOf()
     private var uiSections: HashMap<String, ConfigurationSection> = hashMapOf()
@@ -123,12 +125,22 @@ object UIAPI {
         when (ui) {
             ModuleGem.getSocketUI() -> {
                 val item = player.itemInHand
+                if (item.isAir()) {
+                    player.sendLang("Air-In-Hand")
+                    return
+                }
+
                 player.openSocketUI(item)
                 return
             }
 
             ModuleGem.getUnsocketUI() -> {
                 val item = player.itemInHand
+                if (item.isAir()) {
+                    player.sendLang("Air-In-Hand")
+                    return
+                }
+
                 player.openUnsocketUI(item)
                 return
             }

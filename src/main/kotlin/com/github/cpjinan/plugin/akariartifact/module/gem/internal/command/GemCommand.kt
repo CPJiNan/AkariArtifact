@@ -12,9 +12,11 @@ import taboolib.common.platform.command.subCommand
 import taboolib.common.platform.command.suggest
 import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
+import taboolib.platform.util.isAir
 import taboolib.platform.util.isNotAir
 import taboolib.platform.util.modifyLore
 
+@Suppress("DEPRECATION")
 object GemCommand {
     val gem = subCommand {
         literal("open") {
@@ -36,11 +38,21 @@ object GemCommand {
             suggest { GemAPI.getGemNames() }
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().itemInHand
+                if (item.isAir()) {
+                    sender.sendLang("Air-In-Hand")
+                    return@execute
+                }
+
                 GemAPI.socketGem(sender.cast(), item, context["gem"])
             }
         }.dynamic("options", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().itemInHand
+                if (item.isAir()) {
+                    sender.sendLang("Air-In-Hand")
+                    return@execute
+                }
+
                 GemAPI.socketGem(sender.cast(), item, context["gem"])
             }
         }
@@ -49,11 +61,21 @@ object GemCommand {
             suggest { GemAPI.getGemNames() }
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().itemInHand
+                if (item.isAir()) {
+                    sender.sendLang("Air-In-Hand")
+                    return@execute
+                }
+
                 GemAPI.unsocketGem(sender.cast(), item, context["gem"])
             }
         }.dynamic("options", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().itemInHand
+                if (item.isAir()) {
+                    sender.sendLang("Air-In-Hand")
+                    return@execute
+                }
+
                 GemAPI.unsocketGem(sender.cast(), item, context["gem"])
             }
         }
@@ -75,6 +97,10 @@ object GemCommand {
                 suggest { GemAPI.getGemNames() }
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     val item = sender.cast<Player>().itemInHand
+                    if (item.isAir()) {
+                        sender.sendLang("Air-In-Hand")
+                        return@execute
+                    }
 
                     val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
                     val slotPrefix = ModuleGem.getSlotPrefix()
@@ -98,6 +124,10 @@ object GemCommand {
                     }
 
                     val item = sender.cast<Player>().itemInHand
+                    if (item.isAir()) {
+                        if (!silent) sender.sendLang("Air-In-Hand")
+                        return@execute
+                    }
 
                     val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
                     val slotPrefix = ModuleGem.getSlotPrefix()

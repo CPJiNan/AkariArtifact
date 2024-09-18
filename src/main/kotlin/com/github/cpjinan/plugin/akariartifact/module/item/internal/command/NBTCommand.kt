@@ -11,6 +11,7 @@ import taboolib.module.lang.sendLang
 import taboolib.module.nms.*
 import taboolib.platform.util.isAir
 
+@Suppress("DEPRECATION")
 object NBTCommand {
     val nbt = subCommand {
         createHelper()

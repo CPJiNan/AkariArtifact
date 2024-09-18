@@ -11,7 +11,9 @@ import taboolib.module.chat.colored
 import taboolib.module.lang.sendLang
 import taboolib.module.nms.getName
 import taboolib.platform.util.giveItem
+import taboolib.platform.util.isAir
 
+@Suppress("DEPRECATION")
 object ItemCommand {
     val item = subCommand {
         createHelper()
@@ -94,6 +96,11 @@ object ItemCommand {
         literal("save") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().itemInHand
+                if (item.isAir()) {
+                    sender.sendLang("Air-In-Hand")
+                    return@execute
+                }
+
                 ItemAPI.saveItem(
                     item,
                     "module/item/SaveItems.yml",
@@ -105,6 +112,11 @@ object ItemCommand {
         }.dynamic("id") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().itemInHand
+                if (item.isAir()) {
+                    sender.sendLang("Air-In-Hand")
+                    return@execute
+                }
+
                 ItemAPI.saveItem(
                     item,
                     "module/item/SaveItems.yml",
@@ -116,6 +128,11 @@ object ItemCommand {
         }.dynamic("path") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                 val item = sender.cast<Player>().itemInHand
+                if (item.isAir()) {
+                    sender.sendLang("Air-In-Hand")
+                    return@execute
+                }
+
                 ItemAPI.saveItem(
                     item,
                     "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
@@ -140,6 +157,11 @@ object ItemCommand {
                 }
 
                 val item = sender.cast<Player>().itemInHand
+                if (item.isAir()) {
+                    if (!silent) sender.sendLang("Air-In-Hand")
+                    return@execute
+                }
+
                 ItemAPI.saveItem(
                     item,
                     "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
