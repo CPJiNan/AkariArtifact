@@ -93,7 +93,7 @@ object ItemCommand {
 
         literal("save") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.cast<Player>().inventory.itemInMainHand
+                val item = sender.cast<Player>().itemInHand
                 ItemAPI.saveItem(
                     item,
                     "module/item/SaveItems.yml",
@@ -104,7 +104,7 @@ object ItemCommand {
             }
         }.dynamic("id") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.cast<Player>().inventory.itemInMainHand
+                val item = sender.cast<Player>().itemInHand
                 ItemAPI.saveItem(
                     item,
                     "module/item/SaveItems.yml",
@@ -115,7 +115,7 @@ object ItemCommand {
             }
         }.dynamic("path") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.cast<Player>().inventory.itemInMainHand
+                val item = sender.cast<Player>().itemInHand
                 ItemAPI.saveItem(
                     item,
                     "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",
@@ -139,7 +139,7 @@ object ItemCommand {
                     }
                 }
 
-                val item = sender.cast<Player>().inventory.itemInMainHand
+                val item = sender.cast<Player>().itemInHand
                 ItemAPI.saveItem(
                     item,
                     "module/item/${context["path"].takeIf { it.endsWith(".yml") } ?: "${context["path"]}.yml"}",

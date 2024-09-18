@@ -18,7 +18,7 @@ object NBTCommand {
         literal("check") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                 sender.castSafely<Player>().let {
-                    val item = it?.inventory?.itemInMainHand
+                    val item = it?.itemInHand
                     if (item.isAir()) {
                         sender.sendLang("Air-In-Hand")
                         return@execute
@@ -63,7 +63,7 @@ object NBTCommand {
 
         literal("set").dynamic("key").dynamic("value") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.castSafely<Player>()?.inventory?.itemInMainHand
+                val item = sender.castSafely<Player>()?.itemInHand
                 if (item.isAir()) {
                     sender.sendLang("Air-In-Hand")
                     return@execute
@@ -88,7 +88,7 @@ object NBTCommand {
                     }
                 }
 
-                val item = sender.castSafely<Player>()?.inventory?.itemInMainHand
+                val item = sender.castSafely<Player>()?.itemInHand
                 if (item.isAir()) {
                     sender.sendLang("Air-In-Hand")
                     return@execute
@@ -105,7 +105,7 @@ object NBTCommand {
 
         literal("remove").dynamic("key") {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.castSafely<Player>()?.inventory?.itemInMainHand
+                val item = sender.castSafely<Player>()?.itemInHand
                 if (item.isAir()) {
                     sender.sendLang("Air-In-Hand")
                     return@execute
@@ -129,7 +129,7 @@ object NBTCommand {
                     }
                 }
 
-                val item = sender.castSafely<Player>()?.inventory?.itemInMainHand
+                val item = sender.castSafely<Player>()?.itemInHand
                 if (item.isAir()) {
                     sender.sendLang("Air-In-Hand")
                     return@execute

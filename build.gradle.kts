@@ -34,7 +34,7 @@ taboolib {
             name("SX-Attribute").optional(true)
         }
     }
-    version { taboolib = "6.1.2-beta10" }
+    version { taboolib = "6.1.4" }
     relocate("ink.ptms.um", "com.github.cpjinan.plugin.akariartifact.um")
 }
 

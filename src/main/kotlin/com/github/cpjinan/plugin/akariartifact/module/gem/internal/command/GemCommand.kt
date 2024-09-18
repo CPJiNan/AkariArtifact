@@ -20,13 +20,13 @@ object GemCommand {
         literal("open") {
             literal("socket") {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
-                    val item = sender.cast<Player>().inventory.itemInMainHand
+                    val item = sender.cast<Player>().itemInHand
                     sender.cast<Player>().openSocketUI(item)
                 }
             }
             literal("unsocket") {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
-                    val item = sender.cast<Player>().inventory.itemInMainHand
+                    val item = sender.cast<Player>().itemInHand
                     sender.cast<Player>().openUnsocketUI(item)
                 }
             }
@@ -35,12 +35,12 @@ object GemCommand {
         literal("socket").dynamic("gem") {
             suggest { GemAPI.getGemNames() }
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.cast<Player>().inventory.itemInMainHand
+                val item = sender.cast<Player>().itemInHand
                 GemAPI.socketGem(sender.cast(), item, context["gem"])
             }
         }.dynamic("options", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.cast<Player>().inventory.itemInMainHand
+                val item = sender.cast<Player>().itemInHand
                 GemAPI.socketGem(sender.cast(), item, context["gem"])
             }
         }
@@ -48,12 +48,12 @@ object GemCommand {
         literal("unsocket").dynamic("gem") {
             suggest { GemAPI.getGemNames() }
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.cast<Player>().inventory.itemInMainHand
+                val item = sender.cast<Player>().itemInHand
                 GemAPI.unsocketGem(sender.cast(), item, context["gem"])
             }
         }.dynamic("options", optional = true) {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                val item = sender.cast<Player>().inventory.itemInMainHand
+                val item = sender.cast<Player>().itemInHand
                 GemAPI.unsocketGem(sender.cast(), item, context["gem"])
             }
         }
@@ -61,7 +61,7 @@ object GemCommand {
         literal("slot") {
             literal("check") {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
-                    val item = sender.cast<Player>().inventory?.itemInMainHand
+                    val item = sender.cast<Player>().itemInHand
                     if (item.isNotAir()) {
                         sender.sendLang("Gem-Slot-Check")
                         GemAPI.getItemSlotNames(item).forEachIndexed { index, content ->
@@ -74,7 +74,7 @@ object GemCommand {
             literal("add").dynamic("gem", optional = false) {
                 suggest { GemAPI.getGemNames() }
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
-                    val item = sender.cast<Player>().inventory.itemInMainHand
+                    val item = sender.cast<Player>().itemInHand
 
                     val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
                     val slotPrefix = ModuleGem.getSlotPrefix()
@@ -97,7 +97,7 @@ object GemCommand {
                         }
                     }
 
-                    val item = sender.cast<Player>().inventory.itemInMainHand
+                    val item = sender.cast<Player>().itemInHand
 
                     val slot = GemAPI.getGemSections()[context["gem"]]?.getString("Slot") ?: return@execute
                     val slotPrefix = ModuleGem.getSlotPrefix()

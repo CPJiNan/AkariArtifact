@@ -122,13 +122,13 @@ object UIAPI {
     private fun openUIForPlayer(player: Player, config: YamlConfiguration, ui: String) {
         when (ui) {
             ModuleGem.getSocketUI() -> {
-                val item = player.inventory.itemInMainHand
+                val item = player.itemInHand
                 player.openSocketUI(item)
                 return
             }
 
             ModuleGem.getUnsocketUI() -> {
-                val item = player.inventory.itemInMainHand
+                val item = player.itemInHand
                 player.openUnsocketUI(item)
                 return
             }

@@ -25,7 +25,7 @@ object LoreCommand {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                 try {
                     sender.castSafely<Player>().let {
-                        val item = it?.inventory?.itemInMainHand
+                        val item = it?.itemInHand
                         if (item.isNotAir()) {
                             sender.sendLang("Lore-Check")
                             item.itemMeta?.lore?.forEachIndexed { index, content ->
@@ -44,7 +44,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     try {
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     add(context["lore"].colored())
@@ -70,7 +70,7 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     add(lore.colored())
@@ -90,7 +90,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     try {
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     removeAt(context.int("line") - 1)
@@ -115,7 +115,7 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     removeAt(context.int("line") - 1)
@@ -135,7 +135,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     try {
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     set(context.int("line") - 1, context["lore"].colored())
@@ -161,7 +161,7 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     set(context.int("line") - 1, lore.colored())
@@ -181,7 +181,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     try {
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     add(context.int("line"), context["lore"].colored())
@@ -212,7 +212,7 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     add(context.int("line"), lore.colored())
@@ -237,7 +237,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     try {
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isAir()) {
                                 sender.sendLang("Air-In-Hand")
                                 return@execute
@@ -276,7 +276,7 @@ object LoreCommand {
                                 }
                             }
 
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isAir()) {
                                 sender.sendLang("Air-In-Hand")
                                 return@execute
@@ -315,7 +315,7 @@ object LoreCommand {
             execute<ProxyCommandSender> { sender: ProxyCommandSender, _: CommandContext<ProxyCommandSender>, _: String ->
                 try {
                     sender.castSafely<Player>().let {
-                        val item = it?.inventory?.itemInMainHand
+                        val item = it?.itemInHand
                         if (item.isNotAir()) {
                             item.modifyLore {
                                 clear()
@@ -340,7 +340,7 @@ object LoreCommand {
                     }
 
                     sender.castSafely<Player>().let {
-                        val item = it?.inventory?.itemInMainHand
+                        val item = it?.itemInHand
                         if (item.isNotAir()) {
                             item.modifyLore {
                                 clear()
@@ -359,7 +359,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     try {
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     set(context.int("lineB") - 1, get(context.int("lineA") - 1))
@@ -384,7 +384,7 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     set(context.int("lineB") - 1, get(context.int("lineA") - 1))
@@ -404,7 +404,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     try {
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     val value = get(context.int("line") - 1)
@@ -430,7 +430,7 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     val value = get(context.int("line") - 1)
@@ -451,7 +451,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     sender.castSafely<Player>().let {
                         try {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     clipboard[it]?.colored()?.let { value ->
@@ -480,7 +480,7 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     clipboard[it]?.colored()?.let { value ->
@@ -504,7 +504,7 @@ object LoreCommand {
                 execute<ProxyCommandSender> { sender: ProxyCommandSender, context: CommandContext<ProxyCommandSender>, _: String ->
                     try {
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     val value = get(context.int("line") - 1)
@@ -531,7 +531,7 @@ object LoreCommand {
                         }
 
                         sender.castSafely<Player>().let {
-                            val item = it?.inventory?.itemInMainHand
+                            val item = it?.itemInHand
                             if (item.isNotAir()) {
                                 item.modifyLore {
                                     val value = get(context.int("line") - 1)
