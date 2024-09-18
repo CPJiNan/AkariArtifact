@@ -34,7 +34,7 @@ object LoreCommand {
                             }
                         } else sender.sendLang("Air-In-Hand")
                     }
-                } catch (error: IndexOutOfBoundsException) {
+                } catch (_: IndexOutOfBoundsException) {
                     sender.sendLang("Index-Out-Of-Bounds")
                 }
             }
@@ -53,7 +53,7 @@ object LoreCommand {
                                 sender.sendLang("Lore-Add", context["lore"].colored())
                             } else sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -79,7 +79,7 @@ object LoreCommand {
                                 if (!silent) sender.sendLang("Lore-Add", lore.colored())
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -99,7 +99,7 @@ object LoreCommand {
                                 sender.sendLang("Lore-Remove", context.int("line"))
                             } else sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -124,7 +124,7 @@ object LoreCommand {
                                 if (!silent) sender.sendLang("Lore-Remove", context.int("line"))
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -144,7 +144,7 @@ object LoreCommand {
                                 sender.sendLang("Lore-Set", context.int("line"), context["lore"].colored())
                             } else sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -170,7 +170,7 @@ object LoreCommand {
                                 if (!silent) sender.sendLang("Lore-Set", context.int("line"), lore.colored())
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -195,7 +195,7 @@ object LoreCommand {
                                 )
                             } else sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -226,7 +226,7 @@ object LoreCommand {
                                 )
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -258,7 +258,7 @@ object LoreCommand {
                                 "All"
                             )
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -305,7 +305,7 @@ object LoreCommand {
                                 line ?: "All"
                             )
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -324,7 +324,7 @@ object LoreCommand {
                             sender.sendLang("Lore-Clear")
                         } else sender.sendLang("Air-In-Hand")
                     }
-                } catch (error: IndexOutOfBoundsException) {
+                } catch (_: IndexOutOfBoundsException) {
                     sender.sendLang("Index-Out-Of-Bounds")
                 }
             }
@@ -349,7 +349,7 @@ object LoreCommand {
                             if (!silent) sender.sendLang("Lore-Clear")
                         } else if (!silent) sender.sendLang("Air-In-Hand")
                     }
-                } catch (error: IndexOutOfBoundsException) {
+                } catch (_: IndexOutOfBoundsException) {
                     sender.sendLang("Index-Out-Of-Bounds")
                 }
             }
@@ -368,7 +368,7 @@ object LoreCommand {
                                 sender.sendLang("Lore-Clone", context.int("lineA"), context.int("lineB"))
                             } else sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -393,7 +393,7 @@ object LoreCommand {
                                 if (!silent) sender.sendLang("Lore-Clone", context.int("lineA"), context.int("lineB"))
                             } else if (!silent) sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -414,7 +414,7 @@ object LoreCommand {
                                 }
                             } else sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -440,7 +440,7 @@ object LoreCommand {
                                 }
                             } else if (!silent) sender.sendLang("Air-In-Hand") else return@execute
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -463,7 +463,7 @@ object LoreCommand {
                                     }
                                 }
                             } else sender.sendLang("Air-In-Hand")
-                        } catch (error: IndexOutOfBoundsException) {
+                        } catch (_: IndexOutOfBoundsException) {
                             sender.sendLang("Index-Out-Of-Bounds")
                         }
                     }
@@ -493,7 +493,7 @@ object LoreCommand {
                                 }
                             } else if (!silent) sender.sendLang("Air-In-Hand") else return@execute
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -515,7 +515,7 @@ object LoreCommand {
                                 }
                             } else sender.sendLang("Air-In-Hand")
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
@@ -542,7 +542,7 @@ object LoreCommand {
                                 }
                             } else if (!silent) sender.sendLang("Air-In-Hand") else return@execute
                         }
-                    } catch (error: IndexOutOfBoundsException) {
+                    } catch (_: IndexOutOfBoundsException) {
                         sender.sendLang("Index-Out-Of-Bounds")
                     }
                 }
