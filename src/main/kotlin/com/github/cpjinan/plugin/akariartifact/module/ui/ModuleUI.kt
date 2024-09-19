@@ -4,7 +4,6 @@ import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.saveDefaultResource
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
 import com.github.cpjinan.plugin.akariartifact.module.item.ModuleItem
-import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
 import com.github.cpjinan.plugin.akariartifact.module.ui.api.UIAPI
 import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.LifeCycle
@@ -23,7 +22,7 @@ object ModuleUI {
     }
 
     fun reloadConfig() {
-        ModuleProjectile.config = YamlConfiguration.loadConfiguration(ModuleProjectile.configFile)
+        config = YamlConfiguration.loadConfiguration(configFile)
         UIAPI.reloadUI()
     }
 

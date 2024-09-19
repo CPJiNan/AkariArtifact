@@ -21,7 +21,7 @@ object ModuleItem {
     }
 
     fun reloadConfig() {
-        YamlConfiguration.loadConfiguration(configFile)
+        config = YamlConfiguration.loadConfiguration(configFile)
         ItemAPI.reloadItem()
     }
 
