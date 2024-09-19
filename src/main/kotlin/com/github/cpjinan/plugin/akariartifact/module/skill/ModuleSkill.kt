@@ -1,4 +1,4 @@
-package com.github.cpjinan.plugin.akariartifact.module.interact
+package com.github.cpjinan.plugin.akariartifact.module.skill
 
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.saveDefaultResource
@@ -8,11 +8,11 @@ import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
 import java.io.File
 
-object ModuleInteract {
-    const val MODULE_NAME = "Interact"
+object ModuleSkill {
+    const val MODULE_NAME = "Skill"
     const val MODULE_VERSION = 1
 
-    var configFile = File(FileUtil.dataFolder, "module/interact.yml")
+    var configFile = File(FileUtil.dataFolder, "module/skill.yml")
     var config: YamlConfiguration = YamlConfiguration()
 
     init {
@@ -28,7 +28,7 @@ object ModuleInteract {
     @Awake(LifeCycle.LOAD)
     fun onLoad() {
         plugin.saveDefaultResource(
-            "module/interact.yml"
+            "module/skill.yml"
         )
         reloadConfig()
     }
