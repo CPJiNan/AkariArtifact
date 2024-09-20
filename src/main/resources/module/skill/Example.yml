@@ -1,0 +1,15 @@
+示例技能:
+  Bind:
+    Item: [ ]
+    Name:
+      - Contain<=>物品名称
+      - Equal<=>物品名称
+    Lore: [ ]
+  Condition: [ ]
+  Action:
+    Left-Click:
+      - 'Kether<=>tell "§7触发 §f示例技能 §7."'
+    Right-Click: { }
+    Shift-Left-Click: { }
+    Shift-Right-Click: { }
+  Cooldown: 默认组冷却

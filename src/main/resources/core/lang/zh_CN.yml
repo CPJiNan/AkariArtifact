@@ -53,7 +53,7 @@ UI-List: "&8======== &fUI 列表 &8========"
 UI-Open: "&7已为玩家 &f{0} &7打开 UI &f{1} &7."
 UI-Close: "&7已为玩家 &f{0} &7关闭 UI &7."
 
-# 宝石镶嵌 相关
+# 宝石镶嵌/拆解 相关
 Gem-Slot-Check: "&8======== &f槽位列表 &8========"
 Gem-Slot-Add: "&7已为手持物品添加槽位 &f{0} &7."
 Gem-Socket-Success: "&7镶嵌成功."
@@ -70,3 +70,6 @@ Gem-No-Enough-Money: "&c所需金钱不足.&7({0}/{1})"
 Gem-No-Enough-Point: "&c所需点券不足.&7({0}/{1})"
 Gem-No-Enough-Item: "&c所需镶嵌材料数量不足."
 Gem-Too-Many-Item: "&c手持物品数量过多."
+
+# 技能相关
+Skill-Condition-Not-Met: "&c未满足技能释放条件."

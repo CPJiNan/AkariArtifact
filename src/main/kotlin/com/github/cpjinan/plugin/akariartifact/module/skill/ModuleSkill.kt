@@ -30,6 +30,9 @@ object ModuleSkill {
         plugin.saveDefaultResource(
             "module/skill.yml"
         )
+        plugin.saveDefaultResource(
+            "module/skill/Example.yml"
+        )
         reloadConfig()
     }
 }

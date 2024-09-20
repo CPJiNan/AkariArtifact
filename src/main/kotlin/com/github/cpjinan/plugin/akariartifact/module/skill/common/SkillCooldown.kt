@@ -1,43 +1,36 @@
 package com.github.cpjinan.plugin.akariartifact.module.skill.common
 
-import java.util.UUID
 
 object SkillCooldown {
-    private val cooldown = HashMap<UUID, HashMap<String, Long>>()
+    private val cooldownData = HashMap<String, Long>()
 
     /**
-     * 为冷却组设置冷却
-     * @param player 玩家 UUID
-     * @param cooldownID 冷却组 ID
-     * @param cooldownTime 冷却时间 (秒)
+     * 设置冷却
+     * @param id 组冷却 ID
+     * @param time 冷却时间 (秒)
      */
-    fun setCooldown(player: UUID, cooldownID: String, cooldownTime: Long) {
-        val playerCooldowns = cooldown.getOrPut(player) { hashMapOf() }
-        playerCooldowns[cooldownID] = System.currentTimeMillis() + cooldownTime * 1000
+    fun setCooldown(id: String, time: Long) {
+        cooldownData[id] = System.currentTimeMillis() + time * 1000
     }
 
     /**
-     * 获取冷却组是否冷却结束
-     * @param player 玩家 UUID
-     * @param cooldownID 冷却组 ID
-     * @return 冷却组是否冷却结束
+     * 获取组冷却是否冷却结束
+     * @param id 组冷却 ID
+     * @return 组冷却是否冷却结束
      */
-    fun isCooldownFinish(player: UUID, cooldownID: String): Boolean {
-        val playerCooldown = cooldown[player] ?: return true
-        val endTime = playerCooldown[cooldownID] ?: return true
+    fun isCooldownFinish(id: String): Boolean {
+        val endTime = cooldownData[id] ?: return true
         return System.currentTimeMillis() > endTime
     }
 
     /**
-     * 获取冷却组的冷却剩余时间
-     * @param player 玩家UUID
-     * @param cooldownID 冷却组 ID
+     * 获取组冷却的冷却剩余时间
+     * @param id 组冷却 ID
      * @return 冷却时间 (秒)
      */
-    fun getCooldown(player: UUID, cooldownID: String): Long {
-        val playerCooldown = cooldown[player] ?: return 0
-        val endTime = playerCooldown[cooldownID] ?: return 0
-        val remainingTime = endTime - System.currentTimeMillis()
-        return if (remainingTime > 0) remainingTime / 1000 else 0
+    fun getCooldown(id: String): Long {
+        val endTime = cooldownData[id] ?: return 0
+        val cooldown = endTime - System.currentTimeMillis()
+        return if (cooldown > 0) cooldown / 1000 else 0
     }
 }
