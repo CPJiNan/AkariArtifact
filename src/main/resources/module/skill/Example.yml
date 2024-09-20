@@ -22,5 +22,5 @@
   # MythicMobs<=>技能名称
   Action:
     - 'Kether<=>tell "§7触发 §f示例技能 §7."'
-    - 'Kether<=>command inline "AkariArtifact skill cooldown set {{sender}} 示例技能 30"'
+    - 'Kether<=>command inline "AkariArtifact skill cooldown set {{sender}} 示例技能 30 --silent"'
   Cooldown: '%Player%.示例技能组冷却'
