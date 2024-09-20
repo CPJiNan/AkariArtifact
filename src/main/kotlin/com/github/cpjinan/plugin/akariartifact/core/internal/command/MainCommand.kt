@@ -8,6 +8,7 @@ import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.Item
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.LoreCommand
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.NBTCommand
 import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
+import com.github.cpjinan.plugin.akariartifact.module.skill.ModuleSkill
 import com.github.cpjinan.plugin.akariartifact.module.ui.ModuleUI
 import com.github.cpjinan.plugin.akariartifact.module.ui.internal.command.UICommand
 import taboolib.common.platform.ProxyCommandSender
@@ -46,6 +47,7 @@ object MainCommand {
             ModuleUI.reloadConfig()
             ModuleProjectile.reloadConfig()
             ModuleGem.reloadConfig()
+            ModuleSkill.reloadConfig()
             sender.sendLang("Plugin-Reloaded")
         }
     }

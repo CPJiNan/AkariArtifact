@@ -1,9 +1,11 @@
 示例技能:
   Bind:
     Item: [ ]
-    Name:
-      - Contain<=>物品名称
-      - Equal<=>物品名称
+    # Contain<=>Name
+    # Equal<=>Name
+    Name: [ ]
+    # Contain<=>Lore
+    # Equal<=>Lore
     Lore: [ ]
   Condition: [ ]
   Action:
