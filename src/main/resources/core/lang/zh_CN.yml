@@ -72,5 +72,9 @@ Gem-No-Enough-Item: "&c所需镶嵌材料数量不足."
 Gem-Too-Many-Item: "&c手持物品数量过多."
 
 # 技能相关
-Skill-Condition-Not-Met: "&c未满足技能释放条件."
-Skill-Cooldown: "&c技能还有 {0} 秒结束冷却."
+Skill-Condition-Not-Met: "&c未满足 {0} 技能释放条件."
+Skill-Ready: "&f{0} &7技能已经准备就绪."
+Skill-Cooldown-Check: "&c玩家 {0} 的 {1} 技能还有 {2} 秒结束冷却."
+Skill-Cooldown-Set: "&7已为玩家 &f{0} &7设置 &f{1} &7技能的冷却为 &f{2} &7秒."
+Skill-Cooldown-Add: "&7已为玩家 &f{0} &7增加 &f{1} &7技能的冷却 &f{2} &7秒."
+Skill-Cooldown-Remove: "&7已为玩家 &f{0} &7减少 &f{1} &7技能的冷却 &f{2} &7秒."

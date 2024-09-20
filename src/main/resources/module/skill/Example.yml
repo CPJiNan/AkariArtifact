@@ -1,4 +1,14 @@
 示例技能:
+  Display: '示例技能名称'
+  # Left-Click-Air
+  # Left-Click-Block
+  # Right-Click-Air
+  # Right-Click-Block
+  # Shift-Left-Click-Air
+  # Shift-Left-Click-Block
+  # Shift-Right-Click-Air
+  # Shift-Right-Click-Block
+  Type: Left-Click-Air
   Bind:
     Item: [ ]
     # Contain<=>Name
@@ -8,10 +18,9 @@
     # Equal<=>Lore
     Lore: [ ]
   Condition: [ ]
+  # Kether<=>Kether 语句
+  # MythicMobs<=>技能名称
   Action:
-    Left-Click:
-      - 'Kether<=>tell "§7触发 §f示例技能 §7."'
-    Right-Click: { }
-    Shift-Left-Click: { }
-    Shift-Right-Click: { }
-  Cooldown: 默认组冷却
+    - 'Kether<=>tell "§7触发 §f示例技能 §7."'
+    - 'Kether<=>command inline "AkariArtifact skill cooldown set {{sender}} 示例技能 30"'
+  Cooldown: '%Player%.示例技能组冷却'

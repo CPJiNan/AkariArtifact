@@ -1,11 +1,15 @@
 package com.github.cpjinan.plugin.akariartifact.module.skill.api
 
+import com.github.cpjinan.plugin.akariartifact.core.common.script.kether.Kether.evalKether
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.getConfigSections
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
 import com.github.cpjinan.plugin.akariartifact.module.item.api.ItemAPI
+import com.github.cpjinan.plugin.akariartifact.module.skill.common.SkillCooldown
+import ink.ptms.um.Mythic
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.configuration.file.YamlConfiguration
+import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import taboolib.module.nms.getName
 import taboolib.platform.util.buildItem
@@ -57,6 +61,112 @@ object SkillAPI {
             }) return true
 
         return false
+    }
+
+    /**
+     * 玩家释放技能
+     * @author CPJiNan
+     */
+    fun castSkill(player: Player, skill: String): Boolean {
+        if (!isMetSkillCondition(player, skill)) return false
+        if (!isSkillCooldownFinish(player, skill)) return false
+        runSkillAction(player = player, skill = skill)
+        return true
+    }
+
+    /**
+     * 获取玩家是否满足技能释放条件
+     * @author CPJiNan
+     */
+    fun isMetSkillCondition(player: Player, skill: String): Boolean {
+        return skillSections[skill]?.getStringList("Condition")
+            ?.all { it.evalKether(player).toString().toBoolean() } != false
+    }
+
+    /**
+     * 获取玩家技能冷却是否结束
+     * @author CPJiNan
+     */
+    fun isSkillCooldownFinish(player: Player, skill: String): Boolean {
+        val cooldownID = skillSections[skill]?.getString("Cooldown")?.replace("Player", player.name) ?: return true
+        return SkillCooldown.isCooldownFinish(cooldownID)
+    }
+
+    /**
+     * 获取玩家技能冷却
+     * @author CPJiNan
+     */
+    fun getSkillCooldown(player: Player, skill: String): Long {
+        val cooldownID = skillSections[skill]?.getString("Cooldown")?.replace("Player", player.name) ?: return 0
+        return SkillCooldown.getCooldown(cooldownID)
+    }
+
+    /**
+     * 设置技能冷却时间
+     * @author CPJiNan
+     */
+    fun setSkillCooldown(player: Player, skill: String, time: Long) {
+        val cooldownID = skillSections[skill]?.getString("Cooldown")?.replace("Player", player.name) ?: return
+        SkillCooldown.setCooldown(cooldownID, time)
+    }
+
+    /**
+     * 增加技能冷却时间
+     * @author CPJiNan
+     */
+    fun addSkillCooldown(player: Player, skill: String, time: Long) {
+        val cooldownID = skillSections[skill]?.getString("Cooldown")?.replace("Player", player.name) ?: return
+        SkillCooldown.addCooldown(cooldownID, time)
+    }
+
+    /**
+     * 减少技能冷却时间
+     * @author CPJiNan
+     */
+    fun removeSkillCooldown(player: Player, skill: String, time: Long) {
+        val cooldownID = skillSections[skill]?.getString("Cooldown")?.replace("Player", player.name) ?: return
+        SkillCooldown.removeCooldown(cooldownID, time)
+    }
+
+    /**
+     * 执行技能动作
+     * @author CPJiNan
+     */
+    fun runSkillAction(player: Player, skill: String) {
+        runSkillAction(
+            player = player,
+            action = skillSections[skill]?.getStringList("Action") ?: emptyList()
+        )
+    }
+
+    /**
+     * 执行技能动作
+     * @author CPJiNan
+     */
+    fun runSkillAction(player: Player, action: List<String>) {
+        val skillMap: LinkedHashMap<String, MutableList<String>> = LinkedHashMap()
+
+        action.forEach { entry ->
+            when {
+                entry.startsWith("Kether<=>") -> {
+                    val skillContent = entry.split("Kether<=>", limit = 2)[1]
+                    skillMap.getOrPut("Kether") { mutableListOf() }.add(skillContent)
+                }
+
+                entry.startsWith("MythicMobs<=>") -> {
+                    val skillContent = entry.split("MythicMobs<=>", limit = 2)[1]
+                    skillMap.getOrPut("MythicMobs") { mutableListOf() }.add(skillContent)
+                }
+            }
+        }
+
+        skillMap["Kether"]?.forEach { ketherSkill ->
+            ketherSkill.evalKether(player)
+        }
+
+        skillMap["MythicMobs"]?.forEach { mythicSkill ->
+            Mythic.API.castSkill(player, mythicSkill)
+        }
     }
 
     /**

@@ -5,12 +5,40 @@ object SkillCooldown {
     private val cooldownData = HashMap<String, Long>()
 
     /**
-     * 设置冷却
+     * 设置冷却时间
      * @param id 组冷却 ID
      * @param time 冷却时间 (秒)
      */
     fun setCooldown(id: String, time: Long) {
         cooldownData[id] = System.currentTimeMillis() + time * 1000
+    }
+
+    /**
+     * 增加冷却时间
+     * @param id 组冷却 ID
+     * @param time 增加的冷却时间 (秒)
+     */
+    fun addCooldown(id: String, time: Long) {
+        val currentCooldown = cooldownData[id]
+        val newEndTime = if (currentCooldown != null) {
+            currentCooldown + time * 1000
+        } else {
+            System.currentTimeMillis() + time * 1000
+        }
+        cooldownData[id] = newEndTime
+    }
+
+    /**
+     * 减少冷却时间
+     * @param id 组冷却 ID
+     * @param time 减少的冷却时间 (秒)
+     */
+    fun removeCooldown(id: String, time: Long) {
+        val currentCooldown = cooldownData[id]
+        if (currentCooldown != null) {
+            val newEndTime = currentCooldown - time * 1000
+            cooldownData[id] = maxOf(newEndTime, System.currentTimeMillis())
+        }
     }
 
     /**
