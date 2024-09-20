@@ -9,6 +9,7 @@ import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.Lore
 import com.github.cpjinan.plugin.akariartifact.module.item.internal.command.NBTCommand
 import com.github.cpjinan.plugin.akariartifact.module.projectile.ModuleProjectile
 import com.github.cpjinan.plugin.akariartifact.module.skill.ModuleSkill
+import com.github.cpjinan.plugin.akariartifact.module.skill.internal.command.SkillCommand
 import com.github.cpjinan.plugin.akariartifact.module.ui.ModuleUI
 import com.github.cpjinan.plugin.akariartifact.module.ui.internal.command.UICommand
 import taboolib.common.platform.ProxyCommandSender
@@ -38,6 +39,9 @@ object MainCommand {
 
     @CommandBody(permission = "akariartifact.gem")
     val gem = GemCommand.gem
+
+    @CommandBody(permission = "akariartifact.skill")
+    val skill = SkillCommand.skill
 
     @CommandBody(permission = "akariartifact.reload")
     val reload = subCommand {
