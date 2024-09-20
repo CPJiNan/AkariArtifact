@@ -3,6 +3,7 @@ package com.github.cpjinan.plugin.akariartifact.module.skill
 import com.github.cpjinan.plugin.akariartifact.AkariArtifact.plugin
 import com.github.cpjinan.plugin.akariartifact.core.utils.ConfigUtil.saveDefaultResource
 import com.github.cpjinan.plugin.akariartifact.core.utils.FileUtil
+import com.github.cpjinan.plugin.akariartifact.module.skill.api.SkillAPI
 import org.bukkit.configuration.file.YamlConfiguration
 import taboolib.common.LifeCycle
 import taboolib.common.platform.Awake
@@ -21,6 +22,7 @@ object ModuleSkill {
 
     fun reloadConfig() {
         config = YamlConfiguration.loadConfiguration(configFile)
+        SkillAPI.reloadSkill()
     }
 
     fun isEnabledModule() = config.getBoolean("Enable")
