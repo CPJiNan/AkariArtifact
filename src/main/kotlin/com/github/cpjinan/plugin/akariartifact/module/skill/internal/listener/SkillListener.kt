@@ -19,16 +19,19 @@ object SkillListener {
             .filter { SkillAPI.isBindSkill(item, it) }
             .filter {
                 val isSneak = player.isSneaking
-                when (SkillAPI.getSkillSections()[it]?.getString("Type")) {
-                    "Left-Click-Air" -> event.action == Action.LEFT_CLICK_AIR && !isSneak
-                    "Left-Click-Block" -> event.action == Action.LEFT_CLICK_BLOCK && !isSneak
-                    "Right-Click-Air" -> event.action == Action.RIGHT_CLICK_AIR && !isSneak
-                    "Right-Click-Block" -> event.action == Action.RIGHT_CLICK_BLOCK && !isSneak
-                    "Shift-Left-Click-Air" -> event.action == Action.LEFT_CLICK_AIR && isSneak
-                    "Shift-Left-Click-Block" -> event.action == Action.LEFT_CLICK_BLOCK && isSneak
-                    "Shift-Right-Click-Air" -> event.action == Action.RIGHT_CLICK_AIR && isSneak
-                    "Shift-Right-Click-Block" -> event.action == Action.RIGHT_CLICK_BLOCK && isSneak
-                    else -> return
+                val actionType = SkillAPI.getSkillSections()[it]?.getStringList("Type") ?: return
+                actionType.any { type ->
+                    when (type) {
+                        "Left-Click-Air" -> event.action == Action.LEFT_CLICK_AIR && !isSneak
+                        "Left-Click-Block" -> event.action == Action.LEFT_CLICK_BLOCK && !isSneak
+                        "Right-Click-Air" -> event.action == Action.RIGHT_CLICK_AIR && !isSneak
+                        "Right-Click-Block" -> event.action == Action.RIGHT_CLICK_BLOCK && !isSneak
+                        "Shift-Left-Click-Air" -> event.action == Action.LEFT_CLICK_AIR && isSneak
+                        "Shift-Left-Click-Block" -> event.action == Action.LEFT_CLICK_BLOCK && isSneak
+                        "Shift-Right-Click-Air" -> event.action == Action.RIGHT_CLICK_AIR && isSneak
+                        "Shift-Right-Click-Block" -> event.action == Action.RIGHT_CLICK_BLOCK && isSneak
+                        else -> return
+                    }
                 }
             }
 

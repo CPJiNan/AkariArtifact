@@ -8,7 +8,11 @@
   # Shift-Left-Click-Block
   # Shift-Right-Click-Air
   # Shift-Right-Click-Block
-  Type: Left-Click-Air
+  Type:
+    - 'Left-Click-Air'
+    - 'Left-Click-Block'
+    - 'Shift-Left-Click-Air'
+    - 'Shift-Left-Click-Block'
   Bind:
     Item: [ ]
     # Contain<=>Name
