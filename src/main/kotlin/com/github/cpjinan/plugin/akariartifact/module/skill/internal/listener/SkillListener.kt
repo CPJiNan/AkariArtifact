@@ -21,11 +21,17 @@ object SkillListener {
 
         if (!skillSection.getStringList("Condition")
                 .all { it.evalKether(player).toString().toBoolean() }
-        ) player.sendLang("Skill-Condition-Not-Met")
+        ) {
+            player.sendLang("Skill-Condition-Not-Met")
+            return
+        }
 
-        if (!SkillCooldown.isCooldownFinish("${player.name}.$skillName")) player.sendLang(
-            "Skill-Cooldown",
-            SkillCooldown.getCooldown("${player.name}.$skillName")
-        )
+        if (!SkillCooldown.isCooldownFinish("${player.name}.$skillName")) {
+            player.sendLang(
+                "Skill-Cooldown",
+                SkillCooldown.getCooldown("${player.name}.$skillName")
+            )
+            return
+        }
     }
 }
