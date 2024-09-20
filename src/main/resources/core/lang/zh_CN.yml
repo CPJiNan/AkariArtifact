@@ -73,3 +73,4 @@ Gem-Too-Many-Item: "&c手持物品数量过多."
 
 # 技能相关
 Skill-Condition-Not-Met: "&c未满足技能释放条件."
+Skill-Cooldown: "&c技能还有 {0} 秒结束冷却."
