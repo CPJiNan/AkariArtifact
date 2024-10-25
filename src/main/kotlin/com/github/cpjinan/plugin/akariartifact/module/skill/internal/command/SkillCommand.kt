@@ -4,15 +4,10 @@ import com.github.cpjinan.plugin.akariartifact.core.utils.CommandUtil
 import com.github.cpjinan.plugin.akariartifact.module.skill.api.SkillAPI
 import org.bukkit.entity.Player
 import taboolib.common.platform.ProxyCommandSender
-import taboolib.common.platform.command.CommandContext
-import taboolib.common.platform.command.player
-import taboolib.common.platform.command.subCommand
-import taboolib.common.platform.command.suggest
-import taboolib.common.platform.command.suggestPlayers
+import taboolib.common.platform.command.*
 import taboolib.module.lang.sendLang
 import kotlin.collections.component1
 import kotlin.collections.component2
-import kotlin.collections.iterator
 
 @Suppress("DEPRECATION")
 object SkillCommand {

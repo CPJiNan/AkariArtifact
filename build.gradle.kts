@@ -3,7 +3,7 @@ import io.izzel.taboolib.gradle.*
 plugins {
     `java-library`
     `maven-publish`
-    id("io.izzel.taboolib") version "2.0.13"
+    id("io.izzel.taboolib") version "2.0.19"
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
 }
 
@@ -34,7 +34,7 @@ taboolib {
             name("SX-Attribute").optional(true)
         }
     }
-    version { taboolib = "6.1.4" }
+    version { taboolib = "6.2.0-beta23" }
     relocate("ink.ptms.um", "com.github.cpjinan.plugin.akariartifact.um")
 }
 
