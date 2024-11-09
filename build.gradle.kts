@@ -3,22 +3,23 @@ import io.izzel.taboolib.gradle.*
 plugins {
     `java-library`
     `maven-publish`
-    id("io.izzel.taboolib") version "2.0.19"
+    id("io.izzel.taboolib") version "2.0.20"
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
 }
 
 taboolib {
     env {
         install(
-            UNIVERSAL,
-            UI,
-            NMS_UTIL,
-            KETHER,
-            METRICS,
-            DATABASE,
-            EXPANSION_REDIS,
-            EXPANSION_JAVASCRIPT,
-            BUKKIT_ALL
+            Metrics,
+            CommandHelper,
+            Kether,
+            JavaScript,
+            Bukkit,
+            BukkitUI,
+            BukkitNMS,
+            BukkitNMSUtil,
+            BukkitHook,
+            BukkitUtil
         )
     }
     description {
@@ -34,7 +35,7 @@ taboolib {
             name("SX-Attribute").optional(true)
         }
     }
-    version { taboolib = "6.2.0-beta23" }
+    version { taboolib = "6.2.0-beta33" }
     relocate("ink.ptms.um", "com.github.cpjinan.plugin.akariartifact.um")
 }
 
