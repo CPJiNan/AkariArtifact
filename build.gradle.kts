@@ -48,7 +48,7 @@ repositories {
 dependencies {
     compileOnly("ink.ptms:nms-all:1.0.0")
     compileOnly("ink.ptms.core:v11200:11200")
-    compileOnly("pers.neige.neigeitems:NeigeItems:1.18.16")
+    compileOnly("pers.neige.neigeitems:NeigeItems:1.20.35")
     compileOnly(kotlin("stdlib"))
     compileOnly(fileTree("libs"))
     taboo("ink.ptms:um:1.0.1")
